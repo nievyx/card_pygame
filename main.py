@@ -16,6 +16,8 @@ for suit in suits:
         image_path = os.path.join('cards/' f'{suit}{rank}.png')
         original_image = pygame.image.load(image_path)
         scaled_image = pygame.transform.scale(original_image, (112,150))
+        card_images[(suit, rank)] = scaled_image
+
  
 deck = [(suit,rank) for suit in suits for rank in ranks]
 random.shuffle(deck)
