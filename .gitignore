@@ -1,3 +1,4 @@
-cards/vs/
+cards/.vs/
 .venv
 .env
+.idea
