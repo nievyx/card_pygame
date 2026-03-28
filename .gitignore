@@ -1,4 +1,8 @@
-cards/.vs/
 .venv
 .env
 .idea
+__pycache__/
+
+#this has already been added
+cards/.vs/
+
