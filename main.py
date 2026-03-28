@@ -27,7 +27,7 @@ for i in range(num_players):
     players[i] = [deck.pop() for _ in range(cards_per_player)]
 
 screen_width = 1200
-screen_height = 800
+screen_height = 850
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Card Dealing Simulator")
