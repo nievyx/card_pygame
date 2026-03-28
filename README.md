@@ -1,3 +1,3 @@
 # card_pygame
 
-![Capture](./capture.PNG)
+![Capture](./Capture.PNG)
