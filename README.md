@@ -1,10 +1,11 @@
 # card_pygame
 
-![Capture](./Capture.PNG)
+![Capture](././demo.PNG)
 
 ---
 
-## 🧪 My Implementation Notes
+## 🧪 My Implementation Notes 
+<details>
 
 ### Buttons
 - Created in main.py
@@ -23,3 +24,4 @@
 - Better UI layout
 - Animations
 - Sound
+</details>
