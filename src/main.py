@@ -5,6 +5,7 @@ from button import Button
 
 pygame.init()
 
+game_title = "Card Dealing Simulator!"
 card_images = {}
 
 current_state = 'menu' # possible states: 'menu', 'game', 'how_to_play'
@@ -14,7 +15,7 @@ ranks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12',
 
 for suit in suits:
     for rank in ranks:
-        image_path = os.path.join('cards', f'{suit}{rank}.png')
+        image_path = os.path.join('..\cards', f'{suit}{rank}.png')
         original_image = pygame.image.load(image_path)
         scaled_image = pygame.transform.scale(original_image, (112, 150))
         card_images[(suit, rank)] = scaled_image
@@ -34,13 +35,19 @@ screen_height = 850
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 #Game Title
-pygame.display.set_caption("Card Dealing Simulator")
+pygame.display.set_caption(game_title)
 
 #Button Creation
 start_button = Button((0,255,0), 400,150,200,80,"Start")
 how_to_button = Button((0,0,255), 400,300,200,80,"How To Play")
 quit_button = Button((255,0,0), 400,450,200,80,"Quit")
 back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
+
+
+def handle_mouse_click(pos, state):
+    if state == 'menu':
+        pass
+
 
 running = True
 while running:
@@ -54,11 +61,12 @@ while running:
         # TODO: Add game, how_to
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
+            # TODO: make below a function
 
             if current_state == 'menu':
-                if start_button.isOver(pos):
+                if start_button.is_over(pos):
                     current_state = 'game'
-                elif how_to_button.isOver(pos):
+                elif how_to_button.is_over(pos):
                     pass
 
 

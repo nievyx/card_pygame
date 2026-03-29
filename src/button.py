@@ -24,7 +24,7 @@ class Button:
                 )
             )
 
-    def isOver(self, pos):
+    def is_over(self, pos):
         if self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height:
             return True
         return False
