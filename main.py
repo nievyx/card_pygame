@@ -22,7 +22,7 @@ for suit in suits:
 deck = [(suit, rank) for suit in suits for rank in ranks]
 random.shuffle(deck)
 
-num_players = 4
+num_players = 2
 cards_per_player = 5
 players = {}
 
@@ -37,21 +37,39 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Card Dealing Simulator")
 
 #Button Creation
-startButton = Button((0,255,0), 400,150,200,80,"Start")
-howToButton = Button((0,0,255), 400,300,200,80,"How To Play")
-quitButton = Button((255,0,0), 400,450,200,80,"Quit")
+start_button = Button((0,255,0), 400,150,200,80,"Start")
+how_to_button = Button((0,0,255), 400,300,200,80,"How To Play")
+quit_button = Button((255,0,0), 400,450,200,80,"Quit")
+back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
 
 running = True
 while running:
     for event in pygame.event.get():
+
+        # Check if user wants to quit
         if event.type == pygame.QUIT:
             running = False
 
+        #Logic for clicking menu buttons
+        # TODO: Add game, how_to
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+
+            if current_state == 'menu':
+                if start_button.isOver(pos):
+                    current_state = 'game'
+                elif how_to_button.isOver(pos):
+                    pass
+
+
+
     screen.fill((0, 120, 0))
 
+    # Menu Menu
     if current_state == 'menu':
-        startButton.draw(screen)
+        start_button.draw(screen)
 
+    # Game Loop
     elif current_state == 'game':
         card_width, card_height = 112, 150
         space_between_cards = 10
