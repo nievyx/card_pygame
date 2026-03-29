@@ -49,20 +49,24 @@ while running:
 
     screen.fill((0, 120, 0))
 
-    card_width, card_height = 112, 150
-    space_between_cards = 10
-    initial_x = 20
-    initial_y = 80
-    y_offset = card_height + 40
+    if current_state == 'menu':
+        startButton.draw(screen)
 
-    for player, cards in players.items():
-        x_offset = 0
-        for card in cards:
-            screen.blit(
-                card_images[card],
-                (initial_x + x_offset, initial_y + (player * y_offset))
-            )
-            x_offset += card_width + space_between_cards
+    elif current_state == 'game':
+        card_width, card_height = 112, 150
+        space_between_cards = 10
+        initial_x = 20
+        initial_y = 80
+        y_offset = card_height + 40
+
+        for player, cards in players.items():
+            x_offset = 0
+            for card in cards:
+                screen.blit(
+                    card_images[card],
+                    (initial_x + x_offset, initial_y + (player * y_offset))
+                )
+                x_offset += card_width + space_between_cards
 
     pygame.display.flip()
 
