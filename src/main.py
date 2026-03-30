@@ -21,6 +21,8 @@ game_title = "Card Dealing Simulator!"
 MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '..','assets/monsters'))
 Chimera = Monster(name= 'Chimera', image = MONSTER_DIR + '/chimera.png', hp = 12, mp = 8, energy=5, strength=4 )
 Demon = Monster(name = 'Demon', image =  MONSTER_DIR + '/demon.png', hp = 15, mp = 4, energy=8, strength=9 )
+monster_pool = [Chimera, Demon] #TODO: add auto list creation in class
+
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 current_state: State = 'menu'
@@ -45,7 +47,11 @@ cards_per_player = 5
 players = {}
 
 for i in range(num_players):
-    players[i] = [deck.pop() for _ in range(cards_per_player)]
+    # players[i] = [deck.pop() for _ in range(cards_per_player)] # Old
+    players[i] = [ # TODO: better to create a reset monster in class, this looks messy
+        Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength)
+        for m in random.choices(monster_pool, k=cards_per_player)
+    ]
 
 screen_width = 1200
 screen_height = 850
@@ -136,13 +142,35 @@ while running:
         initial_y = 80
         y_offset = card_height + 40
 
-        for player, cards in players.items():
+        # Old
+        # for player, cards in players.items():
+        #     x_offset = 0
+        #     for card in cards:
+        #         screen.blit(
+        #             card_images[card],
+        #             (initial_x + x_offset, initial_y + (player * y_offset))
+        #         )
+        #         x_offset += card_width + space_between_cards
+
+        for player, monsters in players.items():
             x_offset = 0
-            for card in cards:
-                screen.blit(
-                    card_images[card],
-                    (initial_x + x_offset, initial_y + (player * y_offset))
-                )
+            for monster in monsters:
+                card_x = initial_x + x_offset
+                card_y = initial_y + (player * y_offset)
+
+                # Draw temp card background
+                pygame.draw.rect(screen, (50,50,50), (card_x, card_y, 112, 150))
+
+                # load + scale monster image
+                monster_img = pygame.image.load(monster.image)
+                monster_img = pygame.transform.scale(monster_img, (80, 90))
+
+                # center
+                img_x = card_x + (112 - 80) // 2
+                img_y = card_y + 40
+
+                screen.blit(monster_img, (img_x, img_y))
+
                 x_offset += card_width + space_between_cards
 
     # Update display to reflect changes
