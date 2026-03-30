@@ -1,11 +1,13 @@
 # card_pygame
-
+> note: Readme might not reflect games current state
 ## Install
+```
 pip install -r requirements.txt
-
+```
 ## Run
+```
 python main.py
-
+```
 ## Controls
 - Click "Start" to deal cards
 - Click "Back" to return to menu
@@ -34,17 +36,23 @@ python main.py
 - Better UI layout
 - Animations
 - Sound
+- .exe via:
+```
+pyinstaller --onefile --windowed main.py
+```
 </details>
 
-## Folder Structure (Future Implementation)
+## Folder Structure 
 
 ```
 project/
 │
 ├── src/          ← code 
 ├── cards/        ← assets
+├── script/       ← dev scripts (more run.bat etc)
 ├── README.md
 ├── requirements.txt
+├── run.bat       <- Windows script to run game
 ```
 
 ``` 
