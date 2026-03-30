@@ -1,7 +1,7 @@
 import pygame
 import random
 import os
-from src.ui.button import Button
+from src.ui import Button # re-exported via package for cleaner imports
 from typing import Literal
 
 pygame.init()
