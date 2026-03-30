@@ -2,13 +2,15 @@ import pygame
 import random
 import os
 from button import Button
+from typing import Literal
 
 pygame.init()
 
 game_title = "Card Dealing Simulator!"
 card_images = {}
 
-current_state = 'menu' # possible states: 'menu', 'game', 'how_to_play'
+State = Literal['menu', 'game', 'how_to_play', 'quit']
+current_state: State = 'menu'
 
 suits = ['c', 'd', 'h', 's']
 ranks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13']
@@ -43,11 +45,12 @@ how_to_button = Button((0,0,255), 400,300,200,80,"How To Play")
 quit_button = Button((255,0,0), 400,450,200,80,"Quit")
 back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
 
-
-def handle_mouse_click(pos, state):
+# TODO : this is unused!
+def handle_mouse_click(pos, state: State) -> State:
     """
     Check where mouse button is clicked.
     Used on main menu to detect if user is clicking any of the buttons.
+    :returns: New state based on mouse click event.
     """
     if state == 'menu':
         # Check if start button pressed
