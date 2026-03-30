@@ -45,8 +45,29 @@ back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
 
 
 def handle_mouse_click(pos, state):
+    """
+    Check where mouse button is clicked.
+    Used on main menu to detect if user is clicking any of the buttons.
+    """
     if state == 'menu':
-        pass
+        # Check if start button pressed
+        if start_button.is_over(pos):
+            return 'game'
+
+        # Check if how_to_play button pressed
+        if how_to_button.is_over(pos):
+            return 'how_to_play'
+
+        # Check if quit button pressed
+        if quit_button.is_over(pos):
+            return 'quit'
+
+    #
+    elif state == 'game' or state == 'how_to_play':
+        if start_button.is_over(pos):
+            return 'menu'
+
+    return state
 
 
 running = True
@@ -61,13 +82,14 @@ while running:
         # TODO: Add game, how_to
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            # TODO: make below a function
+            # TODO: run handle mouse click function here
 
+            # ❌ This is about to be removed
             if current_state == 'menu':
                 if start_button.is_over(pos):
                     current_state = 'game'
                 elif how_to_button.is_over(pos):
-                    pass
+                    pass #TODO: finish this
 
 
 
@@ -75,6 +97,7 @@ while running:
 
     # Menu Menu
     if current_state == 'menu':
+        #TODO: All below should be put in a function
         start_button.draw(screen)
 
     # Game Loop
