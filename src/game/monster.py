@@ -1,6 +1,7 @@
 class Monster:
-    def __init__(self, name, hp, mp, energy, strength ):
+    def __init__(self, name, image, hp, mp, energy, strength ):
         self.name = name
+        self.image = image
         self.hp = hp
         self.mp = mp
         self.strength = strength # Strength of physical damage
@@ -16,5 +17,8 @@ class Monster:
         pass
 
     def defense(self):
+        pass
+
+    def rest(self):
         pass
 

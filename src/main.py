@@ -2,6 +2,7 @@ import pygame
 import random
 import os
 from src.ui import Button # re-exported via package for cleaner imports
+from src.game.monster import Monster #TODO: make import cleaner via __init__.py
 from typing import Literal
 
 pygame.init() # Keep at top, before any game setup etc.
@@ -12,6 +13,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CARDS_DIR = os.path.abspath(os.path.join(BASE_DIR, '..','cards'))
 
 game_title = "Card Dealing Simulator!"
+
+# Monster Creation
+# TODO: move these to monsters.py
+# Images currently in assets/monsters dir
+# TODO : fix image mess
+MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '..','assets/monsters'))
+Chimera = Monster(name= 'Chimera', image = MONSTER_DIR + '/chimera.png', hp = 12, mp = 8, energy=5, strength=4 )
+Demon = Monster(name = 'Demon', image =  MONSTER_DIR + '/demon.png', hp = 15, mp = 4, energy=8, strength=9 )
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 current_state: State = 'menu'
