@@ -5,7 +5,7 @@
 ---
 
 ## 🧪 My Implementation Notes 
-<details>
+<details open>
 
 ### Buttons
 - Created in main.py
@@ -25,3 +25,28 @@
 - Animations
 - Sound
 </details>
+
+## Folder Structure (Future Implementation)
+
+```
+project/
+│
+├── src/          ← code 
+├── cards/        ← assets
+├── README.md
+├── requirements.txt
+```
+
+``` 
+    src/
+    │
+    ├── main.py
+    │
+    ├── ui/
+    │   ├── button.py
+    │
+    ├── game/
+    │   ├── state.py
+    │   ├── logic.py
+    │
+```
