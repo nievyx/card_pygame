@@ -46,6 +46,7 @@ quit_button = Button((255,0,0), 400,450,200,80,"Quit")
 back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
 
 # TODO : this is unused!
+# TODO : rename parameter pos as it shadows name from game loop
 def handle_mouse_click(pos, state: State) -> State:
     """
     Check where mouse button is clicked.

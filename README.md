@@ -1,5 +1,15 @@
 # card_pygame
 
+## Install
+pip install -r requirements.txt
+
+## Run
+python main.py
+
+## Controls
+- Click "Start" to deal cards
+- Click "Back" to return to menu
+
 ![Capture](././demo.PNG)
 
 ---
