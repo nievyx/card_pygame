@@ -1,16 +1,9 @@
 #!/bin/bash
 
-# Move to project root (folder above this script)
-cd "$(dirname "$0")/.."
-
-# Create virtual environment if missing
 if [ ! -d ".venv" ]; then
     echo "Creating virtual environment..."
     python3 -m venv .venv
 fi
 
-# Use the venv Python directly
 .venv/bin/python -m pip install -r requirements.txt
-
-# Run the game as a module
 .venv/bin/python -m src.main

@@ -49,10 +49,13 @@ project/
 │
 ├── src/          ← code 
 ├── cards/        ← assets
-├── script/       ← dev scripts (more run.bat etc)
+├── script/       ← dev scripts (relocatable run.bat etc)
+│
+│
 ├── README.md
 ├── requirements.txt
-├── run.bat       <- Windows script to run game
+├── run.bat       <- Windows script to run game (root-based script)
+├── run.sh       <- Linux script to run game (root-based script) (untested)
 ```
 
 ``` 
@@ -67,4 +70,12 @@ project/
     │   ├── state.py
     │   ├── logic.py
     │
+```
+
+``` 
+    scripts/
+    │
+    ├── run.bat
+    │
+    ├── run.sh (untested)
 ```
