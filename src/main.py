@@ -60,24 +60,29 @@ def handle_mouse_click(mouse_pos, state: State) -> State:
     """
     if state == 'menu':
         # Check if start button pressed
-        if start_button.is_over(mouse_pos):
+        if start_button.is_hovered(mouse_pos):
             return 'game'
 
         # Check if how_to_play button pressed
-        if how_to_button.is_over(mouse_pos):
+        if how_to_button.is_hovered(mouse_pos):
             return 'how_to_play'
 
         # Check if quit button pressed
-        if quit_button.is_over(mouse_pos):
+        if quit_button.is_hovered(mouse_pos):
             return 'quit'
 
     # Check for if back button clicked
     elif state in ['game', 'how_to_play']:
-        if back_button.is_over(mouse_pos):
+        if back_button.is_hovered(mouse_pos):
             return 'menu'
 
     return state
 
+def how_to_play():
+    screen.fill((255, 255, 255)) # White
+    font = pygame.font.SysFont('Arial', 40)  # TODO : Create font variables
+    text = font.render('How to play instructions will go here.....', 1, (0, 0, 0))
+    screen.blit(text, (screen_width / 2 - text.get_width() / 2, screen_height / 2 - text.get_height() / 2))
 
 running = True
 while running:
@@ -95,19 +100,24 @@ while running:
 
             # ❌ This is about to be removed
             if current_state == 'menu':
-                if start_button.is_over(pos):
+                if start_button.is_hovered(pos):
                     current_state = 'game'
-                elif how_to_button.is_over(pos):
+                elif how_to_button.is_hovered(pos):
                     pass #TODO: finish this
+                    current_state = 'how_to_play'
 
 
-
-    screen.fill((0, 120, 0))
+    screen.fill((0, 120, 0)) # Green
 
     # Menu Menu
     if current_state == 'menu':
-        #TODO: All below should be put in a function
+        #TODO: move to main menu function
         start_button.draw(screen)
+        how_to_button.draw(screen)
+
+    # How to play screen
+    elif current_state == 'how_to_play':
+        how_to_play()
 
     # Game Loop
     elif current_state == 'game':
@@ -126,6 +136,7 @@ while running:
                 )
                 x_offset += card_width + space_between_cards
 
+    # Update display to reflect changes
     pygame.display.flip()
 
 pygame.quit() #TODO: Will need a quit function

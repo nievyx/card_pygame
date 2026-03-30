@@ -1,3 +1,4 @@
+from typing import Tuple
 import pygame
 
 class Button:
@@ -24,7 +25,8 @@ class Button:
                 )
             )
 
-    def is_over(self, pos):
-        if self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height:
-            return True
-        return False
+    def is_hovered(self, pos: Tuple[int, int]) -> bool:
+        return (
+            self.x <= pos[0] < self.x + self.width and
+            self.y <= pos[1] < self.y + self.height
+        )
