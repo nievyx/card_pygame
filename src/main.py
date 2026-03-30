@@ -62,9 +62,9 @@ def handle_mouse_click(pos, state):
         if quit_button.is_over(pos):
             return 'quit'
 
-    #
-    elif state == 'game' or state == 'how_to_play':
-        if start_button.is_over(pos):
+    # Check for if back button clicked
+    elif state in ['game', 'how_to_play']:
+        if back_button.is_over(pos):
             return 'menu'
 
     return state
