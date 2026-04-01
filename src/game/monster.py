@@ -10,6 +10,8 @@ class Monster:
         self.max_hp = self.hp
         self.max_mp = self.mp
 
+        #TODO: Monsters will hold individual levels, and custom stats
+
     def is_alive(self):
         return self.hp > 0
 

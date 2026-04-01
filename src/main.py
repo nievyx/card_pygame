@@ -8,7 +8,7 @@ from typing import Literal
 pygame.init() # Keep at top, before any game setup etc.
 
 # Paths
-#TODO: connect to loading assets
+# TODO: connect to loading assets
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CARDS_DIR = os.path.abspath(os.path.join(BASE_DIR, '..','cards'))
 
@@ -27,20 +27,21 @@ monster_pool = [Chimera, Demon] #TODO: add auto list creation in class
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 current_state: State = 'menu'
 
+# TODO: think this is safe to delete
 suits = ['c', 'd', 'h', 's']
 ranks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13']
 
 # Load assets
-card_images = {}
-for suit in suits:
-    for rank in ranks:
-        image_path = os.path.join('..\cards', f'{suit}{rank}.png')
-        original_image = pygame.image.load(image_path)
-        scaled_image = pygame.transform.scale(original_image, (112, 150))
-        card_images[(suit, rank)] = scaled_image
-
-deck = [(suit, rank) for suit in suits for rank in ranks]
-random.shuffle(deck)
+# card_images = {}
+# for suit in suits:
+#     for rank in ranks:
+#         image_path = os.path.join('..\cards', f'{suit}{rank}.png')
+#         original_image = pygame.image.load(image_path)
+#         scaled_image = pygame.transform.scale(original_image, (112, 150))
+#         card_images[(suit, rank)] = scaled_image
+#
+# deck = [(suit, rank) for suit in suits for rank in ranks]
+# random.shuffle(deck)
 
 num_players = 2
 cards_per_player = 5
@@ -101,6 +102,7 @@ def how_to_play():
 
 running = True
 while running:
+
     for event in pygame.event.get():
 
         # Check if user wants to quit
