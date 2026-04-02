@@ -34,7 +34,6 @@ cards_per_player = 5
 players = {}
 
 for i in range(num_players):
-    # players[i] = [deck.pop() for _ in range(cards_per_player)] # Old
     players[i] = [ # TODO: better to create a reset monster in class, this looks messy
         Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength)
         for m in random.choices(monster_pool, k=cards_per_player)
@@ -74,7 +73,7 @@ def handle_mouse_click(mouse_pos, state: State) -> State:
             return 'quit'
 
     # Check for if back button clicked
-    elif state in ['game', 'how_to_play']:
+    elif state in ('game', 'how_to_play'):
         if back_button.is_hovered(mouse_pos):
             return 'menu'
 
