@@ -14,7 +14,7 @@ python main.py
   - Click "Back" to return to menu
 
 
-> Image from v0.0.2
+> Image from pre v0.0.2
 ![Capture](././demo.PNG)
 
 > Image from v0.0.1
