@@ -10,7 +10,9 @@ python main.py
 ```
 ## Controls
 - Click "Start" to deal cards
-- Click "Back" to return to menu
+- Click 'How To Play' for non-existent instructions
+  - Click "Back" to return to menu
+
 
 > Image from v0.0.2
 ![Capture](././demo.PNG)

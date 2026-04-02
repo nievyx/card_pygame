@@ -12,7 +12,7 @@ pygame.init() # Keep at top, before any game setup etc.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CARDS_DIR = os.path.abspath(os.path.join(BASE_DIR, '..','cards'))
 
-game_title = "Card Dealing Simulator!"
+game_title = "Niamh's Monster Cards"
 
 how_to_bg = (21,30,61)
 
