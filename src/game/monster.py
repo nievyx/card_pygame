@@ -24,3 +24,5 @@ class Monster:
     def rest(self):
         pass
 
+    def take_damage(self, amount):
+        self.hp -= amount

@@ -16,10 +16,22 @@ class Player:
         self.gold = 0
         # TODO : deside if player has health
 
+class OwnedMonster:
+    def __init__(self, monster) -> None:
+        self.monster = monster
+        self.level = 1
+        self.nickname = None
+
         # Note: Players deck be will pre-shuffled before a card is drawn, do not worry about getting a random card
         def draw_card(self):
             """ draw a card from the deck
-            Works by checking if card if deck not empty, then simultainisly adding to hand and removing from deck """
+            Works by checking if card in deck not empty, then subsequently adding to hand and removing from deck """
             if self.deck:
                 self.hand.append(self.deck.pop())
+
+        def kill_monster(self, monster):
+            if monster in self.board: #TODO: this is if cards need to be played on board and not just attack hand
+                self.board.remove(monster)
+                self.graveyard.append(monster)
+                #TODO: this belong here
 
