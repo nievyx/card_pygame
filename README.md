@@ -12,8 +12,11 @@ python main.py
 - Click "Start" to deal cards
 - Click "Back" to return to menu
 
+> Image from v0.0.2
 ![Capture](././demo.PNG)
 
+> Image from v0.0.1
+![Capture](././menu_demo.PNG)
 ---
 
 ## 🧪 My Implementation Notes 
