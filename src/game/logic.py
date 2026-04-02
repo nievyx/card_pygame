@@ -2,12 +2,13 @@
 
 # Check if clicking enemy monster
 
-attacker = 'player1'
-
-
-if enemy_clicked and selected_monster:
-
-#This the attack bit
-
-if attacker.can_attack and attacker.is_alive:
-    attack(enemy_clicked)
+# attacker = 'player1'
+#
+#
+# if enemy_clicked and selected_monster:
+#     pass
+#
+# #This the attack bit
+#
+# if attacker.can_attack and attacker.is_alive:
+#     attack(enemy_clicked)

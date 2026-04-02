@@ -3,6 +3,7 @@ import random
 import os
 from src.ui import Button # re-exported via package for cleaner imports
 from src.game.monster import Monster #TODO: make import cleaner via __init__.py
+from src.game.battle import Battle
 from typing import Literal
 
 pygame.init() # Keep at top, before any game setup etc.
@@ -27,23 +28,8 @@ monster_pool = [Chimera, Demon] #TODO: add auto list creation in class
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 current_state: State = 'menu'
 
-# TODO: think this is safe to delete
-suits = ['c', 'd', 'h', 's']
-ranks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13']
 
-# Load assets
-# card_images = {}
-# for suit in suits:
-#     for rank in ranks:
-#         image_path = os.path.join('..\cards', f'{suit}{rank}.png')
-#         original_image = pygame.image.load(image_path)
-#         scaled_image = pygame.transform.scale(original_image, (112, 150))
-#         card_images[(suit, rank)] = scaled_image
-#
-# deck = [(suit, rank) for suit in suits for rank in ranks]
-# random.shuffle(deck)
-
-num_players = 2
+num_players = 2 # TODO: Update this
 cards_per_player = 5
 players = {}
 
@@ -67,7 +53,7 @@ how_to_button = Button((0,0,255), 400,300,200,80,"How To Play")
 quit_button = Button((255,0,0), 400,450,200,80,"Quit")
 back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
 
-# TODO : this is unused!
+
 def handle_mouse_click(mouse_pos, state: State) -> State:
     """
     Check where mouse button is clicked.
@@ -110,18 +96,11 @@ while running:
             running = False
 
         #Logic for clicking menu buttons
-        # TODO: Add game, how_to
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            # TODO: run handle mouse click function here
 
-            # ❌ This is about to be removed
-            if current_state == 'menu':
-                if start_button.is_hovered(pos):
-                    current_state = 'game'
-                elif how_to_button.is_hovered(pos):
-                    pass #TODO: finish this
-                    current_state = 'how_to_play'
+            current_state = handle_mouse_click(pos, current_state)
+
 
 
     screen.fill((0, 120, 0)) # Green
@@ -144,15 +123,6 @@ while running:
         initial_y = 80
         y_offset = card_height + 40
 
-        # Old
-        # for player, cards in players.items():
-        #     x_offset = 0
-        #     for card in cards:
-        #         screen.blit(
-        #             card_images[card],
-        #             (initial_x + x_offset, initial_y + (player * y_offset))
-        #         )
-        #         x_offset += card_width + space_between_cards
 
         for player, monsters in players.items():
             x_offset = 0
