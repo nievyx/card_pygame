@@ -54,7 +54,7 @@ back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
 main_menu_button =  Button((200, 200, 200), 20, 20, 150, 60, "Menu") #TODO: dummy button
 
 
-def handle_mouse_click(mouse_pos, state: State) -> State:
+def handle_mouse_click(mouse_pos, state: State, card_rects, battle) -> State:
     """
     Check where mouse button is clicked.
     Used on main menu to detect if user is clicking any of the buttons.
@@ -73,6 +73,19 @@ def handle_mouse_click(mouse_pos, state: State) -> State:
         if quit_button.is_hovered(mouse_pos):
             return 'quit'
 
+    elif state == 'game':
+        # Check for back button
+        if back_button.is_hovered(mouse_pos):
+            return 'menu'
+
+        # Check for if monster card clicked
+        for card_rects, player, monster in card_rects:
+            if card_rects.collidepoint(mouse_pos):
+                battle.selected_monster = monster
+                monster.hp = max(0, monster.hp - 1) #TODO: placeholder -1 damage
+                break
+
+
     # Check for if back button clicked
     elif state in ('game', 'how_to_play'):
         if back_button.is_hovered(mouse_pos):
@@ -88,7 +101,7 @@ def how_to_play():
 
     back_button.draw(screen)
 
-def draw_game():
+def draw_game(battle):
     card_rects = [] #For cards rectangle space
 
     card_width, card_height = 244, 150
@@ -136,8 +149,11 @@ def quit_game():
     pygame.quit()
 
 def main():
-    current_state: State = 'menu'
+    battle = Battle(players[0],players[1])
     card_rects = []
+    current_state: State = 'menu'
+
+
 
     running = True
     while running:
@@ -145,18 +161,23 @@ def main():
         for event in pygame.event.get():
 
             # Check if user wants to quit
-            if event.type == pygame.QUIT:
+            if current_state == 'quit':
                 running = False
 
             #Logic for clicking menu buttons
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
 
-                current_state = handle_mouse_click(pos, current_state)
+                current_state = handle_mouse_click(pos, current_state, card_rects, battle)
 
 
 
         screen.fill((21,30,61)) # Blue 21,30,61 # Green 0,120,10
+
+
+        # Check if user would like to quit
+        if current_state == 'quit':
+            running = False
 
         # Menu Menu
         if current_state == 'menu':
@@ -171,7 +192,8 @@ def main():
 
         # Game Loop
         elif current_state == 'game':
-            card_rects = draw_game()
+            card_rects = draw_game(battle)
+
 
         # Update display to reflect changes
         pygame.display.flip()
