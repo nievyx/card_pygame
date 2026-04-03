@@ -9,10 +9,10 @@ class Config:
     game_title = "Niamh's Monster Cards"
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'assets', 'monsters'))
+    MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '../..', 'assets', 'monsters'))
 
     def create_players(self):
-        Chimera = Monster(
+        chimera = Monster(
             name='Chimera',
             image=self.MONSTER_DIR + '/chimera.png',
             hp=12,
@@ -20,7 +20,7 @@ class Config:
             energy=5,
             strength=4
         )
-        Demon = Monster(
+        demon = Monster(
             name='Demon',
             image=self.MONSTER_DIR + '/demon.png',
             hp=15,
@@ -28,7 +28,7 @@ class Config:
             energy=8,
             strength=9)
 
-        monster_pool = [Chimera, Demon]  # TODO: add auto list creation in class
+        monster_pool = [chimera, demon]  # TODO: add auto list creation in class
 
         num_players = 2
         cards_per_player = 5

@@ -85,11 +85,14 @@ class Game:
         self.quit_button.draw(self.screen)
 
     def draw_how_to_play(self) -> None:
-            self.back_button.draw(self.screen)
+        self.back_button.draw(self.screen)
 
-            #TODO: add instructions. And add font to config, move instructions elsewhere as well
-            font = pygame.font.SysFont('Arial', 40)
-            text = font.render('How to play instructions will go here.....', 1, (0, 0, 0))
+        #TODO: add instructions. And add font to config, move instructions elsewhere as well
+        font = pygame.font.SysFont('Arial', 40)
+        text = font.render('How to play instructions will go here.....', 1, (0, 0, 0))
+
+        self.screen.blit(text, (200,300))
+        #self.screen.blit(text, (self.SCREEN_WIDTH / 2 - text.get_width() / 2, self.SCREEN_HEIGHT / 2 - text.get_height() / 2))
 
     def draw_game(self) -> list:
         card_rects = []  # For cards rectangle space
@@ -118,7 +121,7 @@ class Game:
                     pygame.draw.rect(self.screen, (255,255,0), card_rect, 3) # bright yellow
 
                 # load + scale monster image
-                monster_img = pygame.image.load(monster.image)
+                monster_img = pygame.image.load(monster.image) #TODO: cache images
                 monster_img = pygame.transform.scale(monster_img, (80, 90))
 
                 # center
