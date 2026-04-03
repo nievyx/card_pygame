@@ -17,7 +17,7 @@ python main.py
 > Image from pre v0.0.2
 ![Capture](././demo.PNG)
 
-> Image from v0.0.1
+> Image from pre v0.0.2
 ![Capture](././menu_demo.PNG)
 ---
 

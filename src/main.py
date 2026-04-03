@@ -86,10 +86,11 @@ def how_to_play():
     text = font.render('How to play instructions will go here.....', 1, (0, 0, 0))
     screen.blit(text, (screen_width / 2 - text.get_width() / 2, screen_height / 2 - text.get_height() / 2))
 
-    #TODO: render back button
     back_button.draw(screen)
 
 def draw_game():
+    card_rects = [] #For cards rectangle space
+
     card_width, card_height = 244, 150
     space_between_cards = 10
     initial_x = 20
@@ -97,12 +98,16 @@ def draw_game():
     y_offset = card_height + 40
 
     for player, monsters in players.items():
-        x_offset = 0
+        x_offset = 10 # Moves cards slightly away from the left
         for monster in monsters:
             card_x = initial_x + x_offset
             card_y = initial_y + (player * y_offset)
 
-            # Draw card background
+            # create rect for card (used for clicking)
+            card_rect = pygame.Rect(card_x, card_y, card_width, card_height)
+            card_rects.append((card_rect, player, monster))
+
+            # draw card background
             pygame.draw.rect(screen, (50, 50, 50), (card_x, card_y, 112, 150))
 
             # load + scale monster image
@@ -119,26 +124,20 @@ def draw_game():
 
             hp_text = hp_text_font.render(f'HP: {monster.hp}', True, (255, 255, 255))
 
+            # display monster's image and hp
             screen.blit(hp_text, (card_x +8, card_y + 8))
-
-            #NOTE: If you want cards centered in screen
-            # x_offset += card_width + space_between_cards # was not right delete, change card_ width to 122 -> 244
-
-
-
-
-
-
-
             screen.blit(monster_img, (img_x, img_y))
 
             x_offset += card_width + space_between_cards
+
+    return card_rects
 
 def quit_game():
     pygame.quit()
 
 def main():
     current_state: State = 'menu'
+    card_rects = []
 
     running = True
     while running:
@@ -172,7 +171,7 @@ def main():
 
         # Game Loop
         elif current_state == 'game':
-            draw_game()
+            card_rects = draw_game()
 
         # Update display to reflect changes
         pygame.display.flip()
