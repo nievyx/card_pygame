@@ -9,7 +9,7 @@ class Config:
     game_title = "Niamh's Monster Cards"
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '../..', 'assets', 'monsters'))
+    MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, 'assets', 'monsters'))
 
     def create_players(self):
         chimera = Monster(
