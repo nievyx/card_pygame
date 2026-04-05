@@ -19,14 +19,15 @@ class Config:
             mp=8,
             energy=5,
             strength=4
-        )
+)
         demon = Monster(
             name='Demon',
             image=self.MONSTER_DIR + '/demon.png',
             hp=15,
             mp=4,
             energy=8,
-            strength=9)
+            strength=9
+)
 
         monster_pool = [chimera, demon]  # TODO: add auto list creation in class
 

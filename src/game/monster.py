@@ -10,7 +10,7 @@ class Monster:
         self.max_hp = self.hp
         self.max_mp = self.mp
 
-        #TODO: Monsters will hold individual levels, and custom stats
+        #TODO: Monsters will hold individual levels, and custom stats (owned monster class)
 
     def is_alive(self):
         return self.hp > 0
@@ -25,4 +25,4 @@ class Monster:
         pass
 
     def take_damage(self, amount):
-        self.hp -= amount
+        self.hp = max(0, self.hp - amount)
