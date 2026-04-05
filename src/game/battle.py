@@ -1,8 +1,17 @@
+from enum import Enum, auto
+
+class BattleState(Enum):
+    SELECT_MONSTER = auto()
+    SELECT_TARGET = auto()
+    ENEMY_TURN =auto()
+    BATTLE_OVER = auto()
+
 class Battle:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
         self.current_turn = 0
         self.selected_monster = None
+        self.state = BattleState.SELECT_MONSTER
 
 
     def get_current_player(self):
