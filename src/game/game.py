@@ -29,10 +29,16 @@ class Game:
     def start(self) -> None:
         while self.running:
             self.handle_events()
+            self.update()
             self.draw()
             pygame.display.flip()
 
         pygame.quit()
+
+    def update(self) -> None:
+        # Temporary AI: immediately pass its turn.
+        if self.current_state == 'game' and self.battle.current_turn == 1:
+            self.battle.pass_ai_turn()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -59,10 +65,14 @@ class Game:
                 self.current_state = 'menu'
 
             for rect, player, monster in self.card_rects:
-                if rect.collidepoint(pos):
-                    self.battle.selected_monster = monster
-                    monster.hp = max(0, monster.hp - 1)  # TODO: placeholder -1 damage
-                    break
+                if not rect.collidepoint(pos):
+                    continue
+
+                if player == self.battle.get_current_player():
+                    self.battle.select_monster(player, monster)
+                elif player == self.battle.get_opposing_player():
+                    self.battle.try_attack(player, monster)
+                break
 
         elif self.current_state == 'how_to_play':
             if self.back_button.is_hovered(pos):
@@ -97,11 +107,16 @@ class Game:
     def draw_game(self) -> list:
         card_rects = []  # For cards rectangle space
 
-        card_width, card_height = 112, 150 #244, 150
+        card_width, card_height = 112, 150 #244, 150 This made it look centred even tho it wasn't
         space_between_cards = 10
         initial_x = 20
         initial_y = 80
         y_offset = card_height + 40
+
+        info_font = pygame.font.SysFont('Arial', 24)
+        turn_name = 'Player' if self.battle.get_current_player() == 0 else 'AI'
+        turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
+        self.screen.blit(turn_text, (200, 28))
 
         for player, monsters in self.players.items():
             x_offset = 10  # Moves cards slightly away from the left

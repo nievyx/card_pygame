@@ -9,6 +9,7 @@ class Monster:
 
         self.max_hp = self.hp
         self.max_mp = self.mp
+        self.alive = True
 
         #TODO: Monsters will hold individual levels, and custom stats (owned monster class)
 
