@@ -8,6 +8,31 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
+## Pygame image errors
+> NOTE: To fix 'libpng warning: iCCP: known incorrect sRGB profile'
+> 
+Windows: Open image in Paint3D and resave
+
+Or to temp fix
+```
+import os
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+```
+
+or create a 
+```python
+from PIL import Image
+import os
+
+folder = "your_image_folder"
+
+for filename in os.listdir(folder):
+    if filename.endswith(".png"):
+        path = os.path.join(folder, filename)
+        img = Image.open(path)
+        img.save(path)
+```
+
 ## Controls
 - Click "Start" to deal cards
 - Click 'How To Play' for non-existent instructions
@@ -33,9 +58,11 @@ python main.py
 - current_state = "menu"
 - switches on button click
 
-### Problems I hit
-- (write bugs here)
-- (what fixed them)
+[//]: # (### Problems I hit)
+
+[//]: # (- &#40;write bugs here&#41;)
+
+[//]: # (- &#40;what fixed them&#41;)
 
 ### Improvements for later
 - Better UI layout

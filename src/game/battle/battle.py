@@ -38,7 +38,8 @@ class Battle:
 
         defender.take_damage(attacker.strength)
 
-        print(f'{attacker.name} attacks {defender.name}!')
+        print(f'''{self.current_turn} {attacker.name} attacks {defender.name}!
+it deals {attacker.strength} to {defender.name}''')
 
         self.end_turn()
 
