@@ -18,6 +18,7 @@ class Game:
 
         self.players = config.create_players()
         self.battle = Battle(self.players[0], self.players[1])
+        self.monster_image_cache = {}
 
         # Button Creation
         self.start_button = Button((0, 255, 0), 400, 150, 200, 80, "Start")
@@ -25,6 +26,16 @@ class Game:
         self.quit_button = Button((170, 90, 10), 400, 450, 200, 80, "Quit")
         self.back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
         self.main_menu_button = Button((200, 200, 200), 20, 20, 150, 60, "Menu")
+
+    def get_monster_image(self, image_path: str) -> pygame.Surface:
+        if image_path not in self.monster_image_cache:
+            image = pygame.image.load(image_path).convert_alpha()
+            cropped_rect = image.get_bounding_rect()
+            image = image.subsurface(cropped_rect).copy()
+            image = pygame.transform.smoothscale(image, (80, 90))
+            self.monster_image_cache[image_path] = image
+
+        return self.monster_image_cache[image_path]
 
     def start(self) -> None:
         while self.running:
@@ -148,12 +159,14 @@ class Game:
                     pygame.draw.rect(self.screen, (255,255,0), card_rect, 3) # bright yellow
 
                 # load + scale monster image
-                monster_img = pygame.image.load(monster.image) #TODO: cache images
-                monster_img = pygame.transform.scale(monster_img, (80, 90))
+                monster_img = self.get_monster_image(monster.image)
+
+                image_rect = pygame.Rect(card_x + 16, card_y + 40, 80, 90)
+                img_rect = monster_img.get_rect(center=image_rect.center)
 
                 # center
-                img_x = card_x + (112 - 80) // 2
-                img_y = card_y + 40
+                # img_x = card_x + (112 - 80) // 2
+                # img_y = card_y + 40
 
                 # draw text
                 # card_name_font = pygame.font.SysFont('Arial', 20, bold=True) #TODO: add monster name or nickname
@@ -163,7 +176,7 @@ class Game:
 
                 # display monster's image and hp
                 self.screen.blit(hp_text, (card_x + 8, card_y + 8))
-                self.screen.blit(monster_img, (img_x, img_y))
+                self.screen.blit(monster_img, image_rect)
 
                 x_offset += card_width + space_between_cards
 
