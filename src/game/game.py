@@ -106,6 +106,22 @@ class Game:
         elif self.current_state == 'how_to_play':
             self.draw_how_to_play()
 
+    def draw_battle_log(self) -> None:
+        log_rect = pygame.Rect(620, 360, 340, 180)
+        pygame.draw.rect(self.screen, (35, 35, 35), log_rect)
+        pygame.draw.rect(self.screen, (200, 200, 200), log_rect, 2)
+
+        font = pygame.font.SysFont('Arial', 18)
+        title = font.render('Battle Log', True, (255, 255, 255))
+        self.screen.blit(title, (log_rect.x + 10, log_rect.y + 8))
+
+        line_font = pygame.font.SysFont('Arial', 16)
+        start_y = log_rect.y + 35
+
+        for i, message in enumerate(self.battle.log):
+            text = line_font.render(message, True, (230, 230, 230))
+            self.screen.blit(text, (log_rect.x + 10, start_y + i * 22))
+
     def draw_menu(self) -> None:
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
@@ -185,6 +201,8 @@ class Game:
                 self.screen.blit(hp_text, (card_x + 8, card_y + 130)) #HP
 
                 x_offset += card_width + space_between_cards
+
+                self.draw_battle_log()
 
         return card_rects
 

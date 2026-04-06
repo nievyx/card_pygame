@@ -29,6 +29,8 @@ class Battle:
 
         if len(self.log) > self.max_log_size:
             self.log.pop(0)
+        print(self.log) #TODO: DEBUG
+
 
     def _enemy_turn(self):
         enemy_player = self.players[1]
