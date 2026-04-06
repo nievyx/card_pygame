@@ -27,3 +27,5 @@ class Monster:
 
     def take_damage(self, amount):
         self.hp = max(0, self.hp - amount)
+        if self.hp <= 0:
+            self.alive = False
