@@ -144,6 +144,10 @@ class Game:
         for player, monsters in self.players.items():
             x_offset = 10  # Moves cards slightly away from the left
             for monster in monsters:
+
+                if not monster.is_alive():
+                    continue
+
                 card_x = initial_x + x_offset
                 card_y = initial_y + (player * y_offset)
 
