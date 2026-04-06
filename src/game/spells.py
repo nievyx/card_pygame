@@ -7,7 +7,7 @@ class Spell:
                  strength: int,
                  mana_cost: int,
                  icon='',
-                 use_in_overworld=False
+                 use_in_overworld: bool = False
                  ):
         self.name = name
         self.type = spell_type
@@ -19,13 +19,16 @@ class Spell:
     def __str__(self):
         return f'{self.name} ({self.strength})'
 
+    def cast(self, castor, target):
+        raise NotImplementedError('Each spell must implement cast()')
+
 
 class DamageSpell(Spell):
     def cast(self, castor, target):
         damage = round(int(self.strength) + (int(castor.intelligence) / 3))
         modifier = random.uniform(0.9, 1.1)
         final_damage = round(damage * modifier)
-        print(f'{castor.name} casts {self.name} {self.icon} on {target.name} it dealt {final_damage} damage!')
+        print(f'{castor.name} casts {self.name} {self.icon} on {target.name} it dealt {final_damage} damage!') #TODO: this is debug only
 
         # Apply damage and check for fainting
         target.take_damage(final_damage)
@@ -38,10 +41,10 @@ class DamageSpell(Spell):
 class HealSpell(Spell):
     # TODO: Heal spells will currently only heal castor
     # TODO: Also target refers to the enemy, when it should refer to the healed (Changed target name to castor name)
-    def cast(self, castor, target):
+    def cast(self, caster, target):
         final_amount = self.strength
-        print(f'{castor.name} casts {self.name} on {castor.name}. {final_amount} points healed.')
-        castor.restore_health(final_amount)
+        print(f'{caster.name} casts {self.name} on {caster.name}. {final_amount} points healed.')
+        caster.restore_health(final_amount)
         return final_amount
 
 
@@ -52,18 +55,6 @@ def get_spell_type(spell):
 
 def check_spells(spell_list, *spell_types):
     return [spell for spell in spell_list if isinstance(spell, spell_types)]
-
-
-def check_spells_old(spell_list, *spell_types):
-    print('hi dmg')
-    return [spell for spell in spell_list if isinstance(spell, spell_types)]
-
-
-# TODO: Must add a raise NotImplementedError() #can add a string in args
-# def cast_spell(self):
-# pass
-# Spell Damage=(Base Power+Scaling×Stat)×Multipliers
-# Spell Damage = (Base Power + Scaling * Magic Attack) * Buffs/Debuffs
 
 
 fireball = DamageSpell(name='Fireball',

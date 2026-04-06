@@ -17,10 +17,18 @@ class Battle:
         self.current_turn = Turn.PLAYER
         self.selected_monster = None
         self.state = BattleState.SELECT_MONSTER
+        self.log = []
+        self.max_log_size = 6
 
     def update(self):
         if self.state == BattleState.ENEMY_TURN:
             self._enemy_turn()
+
+    def add_battle_log(self, message: str) -> None:
+        self.log.append(message)
+
+        if len(self.log) > self.max_log_size:
+            self.log.pop(0)
 
     def _enemy_turn(self):
         enemy_player = self.players[1]
@@ -40,6 +48,8 @@ class Battle:
 
         print(f'''{self.current_turn} {attacker.name} attacks {defender.name}!
 it deals {attacker.strength} to {defender.name}''')
+
+        self.add_battle_log('This is a dummy message, if you\'re seeing this im the best')
 
         self.end_turn()
 
