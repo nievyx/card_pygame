@@ -1,6 +1,6 @@
 import pygame
 from typing import Literal
-from src.game.battle import Battle #TODO: also make import cleaner via __init__.py
+from src.game.battle.battle import Battle #TODO: also make import cleaner via __init__.py
 from src.ui import Button
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
@@ -131,7 +131,7 @@ class Game:
                 # draw card background
                 pygame.draw.rect(self.screen, (50, 50, 50), card_rect)
 
-                # 🆕 New feature, highlight selected card
+                # Highlight selected card
                 if monster == self.battle.selected_monster:
                     pygame.draw.rect(self.screen, (255,255,0), card_rect, 3) # bright yellow
 
