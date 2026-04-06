@@ -124,7 +124,7 @@ class Game:
     def draw_game(self) -> list:
         card_rects = []  # For cards rectangle space
 
-        card_width, card_height = 112, 150 #244, 150 This made it look centred even tho it wasn't
+        card_width, card_height = 112, 220 #244, 150 This made it look centred even tho it wasn't
         space_between_cards = 10
         initial_x = 20
         initial_y = 80
@@ -156,7 +156,7 @@ class Game:
                 card_rects.append((card_rect, player, monster))
 
                 # draw card background
-                pygame.draw.rect(self.screen, (50, 50, 50), card_rect)
+                pygame.draw.rect(self.screen, (50, 50, 50), card_rect) # COLOR: gray 50, 50, 50
 
                 # Highlight selected card
                 if monster == self.battle.selected_monster:
