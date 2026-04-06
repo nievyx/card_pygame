@@ -1,6 +1,6 @@
 import pygame
 from typing import Literal
-from src.game.battle.battle import Battle #TODO: also make import cleaner via __init__.py
+from src.game.battle.battle import Battle, BattleState, Turn #TODO: also make import cleaner via __init__.py
 from src.ui import Button
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
@@ -36,9 +36,8 @@ class Game:
         pygame.quit()
 
     def update(self) -> None:
-        # Temporary AI: immediately pass its turn.
-        if self.current_state == 'game' and self.battle.current_turn == 1:
-            self.battle.pass_ai_turn()
+        if self.current_state == 'game':
+            self.battle.update()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -63,6 +62,13 @@ class Game:
         elif self.current_state == 'game':
             if self.back_button.is_hovered(pos):
                 self.current_state = 'menu'
+                return
+
+            if self.battle.state == BattleState.ENEMY_TURN:
+                return
+
+            if self.battle.state == BattleState.BATTLE_OVER:
+                return
 
             for rect, player, monster in self.card_rects:
                 if not rect.collidepoint(pos):
@@ -113,8 +119,14 @@ class Game:
         initial_y = 80
         y_offset = card_height + 40
 
+        turn = self.battle.current_turn
+
+        if turn == Turn.PLAYER:
+            turn_name = 'Player'
+        else:
+            turn_name = 'AI'
+
         info_font = pygame.font.SysFont('Arial', 24)
-        turn_name = 'Player' if self.battle.get_current_player() == 0 else 'AI'
         turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
         self.screen.blit(turn_text, (200, 28))
 

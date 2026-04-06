@@ -42,15 +42,17 @@ class Battle:
 
         self.end_turn()
 
-
-
-    def get_current_player(self):
-         return self.current_turn
+    def get_current_player(self) -> int:
+        """Returns 0 or 1 to correspond with whose turn it is"""
+        return self.current_turn.value
 
     def get_opposing_player(self):
-        return Turn.ENEMY if self.current_turn == Turn.PLAYER else Turn.PLAYER
+        return 1 - self.current_turn.value
 
     def select_monster(self, player, monster):
+        if self.state != BattleState.SELECT_MONSTER:
+            return False
+
         if player != self.get_current_player():
             return False
 
@@ -58,9 +60,13 @@ class Battle:
             return False
 
         self.selected_monster = monster
+        self.state = BattleState.SELECT_TARGET
         return True
 
     def try_attack(self, defender_player, defender):
+        if self.state != BattleState.SELECT_TARGET:
+            return False
+
         attacker = self.selected_monster
 
         if attacker is None or defender is None:
@@ -79,23 +85,11 @@ class Battle:
     def end_turn(self):
         self.selected_monster = None
 
-        # Switch turn to enemy
-        self.current_turn = self.get_opposing_player()
-
         # Change State to enemies
-        if self.current_turn == Turn.ENEMY:
+        if self.current_turn == Turn.PLAYER:
+            self.current_turn = Turn.ENEMY
             self.state = BattleState.ENEMY_TURN
         # Or player select a monster
         else:
+            self.current_turn = Turn.PLAYER
             self.state = BattleState.SELECT_MONSTER
-
-    def pass_ai_turn(self):
-        if self.current_turn != 1:
-            return False
-
-        self.end_turn()
-        return True
-
-
-
-
