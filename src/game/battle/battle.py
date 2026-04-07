@@ -1,3 +1,4 @@
+from src.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
 
@@ -17,10 +18,29 @@ class Battle:
         self.current_turn = Turn.PLAYER
         self.selected_monster = None
         self.state = BattleState.SELECT_MONSTER
+        self.log = []
+        self.max_log_size = 6
 
     def update(self):
         if self.state == BattleState.ENEMY_TURN:
             self._enemy_turn()
+
+    def add_battle_log(self, message: str, color=None) -> None:
+        self.log.append({
+            'text': message,
+            'color': color
+        })
+
+        if len(self.log) > self.max_log_size:
+            self.log.pop(0)
+
+        print(self.log) #TODO: DEBUG
+
+    def generate_attack_message(self, attacker, defender, damage):
+        templates = [
+            f'{attacker.name} attacks {defender.name}! It deals {damage} to {defender.name}!',
+        ]
+        return random.choice(templates)
 
     def _enemy_turn(self):
         enemy_player = self.players[1]
@@ -38,8 +58,8 @@ class Battle:
 
         defender.take_damage(attacker.strength)
 
-        print(f'''{self.current_turn} {attacker.name} attacks {defender.name}!
-it deals {attacker.strength} to {defender.name}''')
+        msg = self.generate_attack_message(attacker, defender, attacker.strength)
+        self.add_battle_log(msg, ENEMY_LOG_COLOR)
 
         self.end_turn()
 
@@ -80,6 +100,10 @@ it deals {attacker.strength} to {defender.name}''')
             return False
 
         defender.take_damage(attacker.strength)
+
+        msg = self.generate_attack_message(attacker, defender, attacker.strength)
+        self.add_battle_log(msg, PLAYER_LOG_COLOR)
+
         self.end_turn()
         return True
 

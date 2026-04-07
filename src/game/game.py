@@ -106,6 +106,24 @@ class Game:
         elif self.current_state == 'how_to_play':
             self.draw_how_to_play()
 
+    def draw_battle_log(self) -> None:
+        log_rect = pygame.Rect(720, 360, 440, 180) #left, top, width, height
+        pygame.draw.rect(self.screen, (35, 35, 35), log_rect)
+        pygame.draw.rect(self.screen, (200, 200, 200), log_rect, 2)
+
+        font = pygame.font.SysFont('Arial', 18)
+        title = font.render('Battle Log', True, (255, 255, 255))
+        self.screen.blit(title, (log_rect.x + 10, log_rect.y + 8))
+
+        line_font = pygame.font.SysFont('Arial', 16)
+        start_y = log_rect.y + 35
+
+        for i, entry in enumerate(self.battle.log):
+            color = entry.get("color") or (230, 230, 230)
+
+            text = line_font.render(entry["text"], True, color)
+            self.screen.blit(text, (log_rect.x + 10, start_y + i * 22))
+
     def draw_menu(self) -> None:
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
@@ -173,18 +191,30 @@ class Game:
                 # img_y = card_y + 40
 
                 # draw text
-                card_name_font = pygame.font.SysFont('Arial', 20, bold=False) #TODO: add monster name or nickname
+                card_name_font = pygame.font.SysFont('Arial', 20, bold=False)
                 name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
                 hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
                 hp_text = hp_text_font.render(f'HP: {monster.hp}', True, (255, 255, 255))
+
+                card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)
+                strength_text = card_strength_font.render(f'STR: {monster.strength}', True, (255, 255, 255))
+
+                card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
+                energy_text = card_energy_font.render(f'ENG: {monster.energy}', True, (255, 255, 255))
 
                 # display monster's image and hp
                 self.screen.blit(name_text, (card_x + 8, card_y + 8)) # Name
                 self.screen.blit(monster_img, image_rect) # Image
                 self.screen.blit(hp_text, (card_x + 8, card_y + 130)) #HP
 
+                self.screen.blit(strength_text, (card_x + 8, card_y + 150))  # STR
+
+                self.screen.blit(energy_text, (card_x + 8, card_y + 170))  # ENG
+
                 x_offset += card_width + space_between_cards
+
+            self.draw_battle_log()
 
         return card_rects
 
