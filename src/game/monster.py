@@ -29,3 +29,7 @@ class Monster:
         self.hp = max(0, self.hp - amount)
         if self.hp <= 0:
             self.alive = False
+
+    def lose_energy(self, amount):
+        self.energy = max(0, self.hp - amount)
+
