@@ -52,7 +52,7 @@ for filename in os.listdir(folder):
 ### Buttons
 - Created in main.py
 - Drawn only in menu state
-- Use isOver() for clicks
+- Use is_hovered() for clicks
 
 ### State System
 - current_state = "menu"
@@ -68,6 +68,7 @@ for filename in os.listdir(folder):
 - Better UI layout
 - Animations
 - Sound
+- Gameplay balancing
 - .exe via:
 ```
 pyinstaller --onefile --windowed main.py
@@ -75,12 +76,14 @@ pyinstaller --onefile --windowed main.py
 </details>
 
 ## Folder Structure 
+> Last updated pre v0.0.5
+
+note: (__init__.py files not accounted for)
 
 ```
 project/
 │
-├── src/          ← code 
-├── cards/        ← assets
+├── src/          ← code, monster images also inside here for now
 ├── script/       ← dev scripts (relocatable run.bat etc)
 │
 │
@@ -89,21 +92,32 @@ project/
 ├── run.bat       <- Windows script to run game (root-based script)
 ├── run.sh        <- Linux script to run game (root-based script) (untested)
 ```
-
+## Code Structure
 ``` 
     src/
     │
     ├── main.py
+    ├── config.py
+    │
+    ├── config/
+    │   ├── colors.py
     │
     ├── ui/
     │   ├── button.py
+    │   │
+    │   ├── components/
+    │       ├── battle_log.py
+    │       ├── card_view.py
+    │
+    ├── theme/
+    │   ├── theme_manager.py
     │
     ├── game/
     │   ├── state.py
     │   ├── logic.py
     │
 ```
-
+# #Dev scripts (Run game via these)
 ``` 
     scripts/
     │
