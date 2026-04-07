@@ -1,6 +1,7 @@
 import pygame
 from typing import Literal
 from src.game.battle.battle import Battle, BattleState, Turn #TODO: also make import cleaner via __init__.py
+from src.ui.components.battle_log import BattleLog
 from src.ui import Button
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
@@ -19,6 +20,7 @@ class Game:
         self.players = config.create_players()
         self.battle = Battle(self.players[0], self.players[1])
         self.monster_image_cache = {}
+        self.battle_log = BattleLog(self.battle)
 
         # Button Creation
         self.start_button = Button((0, 255, 0), 400, 150, 200, 80, "Start")
@@ -105,24 +107,6 @@ class Game:
             self.card_rects = self.draw_game()
         elif self.current_state == 'how_to_play':
             self.draw_how_to_play()
-
-    def draw_battle_log(self) -> None:
-        log_rect = pygame.Rect(720, 360, 440, 180) #left, top, width, height
-        pygame.draw.rect(self.screen, (35, 35, 35), log_rect)
-        pygame.draw.rect(self.screen, (200, 200, 200), log_rect, 2)
-
-        font = pygame.font.SysFont('Arial', 18)
-        title = font.render('Battle Log', True, (255, 255, 255))
-        self.screen.blit(title, (log_rect.x + 10, log_rect.y + 8))
-
-        line_font = pygame.font.SysFont('Arial', 16)
-        start_y = log_rect.y + 35
-
-        for i, entry in enumerate(self.battle.log):
-            color = entry.get("color") or (230, 230, 230)
-
-            text = line_font.render(entry["text"], True, color)
-            self.screen.blit(text, (log_rect.x + 10, start_y + i * 22))
 
     def draw_menu(self) -> None:
         self.start_button.draw(self.screen)
@@ -214,7 +198,7 @@ class Game:
 
                 x_offset += card_width + space_between_cards
 
-            self.draw_battle_log()
+            self.battle_log.draw(self.screen)
 
         return card_rects
 
