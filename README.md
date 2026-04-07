@@ -87,7 +87,7 @@ project/
 ├── README.md
 ├── requirements.txt
 ├── run.bat       <- Windows script to run game (root-based script)
-├── run.sh       <- Linux script to run game (root-based script) (untested)
+├── run.sh        <- Linux script to run game (root-based script) (untested)
 ```
 
 ``` 

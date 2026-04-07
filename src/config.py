@@ -3,6 +3,9 @@ import random
 
 from src.game.monster import Monster #TODO: make import cleaner via __init__.py
 
+PLAYER_LOG_COLOR = None # AQUA (0, 255, 255)
+ENEMY_LOG_COLOR = (255, 0, 0)
+
 class Config:
     SCREEN_WIDTH = 1200
     SCREEN_HEIGHT = 850
@@ -28,8 +31,16 @@ class Config:
             energy=8,
             strength=9
 )
+        calm = Monster(
+            name='Calm',
+            image=self.MONSTER_DIR + '/calm.png',
+            hp=10,
+            mp=6,
+            energy=6,
+            strength=3
+        )
 
-        monster_pool = [chimera, demon]  # TODO: add auto list creation in class
+        monster_pool = [chimera, demon, calm]  # TODO: add auto list creation in class
 
         num_players = 2
         cards_per_player = 5
