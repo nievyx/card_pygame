@@ -2,6 +2,7 @@ import pygame
 from typing import Literal
 from src.game.battle.battle import Battle, BattleState, Turn #TODO: also make import cleaner via __init__.py
 from src.ui.components.battle_log import BattleLog
+from src.ui.theme import THEME
 from src.ui import Button
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
@@ -99,7 +100,7 @@ class Game:
 
 
     def draw(self):
-        self.screen.fill((21, 30, 61)) # TODO: Get color from config file
+        self.screen.fill(THEME['background']) # TODO: Get color from config file
 
         if self.current_state == 'menu':
             self.draw_menu()
@@ -198,7 +199,7 @@ class Game:
 
                 x_offset += card_width + space_between_cards
 
-            self.battle_log.draw(self.screen)
+            self.battle_log.draw(self.screen) # Battle Log box
 
         return card_rects
 
