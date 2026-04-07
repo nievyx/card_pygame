@@ -9,4 +9,10 @@ THEME = {
 
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
+
+    # Battle Log
+    'battle_log_bg' :  (35, 35, 35), #Make green (20, 35, 35),
+    'battle_log_border': (200, 200, 200),
+
+    'battle_log_default_text' : (255, 255, 255),
 }

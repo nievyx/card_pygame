@@ -1,4 +1,5 @@
 import pygame
+from src.ui.theme import THEME
 
 class BattleLog:
     def __init__(self, battle): #TODO: rect, theme, font_manger removed
@@ -6,11 +7,11 @@ class BattleLog:
 
     def draw(self, screen): #TODO: removed entries
         log_rect = pygame.Rect(720, 360, 440, 180)  # left, top, width, height
-        pygame.draw.rect(screen, (35, 35, 35), log_rect)
-        pygame.draw.rect(screen, (200, 200, 200), log_rect, 2)
+        pygame.draw.rect(screen, THEME['battle_log_bg'], log_rect)
+        pygame.draw.rect(screen, THEME['battle_log_border'], log_rect, 2)
 
         font = pygame.font.SysFont('Arial', 18)
-        title = font.render('Battle Log', True, (255, 255, 255))
+        title = font.render('Battle Log', True, THEME['battle_log_default_text'])
         screen.blit(title, (log_rect.x + 10, log_rect.y + 8))
 
         line_font = pygame.font.SysFont('Arial', 16)
