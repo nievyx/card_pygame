@@ -56,10 +56,13 @@ class Battle:
         attacker = random.choice(alive_enemies)
         defender = random.choice(alive_players)
 
-        defender.take_damage(attacker.strength)
+        damage = attacker.attack(defender)
 
-        msg = self.generate_attack_message(attacker, defender, attacker.strength)
-        self.add_battle_log(msg, ENEMY_LOG_COLOR)
+        if damage == 0:
+            self.add_battle_log(f"{attacker.name} is too tired to attack!", ENEMY_LOG_COLOR)
+        else:
+            msg = self.generate_attack_message(attacker, defender, damage)
+            self.add_battle_log(msg, ENEMY_LOG_COLOR)
 
         self.end_turn()
 
@@ -99,9 +102,13 @@ class Battle:
         if not attacker.is_alive() or not defender.is_alive():
             return False
 
-        defender.take_damage(attacker.strength)
+        damage = attacker.attack(defender)
 
-        msg = self.generate_attack_message(attacker, defender, attacker.strength)
+        if damage == 0:
+            self.add_battle_log(f"{attacker.name} has no energy!", PLAYER_LOG_COLOR)
+            return False
+
+        msg = self.generate_attack_message(attacker, defender, damage)
         self.add_battle_log(msg, PLAYER_LOG_COLOR)
 
         self.end_turn()
