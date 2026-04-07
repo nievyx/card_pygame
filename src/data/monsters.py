@@ -1,6 +1,3 @@
-"""
-This file is currently completely unused atm but will be used atm soon.
-"""
 from src.game.monster import Monster
 import os
 
