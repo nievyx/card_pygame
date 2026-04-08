@@ -9,24 +9,28 @@ class BattleLog: #TODO: rect, theme, font_manger removed
         self.top = top
         self.right_padding = right_padding
 
-    def draw(self, screen): #TODO: removed entries
+    def draw(self, screen):  #TODO: removed entries
         screen_rect = screen.get_rect()
 
         log_rect = pygame.Rect(0, 0, self.width, self.height)
-        log_rect.top = self.top
-        log_rect.right = screen_rect.right - self.right_padding
+        log_rect.midright = (screen_rect.right - self.right_padding, screen_rect.centery)
 
         pygame.draw.rect(screen, THEME['battle_log_bg'], log_rect)
         pygame.draw.rect(screen, THEME['battle_log_border'], log_rect, 2)
 
-        font = pygame.font.SysFont('Arial', 18) #THEME['battle_log_title_font'], #THEME['battle_log_title_font_size']
+        font = pygame.font.SysFont('Arial', 18) #TODO: THEME['battle_log_title_font'], #THEME['battle_log_title_font_size']
         title = font.render('Battle Log', True, THEME['battle_log_default_text'])
-        screen.blit(title, (log_rect.x + 10, log_rect.y + 8))
+        title_rect = title.get_rect(midtop=(log_rect.centerx, log_rect.top + 8))
+        screen.blit(title, title_rect)
 
         line_font = pygame.font.SysFont('Arial', 16)
         start_y = log_rect.y + 35
 
-        for i, entry in enumerate(self.battle.log):
+        visible_entries = self.battle.log[-6:]
+
+        for i, entry in enumerate(visible_entries):
             color = entry.get("color") or (230, 230, 230)
             text = line_font.render(entry["text"], True, color)
-            screen.blit(text, (log_rect.x + 10, start_y + i * 22))
+
+            text_rect = text.get_rect(midtop=(log_rect.centerx, start_y + i * 22))
+            screen.blit(text, text_rect)
