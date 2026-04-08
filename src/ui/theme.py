@@ -10,9 +10,20 @@ THEME = {
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
 
-    # Battle Log
+    # Button Font (Used in ui/buttons.py)
+    'button_font' : 'comicsans',
+    'button_text_color' : (0, 0 , 0),
+
+    # Battle Log (Used in ui/components/battle_log.py)
     'battle_log_bg' :  (35, 35, 35), #Make green (20, 35, 35),
     'battle_log_border': (200, 200, 200),
 
     'battle_log_default_text' : (255, 255, 255),
+
+    'battle_log_title_font': 'Arial', #TODO: not in use
+    'battle_log_title_font_size' : 16, #TODO: not in use
+
+    'battle_log_font': 'Arial', #TODO: not in use
+    'battle_log_text_size' : 16, #TODO: not in use
+    'battle_log_text_color' : (0, 0 , 0),
 }

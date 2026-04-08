@@ -1,5 +1,6 @@
 from typing import Tuple
 import pygame
+from src.ui.theme import THEME
 
 class Button:
     def __init__(self, color, x, y, width, height, text=''):
@@ -15,8 +16,8 @@ class Button:
             pygame.draw.rect(screen, outline, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 0)
         if self.text != '':
-            font = pygame.font.SysFont('comicsans', 60)
-            text = font.render(self.text, 1, (0, 0 , 0))
+            font = pygame.font.SysFont(THEME['button_font'], 60)
+            text = font.render(self.text, 1, THEME['button_text_color'])
             screen.blit(
                 text,
                 (

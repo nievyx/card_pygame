@@ -145,32 +145,41 @@ class Game:
         turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
         self.screen.blit(turn_text, (200, 28))
 
-        for player, monsters in self.players.items():
-            x_offset = 10  # Moves cards slightly away from the left
-            for monster in monsters:
+        screen_rect = self.screen.get_rect()
 
-                if not monster.is_alive():
-                    continue
+        for row_index, (player, monsters) in enumerate(self.players.items()):
+            alive_monsters = [monster for monster in monsters if monster.is_alive()]
+            num_cards = len(alive_monsters)
 
-                card_x = initial_x + x_offset
-                card_y = initial_y + (player * y_offset)
+            total_width = num_cards * card_width + (num_cards - 1) * space_between_cards
+
+            row_rect = pygame.Rect(0, 0, total_width, card_height)
+            row_rect.centerx = screen_rect.centerx
+            row_rect.y = initial_y + (row_index * y_offset)
+
+            x = row_rect.left
+
+            for monster in alive_monsters:
+                card_x = x
+                card_y = row_rect.y
 
                 # create rect for card (used for clicking)
                 card_rect = pygame.Rect(card_x, card_y, card_width, card_height)
                 card_rects.append((card_rect, player, monster))
 
                 # draw card background
-                pygame.draw.rect(self.screen, (50, 50, 50), card_rect) # COLOR: gray 50, 50, 50
+                pygame.draw.rect(self.screen, (50, 50, 50), card_rect)  # COLOR: gray 50, 50, 50
 
                 # Highlight selected card
                 if monster == self.battle.selected_monster:
-                    pygame.draw.rect(self.screen, (255,255,0), card_rect, 3) # bright yellow
+                    pygame.draw.rect(self.screen, (255, 255, 0), card_rect, 3)  # bright yellow
 
                 # load + scale monster image
                 monster_img = self.get_monster_image(monster.image)
 
-                image_rect = pygame.Rect(card_x + 16, card_y + 40, 80, 90)
-                img_rect = monster_img.get_rect(center=image_rect.center)
+                image_rect = monster_img.get_rect()
+                image_rect.centerx = card_rect.centerx
+                image_rect.top = card_y + 40
 
                 # center
                 # img_x = card_x + (112 - 80) // 2
@@ -180,6 +189,7 @@ class Game:
                 card_name_font = pygame.font.SysFont('Arial', 20, bold=False)
                 name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
+                # TODO: use a stats variable and get it from themes / create it and then move it to themes
                 hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
                 hp_text = hp_text_font.render(f'HP: {monster.hp}', True, (255, 255, 255))
 
@@ -189,16 +199,14 @@ class Game:
                 card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
                 energy_text = card_energy_font.render(f'ENG: {monster.energy}', True, (255, 255, 255))
 
-                # display monster's image and hp
-                self.screen.blit(name_text, (card_x + 8, card_y + 8)) # Name
-                self.screen.blit(monster_img, image_rect) # Image
-                self.screen.blit(hp_text, (card_x + 8, card_y + 130)) #HP
-
+                # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop
+                self.screen.blit(name_text, (card_x + 8, card_y + 8))  # Name
+                self.screen.blit(monster_img, image_rect)  # Image
+                self.screen.blit(hp_text, (card_x + 8, card_y + 130))  # HP
                 self.screen.blit(strength_text, (card_x + 8, card_y + 150))  # STR
-
                 self.screen.blit(energy_text, (card_x + 8, card_y + 170))  # ENG
 
-                x_offset += card_width + space_between_cards
+                x += card_width + space_between_cards
 
             self.battle_log.draw(self.screen) # Battle Log box
 
