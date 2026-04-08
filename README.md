@@ -106,11 +106,11 @@ project/
     │   ├── button.py
     │   │
     │   ├── components/
-    │       ├── battle_log.py
-    │       ├── card_view.py
-    │
-    ├── theme/
-    │   ├── theme_manager.py
+    │   │   ├── battle_log.py
+    │   │   ├── card_view.py
+    │   │ 
+    │   ├── theme/
+    │   │   ├── theme_manager.py
     │
     ├── game/
     │   ├── state.py

@@ -5,10 +5,10 @@ from src.game.monster import Monster #TODO: make import cleaner via __init__.py
 
 
 PLAYER_LOG_COLOR = None # AQUA (0, 255, 255)
-ENEMY_LOG_COLOR = (255, 0, 0)
+ENEMY_LOG_COLOR = (240, 80, 16)
 
 class Config:
-    SCREEN_WIDTH = 1200
+    SCREEN_WIDTH = 1200 # TODO: Game set to fullscreen via game.py
     SCREEN_HEIGHT = 850
     game_title = "Niamh's Monster Cards"
 

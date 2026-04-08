@@ -11,7 +11,8 @@ class Game:
     def __init__(self, config) -> None:
         pygame.init()
         self.config = config
-        self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        # self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT)) #Orginial res
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) #Full Screen
         pygame.display.set_caption(config.game_title)
 
         self.current_state: State = 'menu'

@@ -21,11 +21,12 @@ class Monster:
 
     def attack(self, target) -> int:
         if not self.can_attack():
-            raise ValueError(f'{self.name} has no energy left to fight') #TODO: Append to battle log?
+            raise ValueError(f'{self.name} has no energy left to fight') #TODO: remove error and just let monster not fight, u may also need to update logic for enemy using a monster with no energy
+             #TODO: Append to battle log?, probably not here
 
         damage = self.strength
 
-        self.deplete_energy(1) #TODO: change to strength
+        self.deplete_energy(1) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
         target.take_damage(damage)
 
         return damage
