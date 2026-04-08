@@ -1,6 +1,5 @@
 import random
 
-from src.data.monsters import monster_pool
 from src.game.monster import Monster #TODO: make import cleaner via __init__.py
 
 
@@ -20,6 +19,6 @@ class Config:
         for i in range(num_players):
             players[i] = [
                 Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength)
-                for m in random.choices(monster_pool, k=cards_per_player)
+                for m in random.choices(Monster.monster_pool, k=cards_per_player)
             ]
         return players

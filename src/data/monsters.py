@@ -5,12 +5,12 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'assets', 'monsters'))
 
 chimera = Monster(
-            name='Chimera',
-            image=MONSTER_DIR + '/Chimera.png',
-            hp=12,
-            mp=8,
-            energy=5,
-            strength=4
+        name='Chimera',
+        image=MONSTER_DIR + '/Chimera.png',
+        hp=12,
+        mp=8,
+        energy=5,
+        strength=4
 )
 demon = Monster(
         name='Demon',
@@ -29,4 +29,4 @@ calm = Monster(
         strength=3
 )
 
-monster_pool = [chimera, demon, calm]  # TODO: add auto list creation in class
+# monster_pool = [chimera, demon, calm]  # TODO: add auto list creation in class

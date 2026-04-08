@@ -1,4 +1,6 @@
 class Monster:
+    monster_pool = []
+
     def __init__(self, name, image, hp, mp, energy, strength ):
         self.name = name
         self.image = image
@@ -11,7 +13,17 @@ class Monster:
         self.max_mp = self.mp
         self.alive = True
 
+        Monster.monster_pool.append(self)
+
         #TODO: Monsters will hold individual levels, and custom stats (owned monster class, this is in player class)
+
+    @classmethod
+    def add_to_monster_pool(cls, monster):
+        return cls.monster_pool.append(monster)
+
+    @classmethod
+    def get_monster_pool(cls):
+        return cls.monster_pool
 
     def is_alive(self):
         return self.hp > 0

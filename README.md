@@ -100,7 +100,7 @@ project/
     ├── config.py
     │
     ├── config/
-    │   ├── colors.py
+    │   ├── colors.py           <- unused
     │
     ├── ui/
     │   ├── button.py
