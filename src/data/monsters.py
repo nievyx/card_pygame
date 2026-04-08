@@ -1,3 +1,4 @@
+from src.data.spells import light_heal
 from src.game.monster import Monster
 import os
 
@@ -26,7 +27,15 @@ calm = Monster(
         hp=10,
         mp=6,
         energy=6,
-        strength=3
+        strength=3,
+        known_spells = [light_heal]
 )
-
-# monster_pool = [chimera, demon, calm]  # TODO: add auto list creation in class
+yanpi = Monster(
+        name='Yanpi',
+        image=MONSTER_DIR + '/Yanpi.png',
+        hp=8,
+        mp=7,
+        energy=5,
+        strength=2,
+        known_spells = [light_heal]
+)

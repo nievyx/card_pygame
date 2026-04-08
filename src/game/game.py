@@ -199,6 +199,7 @@ class Game:
                 name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
                 # TODO: use a stats variable and get it from themes / create it and then move it to themes
+
                 hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
                 hp_text = hp_text_font.render(f'HP: {monster.hp}', True, (255, 255, 255))
 

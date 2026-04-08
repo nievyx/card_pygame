@@ -1,6 +1,8 @@
 import random
 
 class Spell:
+    spell_pool = []
+
     def __init__(self,
                  name: str,
                  spell_type: str,
@@ -15,6 +17,8 @@ class Spell:
         self.mana_cost = mana_cost
         self.icon = icon
         self.use_in_overworld = use_in_overworld
+
+        Spell.spell_pool.append(self)
 
     def __str__(self):
         return f'{self.name} ({self.strength})'

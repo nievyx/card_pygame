@@ -1,7 +1,9 @@
 import random
 
 from src.game.monster import Monster #TODO: make import cleaner via __init__.py
-
+import src.data.monsters # This being used to create monster pool (even tho ide can't recognise that)
+# ^ TODO: probs put this in main
+import src.data.spells
 
 PLAYER_LOG_COLOR = None # AQUA (0, 255, 255)
 ENEMY_LOG_COLOR = (240, 80, 16)
