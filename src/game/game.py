@@ -155,7 +155,16 @@ class Game:
 
             row_rect = pygame.Rect(0, 0, total_width, card_height)
             row_rect.centerx = screen_rect.centerx
-            row_rect.y = initial_y + (row_index * y_offset)
+            # row_rect.y = initial_y + (row_index * y_offset)
+
+            top_row_y = 80
+            bottom_row_y = screen_rect.bottom - card_height - 80
+
+            # Choose which player goes on top / bottom
+            if row_index == 1:
+                row_rect.y = top_row_y # enemy
+            else:
+                row_rect.y = bottom_row_y # player
 
             x = row_rect.left
 
@@ -199,7 +208,7 @@ class Game:
                 card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
                 energy_text = card_energy_font.render(f'ENG: {monster.energy}', True, (255, 255, 255))
 
-                # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop
+                # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation should get a class
                 self.screen.blit(name_text, (card_x + 8, card_y + 8))  # Name
                 self.screen.blit(monster_img, image_rect)  # Image
                 self.screen.blit(hp_text, (card_x + 8, card_y + 130))  # HP

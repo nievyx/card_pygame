@@ -6,7 +6,7 @@ MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'assets', 'monsters')
 
 chimera = Monster(
             name='Chimera',
-            image=MONSTER_DIR + '/chimera.png',
+            image=MONSTER_DIR + '/Chimera.png',
             hp=12,
             mp=8,
             energy=5,
@@ -14,7 +14,7 @@ chimera = Monster(
 )
 demon = Monster(
         name='Demon',
-        image=MONSTER_DIR + '/demon.png',
+        image=MONSTER_DIR + '/Demon.png',
         hp=15,
         mp=4,
         energy=8,
@@ -22,7 +22,7 @@ demon = Monster(
 )
 calm = Monster(
         name='Calm',
-        image=MONSTER_DIR + '/calm.png',
+        image=MONSTER_DIR + '/Calm.png',
         hp=10,
         mp=6,
         energy=6,

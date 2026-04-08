@@ -56,7 +56,7 @@ def get_spell_type(spell):
 def check_spells(spell_list, *spell_types):
     return [spell for spell in spell_list if isinstance(spell, spell_types)]
 
-
+#TODO: remove these after connecting new data/spells.py
 fireball = DamageSpell(name='Fireball',
                        spell_type='damage',
                        strength=30,
