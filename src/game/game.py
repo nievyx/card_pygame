@@ -1,7 +1,7 @@
 import pygame
 from typing import Literal
 from src.game.battle.battle import Battle, BattleState, Turn #TODO: also make import cleaner via __init__.py
-from src.ui.components.battle_log import BattleLog
+from src.ui.components.battle_log import BattleLog #TODO: also make import cleaner via __init__.py, think u can comma it
 from src.ui.components.spell_menu import SpellMenu
 from src.ui.theme import THEME
 from src.ui import Button
@@ -14,7 +14,8 @@ class Game:
         self.config = config
         # self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT)) #Orginial res
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) #Full Screen
-        pygame.display.set_caption(config.game_title)
+        self.background = config.load_random_background(self.screen.get_size())
+        pygame.display.set_caption(config.game_title) #TODO: this looks a little off here
 
         self.current_state: State = 'menu'
         self.running = True
@@ -123,7 +124,9 @@ class Game:
                 self.current_state = 'menu'
 
     def draw(self):
-        self.screen.fill(THEME['background']) # TODO: Get color from config file
+        self.screen.fill(THEME['background']) #TODO: Use this for color bg
+        self.screen.blit(self.background, (0,0))
+
 
         if self.current_state == 'menu':
             self.draw_menu()
@@ -133,6 +136,7 @@ class Game:
             self.draw_how_to_play()
 
     def draw_menu(self) -> None:
+        self.screen.fill(THEME['background'])  # TODO: Use this for color bg
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
         self.quit_button.draw(self.screen)
