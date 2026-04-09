@@ -2,6 +2,9 @@ from src.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
 
+from src.game.spell import Spell, HealSpell
+
+
 class BattleState(Enum):
     SELECT_MONSTER = auto()
     SELECT_TARGET = auto()
@@ -17,9 +20,12 @@ class Battle:
         self.players = [player1, player2]
         self.current_turn = Turn.PLAYER
         self.selected_monster = None
+        self.selected_spell = None
         self.state = BattleState.SELECT_MONSTER
         self.log = []
         self.max_log_size = 6
+        self.winner = None
+        self.loser = None
 
     def get_player(self, index):
         return self.players[index]
@@ -37,13 +43,16 @@ class Battle:
         if len(self.log) > self.max_log_size:
             self.log.pop(0)
 
-        print(self.log) #TODO: DEBUG
-
     def generate_attack_message(self, attacker, defender, damage):
         templates = [
             f'{attacker.name} attacks {defender.name}! It deals {damage} to {defender.name}!',
         ]
         return random.choice(templates)
+
+    def generate_spell_message(self, castor, target, spell, amount):
+        if isinstance(spell, HealSpell):
+            return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
+        return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
 
     def _enemy_turn(self):
         enemy_player = self.players[1]
@@ -74,6 +83,9 @@ class Battle:
         return self.current_turn.value
 
     def get_opposing_player(self):
+        """Returns index of the AI player
+
+        Calculated by flipping """
         return 1 - self.current_turn.value
 
     def select_monster(self, player, monster):

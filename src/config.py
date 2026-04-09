@@ -1,26 +1,29 @@
 import random
+from src.game import Monster
 
-from src.game.monster import Monster #TODO: make import cleaner via __init__.py
-import src.data.monsters # This being used to create monster pool (even tho ide can't recognise that)
-# ^ TODO: probs put this in main
-import src.data.spells
-
-PLAYER_LOG_COLOR = None # AQUA (0, 255, 255)
+PLAYER_LOG_COLOR = (0, 255, 255)
 ENEMY_LOG_COLOR = (240, 80, 16)
 
 class Config:
-    SCREEN_WIDTH = 1200 # TODO: Game set to fullscreen via game.py
+    SCREEN_WIDTH = 1200
     SCREEN_HEIGHT = 850
     game_title = "Niamh's Monster Cards"
+
+    @staticmethod
+    def load_game_data():
+        """
+        Loads all game data via import side effects.
+        Registers monsters and spells in global pools.
+        NOTE: Imports may appear to be unused in some IDEs, but
+        is required.
+        """
+        import src.data.monsters
+        import src.data.spells
 
     def create_players(self):
         num_players = 2
         cards_per_player = 5
         players = {}
-
-        # TODO: idea for player and enemy setup
-        # player = Player("Player", monsters=player_monsters, is_human=True)
-        # enemy = Player("Enemy", monsters=enemy_monsters, is_human=False)
 
         for i in range(num_players):
             players[i] = [
@@ -28,3 +31,6 @@ class Config:
                 for m in random.choices(Monster.monster_pool, k=cards_per_player)
             ]
         return players
+
+
+

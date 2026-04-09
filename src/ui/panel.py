@@ -32,3 +32,20 @@ class Panel:
 
         return rect
 
+    def draw_overlay_message(self, screen, title: str, subtitle: str) -> None:
+        overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 140))
+        screen.blit(overlay, (0, 0))
+
+        panel_rect = pygame.Rect(0, 0, 520, 180)
+        panel_rect.center = screen.get_rect().center
+        pygame.draw.rect(screen, (35, 35, 35), panel_rect)
+        pygame.draw.rect(screen, (220, 220, 220), panel_rect, 2)
+
+        title_font = pygame.font.SysFont('Arial', 42, bold=True)
+        text_font = pygame.font.SysFont('Arial', 24)
+        title_surface = title_font.render(title, True, (255, 255, 255))
+        subtitle_surface = text_font.render(subtitle, True, (235, 235, 235))
+        screen.blit(title_surface, title_surface.get_rect(center=(panel_rect.centerx, panel_rect.centery - 24)))
+        screen.blit(subtitle_surface, subtitle_surface.get_rect(center=(panel_rect.centerx, panel_rect.centery + 28)))
+

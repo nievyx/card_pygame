@@ -18,21 +18,25 @@ class Spell:
 
         Spell.spell_pool.append(self)
 
-    def __str__(self):
-        return f'{self.name} ({self.strength})'
+    def can_cast(self, caster) -> bool:
+        return getattr(caster, 'mp', 0) >= self.mana_cost and caster.use_in_overworld
+
+    def spend_mana(self, caster):
+        caster.mp = max(0, caster.mp - self.mana_cost)
 
     def cast(self, castor, target):
         raise NotImplementedError('Each spell must implement cast()')
 
+    def __str__(self):
+        return f'{self.name} ({self.strength})'
 
 class DamageSpell(Spell):
     def cast(self, castor, target):
-        damage = round(int(self.strength) + (int(castor.intelligence) / 3))
+
+
+        damage = self.strength
         modifier = random.uniform(0.9, 1.1)
         final_damage = round(damage * modifier)
-        print(f'{castor.name} casts {self.name} {self.icon} on {target.name} it dealt {final_damage} damage!') #TODO: this is debug only
-
-        # Apply damage and check for fainting
         target.take_damage(final_damage)
         return final_damage
 
