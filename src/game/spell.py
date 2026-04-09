@@ -5,14 +5,12 @@ class Spell:
 
     def __init__(self,
                  name: str,
-                 spell_type: str,
                  strength: int,
                  mana_cost: int,
                  icon='',
                  use_in_overworld: bool = False
                  ):
         self.name = name
-        self.type = spell_type
         self.strength = strength
         self.mana_cost = mana_cost
         self.icon = icon
@@ -60,22 +58,3 @@ def get_spell_type(spell):
 def check_spells(spell_list, *spell_types):
     return [spell for spell in spell_list if isinstance(spell, spell_types)]
 
-#TODO: remove these after connecting new data/spells.py
-fireball = DamageSpell(name='Fireball',
-                       spell_type='damage',
-                       strength=30,
-                       mana_cost=10,
-                       icon='🔥')
-
-
-icebolt = DamageSpell(name='Icebolt',
-                      spell_type='damage',
-                      strength=40,
-                      mana_cost=10,
-                      icon='❄')
-
-light_heal = HealSpell(name='Light Heal',
-                       spell_type='heal',
-                       strength=15,
-                       mana_cost=8,
-                       use_in_overworld=True)
