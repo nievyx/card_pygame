@@ -30,6 +30,7 @@ class Spell:
     def __str__(self):
         return f'{self.name} ({self.strength})'
 
+
 class DamageSpell(Spell):
     def cast(self, castor, target):
 

@@ -1,4 +1,8 @@
+import os
 import random
+
+import pygame
+
 from src.game import Monster
 
 PLAYER_LOG_COLOR = (0, 255, 255)
@@ -20,6 +24,23 @@ class Config:
         import src.data.monsters
         import src.data.spells
 
+    @staticmethod
+    def load_random_background(screen_size):
+        folder = 'assets/backgrounds/'
+        img_types = ('.png', '.jpg', '.jpeg', '.webp')
+
+        files = [
+            os.path.join(folder, name)
+            for name in os.listdir(folder)
+            if name.lower().endswith(img_types)
+        ]
+        bg_img = random.choice(files)
+
+        image = pygame.image.load(bg_img).convert()
+        image = pygame.transform.scale(image, screen_size)
+
+        return image
+
     def create_players(self):
         num_players = 2
         cards_per_player = 5
@@ -31,6 +52,7 @@ class Config:
                 for m in random.choices(Monster.monster_pool, k=cards_per_player)
             ]
         return players
+
 
 
 
