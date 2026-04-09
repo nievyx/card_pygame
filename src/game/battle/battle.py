@@ -21,6 +21,9 @@ class Battle:
         self.log = []
         self.max_log_size = 6
 
+    def get_player(self, index):
+        return self.players[index]
+
     def update(self):
         if self.state == BattleState.ENEMY_TURN:
             self._enemy_turn()

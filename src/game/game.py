@@ -122,7 +122,6 @@ class Game:
             if self.back_button.is_hovered(pos):
                 self.current_state = 'menu'
 
-
     def draw(self):
         self.screen.fill(THEME['background']) # TODO: Get color from config file
 
@@ -164,12 +163,14 @@ class Game:
         else:
             turn_name = 'AI'
 
+        # Player Turn Text
         info_font = pygame.font.SysFont('Arial', 24)
         turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
         self.screen.blit(turn_text, (200, 28))
 
         screen_rect = self.screen.get_rect()
 
+        # Print the cards
         for row_index, (player, monsters) in enumerate(self.players.items()):
             alive_monsters = [monster for monster in monsters if monster.is_alive()]
             num_cards = len(alive_monsters)
@@ -204,7 +205,7 @@ class Game:
 
                 # Highlight selected card
                 if monster == self.battle.selected_monster:
-                    pygame.draw.rect(self.screen, (255, 255, 0), card_rect, 3)  # bright yellow
+                    pygame.draw.rect(self.screen, THEME['card_selected'], card_rect, 3)  # bright yellow
 
                 # load + scale monster image
                 monster_img = self.get_monster_image(monster.image)
@@ -212,10 +213,6 @@ class Game:
                 image_rect = monster_img.get_rect()
                 image_rect.centerx = card_rect.centerx
                 image_rect.top = card_y + 40
-
-                # center
-                # img_x = card_x + (112 - 80) // 2
-                # img_y = card_y + 40
 
                 # draw text
                 card_name_font = pygame.font.SysFont('Arial', 20, bold=False)

@@ -18,6 +18,10 @@ class Config:
         cards_per_player = 5
         players = {}
 
+        # TODO: idea for player and enemy setup
+        # player = Player("Player", monsters=player_monsters, is_human=True)
+        # enemy = Player("Enemy", monsters=enemy_monsters, is_human=False)
+
         for i in range(num_players):
             players[i] = [
                 Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength, known_spells=list(m.known_spells))

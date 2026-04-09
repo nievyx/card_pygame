@@ -10,11 +10,13 @@ THEME = {
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
 
-    # Button Font (Used in ui/buttons.py)
+    # BUTTON FONT
+    # (Used in ui/buttons.py)
     'button_font' : 'comicsans',
     'button_text_color' : (0, 0 , 0),
 
-    # Battle Log (Used in ui/components/battle_log.py)
+    # BATTLE LOG
+    # (Used in ui/components/battle_log.py)
     'battle_log_bg' :  (35, 35, 35), #Make green (20, 35, 35),
     'battle_log_border': (200, 200, 200),
 
