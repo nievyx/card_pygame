@@ -69,6 +69,11 @@ class Game:
                 pos = pygame.mouse.get_pos()
                 self.handle_mouse_click(pos)
 
+    def close_spell_menu(self):
+        self.show_spell_menu = False
+        self.active_spell_monster = None
+        self.selected_spell_index = 0
+
     def handle_mouse_click(self, pos: tuple[int, int]) -> None:
         if self.current_state == 'menu':
             if self.start_button.is_hovered(pos):
@@ -91,9 +96,13 @@ class Game:
             if self.battle.state == BattleState.BATTLE_OVER:
                 return
 
+            clicked_card = False
+
             for rect, player, monster in self.card_rects:
                 if not rect.collidepoint(pos):
                     continue
+
+                clicked_card = True
 
                 if player == self.battle.get_current_player():
                     self.battle.select_monster(player, monster)
@@ -101,13 +110,11 @@ class Game:
                     if monster.known_spells:
                         self.show_spell_menu = True
                         self.active_spell_monster = monster
-                        print("CLICKED:", monster.name) #TODO: DEBUG
-                        print("SPELLS:", monster.known_spells) #TODO: DEBUG
                     else:
-                        self.show_spell_menu = False
-                        self.active_spell_monster = None
+                        self.close_spell_menu()
 
-                elif player == self.battle.get_opposing_player():
+                elif player == self.battle.get_opposing_player():#
+                    self.close_spell_menu()
                     self.battle.try_attack(player, monster)
                 break
 
