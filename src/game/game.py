@@ -2,6 +2,7 @@ import pygame
 from typing import Literal
 from src.game.battle.battle import Battle, BattleState, Turn #TODO: also make import cleaner via __init__.py
 from src.ui.components.battle_log import BattleLog
+from src.ui.components.spell_menu import SpellMenu
 from src.ui.theme import THEME
 from src.ui import Button
 
@@ -23,6 +24,11 @@ class Game:
         self.battle = Battle(self.players[0], self.players[1])
         self.monster_image_cache = {}
         self.battle_log = BattleLog(self.battle)
+
+        self.spell_menu = SpellMenu()
+        self.show_spell_menu = False
+        self.selected_spell_index = 0
+        self.active_spell_monster = None
 
         # Button Creation
         self.start_button = Button((0, 255, 0), 400, 150, 200, 80, "Start")
@@ -91,6 +97,16 @@ class Game:
 
                 if player == self.battle.get_current_player():
                     self.battle.select_monster(player, monster)
+
+                    if monster.known_spells:
+                        self.show_spell_menu = True
+                        self.active_spell_monster = monster
+                        print("CLICKED:", monster.name) #TODO: DEBUG
+                        print("SPELLS:", monster.known_spells) #TODO: DEBUG
+                    else:
+                        self.show_spell_menu = False
+                        self.active_spell_monster = None
+
                 elif player == self.battle.get_opposing_player():
                     self.battle.try_attack(player, monster)
                 break
@@ -219,6 +235,9 @@ class Game:
                 x += card_width + space_between_cards
 
             self.battle_log.draw(self.screen) # Battle Log box
+
+            if self.show_spell_menu and self.active_spell_monster:
+                self.spell_menu.draw(self.screen, self.active_spell_monster)
 
         return card_rects
 

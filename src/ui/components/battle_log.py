@@ -1,6 +1,8 @@
 import pygame
 from src.ui.theme import THEME
 
+#TODO: attach battle log to Panel Class
+
 class BattleLog: #TODO: rect, theme, font_manger removed
     def __init__(self, battle, width=440, height=180, top=360, right_padding=40):
         self.battle = battle
