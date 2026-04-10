@@ -8,13 +8,15 @@ class Spell:
                  strength: int,
                  mana_cost: int,
                  icon='',
-                 use_in_overworld: bool = False
+                 use_in_overworld: bool = False,
+                 sfx_name: str | None = None,
                  ):
         self.name = name
         self.strength = strength
         self.mana_cost = mana_cost
         self.icon = icon
         self.use_in_overworld = use_in_overworld
+        self.sfx_name = sfx_name or self.name.lower().replace('', '_')
 
         Spell.spell_pool.append(self)
 
