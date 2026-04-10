@@ -54,6 +54,12 @@ class Battle:
             return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
         return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
 
+    def battle_is_over(self):
+        player_alive = any(monster.is_alive() for monster in self.players[0])
+        enemy_alive = any(monster.is_alive() for monster in self.players[1])
+
+        #TODO: finish me!
+
     def _enemy_turn(self):
         enemy_player = self.players[1]
         player = self.players[0]
@@ -98,8 +104,15 @@ class Battle:
         if monster is None or not monster.is_alive():
             return False
 
+        #Clicking the same monster deselects #TODO: fact check this
+        if self.selected_monster == monster:
+            self.cancel_selection()
+            return True
+
         self.selected_monster = monster
+        self.selected_spell = None
         self.state = BattleState.SELECT_TARGET
+
         return True
 
     def try_attack(self, defender_player, defender):
@@ -128,6 +141,11 @@ class Battle:
 
         self.end_turn()
         return True
+
+    def cancel_selection(self):
+        self.selected_monster = None
+        self.selected_spell = None
+        self.state = BattleState.SELECT_MONSTER
 
     def end_turn(self):
         self.selected_monster = None
