@@ -1,3 +1,5 @@
+import random
+
 class Monster:
     monster_pool = []
 
@@ -37,6 +39,7 @@ class Monster:
             raise ValueError(f'{self.name} has no energy left to fight') #TODO: remove error and just let monster not fight, u may also need to update logic for enemy using a monster with no energy
              #TODO: Append to battle log?, probably not here
 
+        #TODO: dice roll for critical hit
         damage = self.strength
 
         self.deplete_energy(1) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
@@ -45,7 +48,8 @@ class Monster:
         return damage
 
     def critical_hit(self, target):
-        pass
+        modifier = random.uniform(2.2, 3.3)
+        return modifier
 
     def can_attack(self) -> bool:
         """ #TODO: update this when decided how much energy attacks will use"""
@@ -61,5 +65,7 @@ class Monster:
         self.hp = max(0, self.hp - amount)
         if self.hp <= 0:
             self.alive = False
+
+
 
 

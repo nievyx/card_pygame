@@ -1,6 +1,7 @@
 from src.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
+from src.ui.theme import THEME
 
 from src.game.spell import Spell, HealSpell
 
@@ -27,12 +28,46 @@ class Battle:
         self.winner = None
         self.loser = None
 
-    def get_player(self, index):
-        return self.players[index]
+    def _can_cast_selected_heal_on_ally(self, target_player, target) -> bool:
+        return (
+            self.state == BattleState.SELECT_TARGET
+            and self.selected_monster is not None
+            and self.selected_spell is not None
+            and isinstance(self.selected_spell, HealSpell)
+            and target_player == self.get_current_player()
+            and target is not None
+            and target.is_alive()
+        )
 
     def update(self):
         if self.state == BattleState.ENEMY_TURN:
             self._enemy_turn()
+
+    def _can_attack_target(self):
+        pass
+
+    def try_cast_on_ally(self, target_player, target) -> bool:
+        if not self._can_cast_selected_heal_on_ally(target_player, target):
+            return False
+
+        amount = self.selected_spell.cast(self.selected_spell, target)
+        if amount is None:
+            #TODO: here ur passing the whole msg, but below ur just passing the item, pick one
+            self.add_battle_log(
+                f'{self.selected_monster.name} failed to cast {self.selected_monster}on {self.selected_monster}.',
+                THEME['PLAYER_LOG_COLOR']
+            )
+            return False
+        self.add_battle_log(
+            self.generate_spell_message(self.selected_monster, self.selected_spell, target, amount),
+        )
+
+        if not self.battle_is_over():
+            self.end_turn()
+        return True
+
+    def get_player(self, index):
+        return self.players[index]
 
     def add_battle_log(self, message: str, color=None) -> None:
         self.log.append({
@@ -42,6 +77,8 @@ class Battle:
 
         if len(self.log) > self.max_log_size:
             self.log.pop(0)
+
+    #TODO: do u want these message generators statics
 
     def generate_attack_message(self, attacker, defender, damage):
         templates = [
@@ -54,9 +91,17 @@ class Battle:
             return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
         return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
 
-    def battle_is_over(self):
+    def battle_is_over(self) -> bool:
         player_alive = any(monster.is_alive() for monster in self.players[0])
         enemy_alive = any(monster.is_alive() for monster in self.players[1])
+
+        if player_alive and enemy_alive:
+            return False
+
+        self.state = BattleState.BATTLE_OVER
+        if player_alive:
+            self.winner = 0
+        return True
 
         #TODO: finish me!
 

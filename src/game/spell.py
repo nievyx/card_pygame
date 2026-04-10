@@ -21,6 +21,9 @@ class Spell:
     def can_cast(self, caster) -> bool:
         return getattr(caster, 'mp', 0) >= self.mana_cost and caster.is_alive()
 
+    def get_valid_targets(self, caster, allies, enemies):
+        raise NotImplementedError('Each spell must implement get_valid_targets()')
+
     def spend_mana(self, caster):
         caster.mp = max(0, caster.mp - self.mana_cost)
 
@@ -34,12 +37,12 @@ class Spell:
         return f'{self.name} : ({self.strength}STR, {self.mana_cost}MP)'
 
 class DamageSpell(Spell):
-    """
-    Attempts to cast spell on target.
-
-    :returns int | None: Effect damage amount if successful, otherwise None
-    """
     def cast(self, caster, target):
+        """
+            Attempts to cast spell on target.
+
+            :returns int | None: Effect damage amount if successful, otherwise None
+        """
         if not self.can_cast_on(caster, target):
             return None
 
@@ -50,17 +53,28 @@ class DamageSpell(Spell):
         target.take_damage(final_damage)
         return final_damage
 
+    def get_valid_targets(self, caster, allies, enemies):
+        """
+        Returns a list of valid targets to use damage spell.
+        :param caster:
+        :param allies:
+        :param enemies:
+        :return: List of targets or empty list
+        """
+        return [monster for monster in enemies if monster.is_alive()]
+
+
     def __str__(self):
         return f'{self.name} (Damage: {self.strength}, Cost: {self.mana_cost}MP)'
 
 
 class HealSpell(Spell):
-    """
-    Attempts to cast spell on target.
-
-    :returns int | None: amount healed if successful, otherwise None
-    """
     def cast(self, caster, target):
+        """
+            Attempts to cast spell on target.
+
+            :returns int | None: amount healed if successful, otherwise None
+        """
         if not self.can_cast_on(caster, target):
             return None
 
@@ -70,6 +84,19 @@ class HealSpell(Spell):
         healed = target.restore_health(final_amount)
 
         return healed
+
+    def get_valid_targets(self, caster, allies, enemies):
+        """
+                Returns a list of valid targets to use heal spell.
+                :param caster:
+                :param allies:
+                :param enemies:
+                :return: List of targets or empty list
+                """
+        return [
+            monster for monster in allies 
+            if monster.is_alive() and monster.hp < monster.max_hp 
+        ]
 
     def __str__(self):
         return f'{self.name} (Heal: {self.strength}, Cost: {self.mana_cost}MP)'

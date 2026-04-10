@@ -5,6 +5,7 @@ import pygame
 
 from src.game import Monster
 
+#TODO: these are now also in theme/theme
 PLAYER_LOG_COLOR = (0, 255, 255)
 ENEMY_LOG_COLOR = (240, 80, 16)
 
