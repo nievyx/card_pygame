@@ -1,4 +1,5 @@
 THEME = {
+    #Used in main.py
     'background': (21, 30, 61),
 
     'panel_bg': (35, 35, 35),
@@ -7,8 +8,12 @@ THEME = {
     'text_primary': (255, 255, 255),
     'text_secondary': (230, 230, 230),
 
+    'primary_font' : 'Arial', #TODO: replace all the arial usage in main.py with THEME['primary_font']
+
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
+
+    'card_stat_low' : (255, 0, 0),
 
     # BUTTON FONT
     # (Used in ui/buttons.py)

@@ -143,9 +143,12 @@ class Game:
 
     def draw_how_to_play(self) -> None:
         self.back_button.draw(self.screen)
+        # TODO: do u want the game bg
 
         #TODO: add instructions. And add font to config, move instructions elsewhere as well
+        #TODO: should instructions be a txt or a md and then just a quick func to read ir
         font = pygame.font.SysFont('Arial', 40)
+        #TODO : Put text in the box, believe it's in panel class
         text = font.render('How to play instructions will go here.....', 1, (0, 0, 0))
 
         self.screen.blit(text, (200,300))
@@ -222,10 +225,16 @@ class Game:
                 card_name_font = pygame.font.SysFont('Arial', 20, bold=False)
                 name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
+                def get_stat_color(current, max):
+                    """Toggles stat colors to highlight low stats"""
+                    percent = 0.3
+                    return THEME['card_stat_low'] if current / max <= percent else THEME['text_secondary']
+
                 # TODO: use a stats variable and get it from themes / create it and then move it to themes
 
                 hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
-                hp_text = hp_text_font.render(f'HP: {monster.hp}', True, (255, 255, 255))
+                hp_color = get_stat_color(monster.hp, monster.max_hp)
+                hp_text = hp_text_font.render(f'HP: {monster.hp}', True, hp_color)
 
                 card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)
                 strength_text = card_strength_font.render(f'STR: {monster.strength}', True, (255, 255, 255))
