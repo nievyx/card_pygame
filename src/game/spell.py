@@ -19,24 +19,25 @@ class Spell:
         Spell.spell_pool.append(self)
 
     def can_cast(self, caster) -> bool:
-        return getattr(caster, 'mp', 0) >= self.mana_cost and caster.use_in_overworld
+        return getattr(caster, 'mp', 0) >= self.mana_cost and caster.is_alive()
 
     def spend_mana(self, caster):
         caster.mp = max(0, caster.mp - self.mana_cost)
 
-    def cast(self, castor, target):
+    def cast(self, caster, target):
         raise NotImplementedError('Each spell must implement cast()')
-
-    def __str__(self):
-        return f'{self.name} : ({self.strength}STR, {self.mana_cost}MP)'
 
     def can_cast_on(self, caster, target):
         return self.can_cast(caster) and target is not None and target.is_alive()
 
-class DamageSpell(Spell):
-    """Attempts to cast spell.
+    def __str__(self):
+        return f'{self.name} : ({self.strength}STR, {self.mana_cost}MP)'
 
-    :returns int | None: Effect amount if successful, otherwise None
+class DamageSpell(Spell):
+    """
+    Attempts to cast spell on target.
+
+    :returns int | None: Effect damage amount if successful, otherwise None
     """
     def cast(self, caster, target):
         if not self.can_cast_on(caster, target):
@@ -50,28 +51,26 @@ class DamageSpell(Spell):
         return final_damage
 
     def __str__(self):
-        return f'{self.name} (Base Damage: {self.strength})' #TODO: can this just inherit spells?
+        return f'{self.name} (Damage: {self.strength}, Cost: {self.mana_cost}MP)'
 
 
 class HealSpell(Spell):
-    # TODO: Heal spells will currently only heal castor
-    # TODO: Also target refers to the enemy, when it should refer to the healed (Changed target name to castor name)
+    """
+    Attempts to cast spell on target.
+
+    :returns int | None: amount healed if successful, otherwise None
+    """
     def cast(self, caster, target):
         if not self.can_cast_on(caster, target):
             return None
 
+        self.spend_mana(caster)
+        modifier = random.uniform(0.9, 1.1)
+        final_amount = round(self.strength * modifier)
+        healed = target.restore_health(final_amount)
 
-        final_amount = self.strength
-        print(f'{caster.name} casts {self.name} on {caster.name}. {final_amount} points healed.')
-        caster.restore_health(final_amount)
-        return final_amount
+        return healed
 
-
-# These have no use now
-def get_spell_type(spell):
-    return spell.__class__.__name__
-
-
-def check_spells(spell_list, *spell_types):
-    return [spell for spell in spell_list if isinstance(spell, spell_types)]
+    def __str__(self):
+        return f'{self.name} (Heal: {self.strength}, Cost: {self.mana_cost}MP)'
 
