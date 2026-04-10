@@ -28,13 +28,21 @@ class Spell:
         raise NotImplementedError('Each spell must implement cast()')
 
     def __str__(self):
-        return f'{self.name} ({self.strength})'
+        return f'{self.name} : ({self.strength}STR, {self.mana_cost}MP)'
 
+    def can_cast_on(self, caster, target):
+        return self.can_cast(caster) and target is not None and target.is_alive()
 
 class DamageSpell(Spell):
-    def cast(self, castor, target):
+    """Attempts to cast spell.
 
+    :returns int | None: Effect amount if successful, otherwise None
+    """
+    def cast(self, caster, target):
+        if not self.can_cast_on(caster, target):
+            return None
 
+        self.spend_mana(caster)
         damage = self.strength
         modifier = random.uniform(0.9, 1.1)
         final_damage = round(damage * modifier)
@@ -42,13 +50,17 @@ class DamageSpell(Spell):
         return final_damage
 
     def __str__(self):
-        return f'{self.name} (Base Damage: {self.strength})'
+        return f'{self.name} (Base Damage: {self.strength})' #TODO: can this just inherit spells?
 
 
 class HealSpell(Spell):
     # TODO: Heal spells will currently only heal castor
     # TODO: Also target refers to the enemy, when it should refer to the healed (Changed target name to castor name)
     def cast(self, caster, target):
+        if not self.can_cast_on(caster, target):
+            return None
+
+
         final_amount = self.strength
         print(f'{caster.name} casts {self.name} on {caster.name}. {final_amount} points healed.')
         caster.restore_health(final_amount)

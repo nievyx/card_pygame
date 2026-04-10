@@ -225,10 +225,12 @@ class Game:
                 card_name_font = pygame.font.SysFont('Arial', 20, bold=False)
                 name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
-                def get_stat_color(current, max):
+                def get_stat_color(current, max_value):
                     """Toggles stat colors to highlight low stats"""
+                    if max_value <= 0:
+                        return THEME['text_secondary']
                     percent = 0.3
-                    return THEME['card_stat_low'] if current / max <= percent else THEME['text_secondary']
+                    return THEME['card_stat_low'] if current / max_value <= percent else THEME['text_secondary']
 
                 # TODO: use a stats variable and get it from themes / create it and then move it to themes
 
