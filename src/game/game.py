@@ -109,19 +109,20 @@ class Game:
         if not (self.show_spell_menu and self.active_spell_monster):
             return False
 
-        spell_index = self.spell_menu.get_spell_by_pos(self.screen, self.active_spell_monster, pos)
+        spell_index = self.spell_menu.get_spell_by_pos(
+            self.screen, self.active_spell_monster, pos
+        )
         if spell_index is None:
             return False
 
         self.battle.selected_spell = self.active_spell_monster.known_spells[spell_index]
         self.selected_spell_index = spell_index
-
         return True
 
     def close_spell_menu(self):
         self.show_spell_menu = False
         self.active_spell_monster = None
-        self.selected_spell_index = 0
+        self.selected_spell_index = None
 
     def handle_menu_click(self, pos: tuple[int, int]) -> None:
         if self.start_button.is_hovered(pos):
@@ -323,11 +324,15 @@ class Game:
                 hp_color = get_stat_color(monster.hp, monster.max_hp)
                 hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
 
+
                 card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)
                 strength_text = card_strength_font.render(f'STR: {monster.strength}', True, THEME['card_stat_text'])
 
                 card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
                 energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True, THEME['card_stat_text'])
+                mp_text = card_energy_font.render(
+                    f'MP: {monster.mp}', True, THEME['card_stat_text']
+                )
 
                 # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
                 self.screen.blit(name_text, (card_x + 8, card_y + 8))  # Name
@@ -335,6 +340,7 @@ class Game:
                 self.screen.blit(hp_text, (card_x + 8, card_y + 130))  # HP
                 self.screen.blit(strength_text, (card_x + 8, card_y + 150))  # STR
                 self.screen.blit(energy_text, (card_x + 8, card_y + 170))  # ENG
+                self.screen.blit(mp_text, (card_x + 8, card_y + 190)) # MP
 
                 x += card_width + space_between_cards
 
