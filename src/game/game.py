@@ -4,6 +4,7 @@ from src.game.battle import Battle, BattleState, Turn
 from src.ui.components import BattleLog, SpellMenu
 from src.sound.sfx import SFX
 from src.ui import Button, THEME
+from src.ui.panel import Panel
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 
@@ -47,11 +48,19 @@ class Game:
 
     def start_new_wave(self):
         self.wave_count += 1
+        Panel.draw_popup_message(self.screen, f'Wave {self.wave_count}', '')
         enemy_team = self.config.create_enemy_team()
         self.players[1] = enemy_team
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
+
+    def reset_battle(self):
+        self.players = self.config.create_players()
+        self.battle = Battle(self.players[0], self.players[1])
+        self.battle_log = BattleLog(self.battle)
+        self.close_spell_menu()
+        self.card_rects = []
 
     def get_monster_image(self, image_path: str) -> pygame.Surface:
         if image_path not in self.monster_image_cache:
@@ -76,8 +85,7 @@ class Game:
             self.battle.update()
 
             if self.battle.state == BattleState.BATTLE_OVER:
-                if self.battle.winner == 0:
-                    pass
+                self.battle.battle_is_over()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -112,11 +120,17 @@ class Game:
                 return
 
             if self.battle.state == BattleState.BATTLE_OVER:
+                self.reset_battle()
+                self.current_state = 'menu'
                 return
+
+            clicked_monster = False
 
             for rect, player, monster in self.card_rects:
                 if not rect.collidepoint(pos):
                     continue
+
+                clicked_monster = True
 
                 if player == self.battle.get_current_player():
                     self.battle.select_monster(player, monster)
@@ -132,11 +146,22 @@ class Game:
                     self.battle.try_attack(player, monster)
                 break
 
+            if not clicked_monster:
+                # Click away from monster to deselect
+                self.battle.cancel_selection()
+                self.close_spell_menu()
+
+
+
         elif self.current_state == 'how_to_play':
             if self.back_button.is_hovered(pos):
                 self.current_state = 'menu'
 
+
+
+
     def generate_bg(self):
+        #TODO: this does not re-randomise background image
         self.screen.blit(self.background, (0, 0))
 
     def draw(self):
@@ -169,11 +194,31 @@ class Game:
         self.screen.blit(text, (200,300))
         #self.screen.blit(text, (self.SCREEN_WIDTH / 2 - text.get_width() / 2, self.SCREEN_HEIGHT / 2 - text.get_height() / 2))
 
+    def display_selections(self):
+        if self.battle.selected_monster is not None:
+            display_text = f' Selected: {self.battle.selected_monster.name}'
+
+            if self.battle.selected_spell is not None:
+                display_text += f' | {self.battle.selected_spell.name}'
+
+            info_font = pygame.font.SysFont('Arial', 24)
+            display_text_surface = info_font.render(display_text, True, THEME['text_primary'])
+            self.screen.blit(display_text_surface, (360,28))
+
+    def draw_battle_result(self):
+        if self.battle.winner == 0:
+            Panel.draw_popup_message(self.screen, 'You Win', 'Click anywhere to return to the menu')
+        elif self.battle.winner == 1:
+            Panel.draw_popup_message(self.screen, 'You Lose', 'Click anywhere to return to the menu')
+        else:
+            Panel.draw_popup_message(self.screen, 'Draw', 'Click anywhere to return to the menu')
+
+
     def draw_game(self) -> list:
         self.main_menu_button.draw(self.screen)
         card_rects = []  # For cards rectangle space
 
-        card_width, card_height = 112, 220 #244, 150 This made it look centred even tho it wasn't
+        card_width, card_height = 112, 220
         space_between_cards = 10
         initial_x = 20
         initial_y = 80
@@ -186,6 +231,9 @@ class Game:
             turn_name = 'Player'
         else:
             turn_name = 'AI'
+
+
+        self.display_selections()
 
         # Player Turn Text
         info_font = pygame.font.SysFont('Arial', 24)
@@ -275,10 +323,11 @@ class Game:
             if self.show_spell_menu and self.active_spell_monster and self.active_spell_monster.is_alive():
                 self.spell_menu.draw(self.screen, self.active_spell_monster, self.selected_spell_index)
 
-            # TODO: check for winner here
-            if self.battle.state != BattleState.BATTLE_OVER:
-                if self.battle.battle_is_over():
-                    print("Battle ended")
+
+            if self.battle.state == BattleState.BATTLE_OVER:
+                self.draw_battle_result()
+
+
 
 
         return card_rects

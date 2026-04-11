@@ -15,7 +15,11 @@ class SpellMenu(Panel):
             rects.append(pygame.Rect(menu_rect.x + 16, start_y + i * self.line_height - 2, menu_rect.width - 32, self.line_height))
         return rects
 
-
+    def get_spell_by_pos(self, screen, monster, pos):
+        for i, rect in enumerate(self.get_spell_rects(screen, monster)):
+            if rect.collidepoint(pos):
+                return i
+        return None
 
 
     def draw(self, screen, monster, selected_index=None):

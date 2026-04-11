@@ -33,9 +33,9 @@ class Panel:
         return rect
 
     @staticmethod
-    def draw_overlay_message(screen, title: str, subtitle: str) -> None:
+    def draw_popup_message(screen, title: str, subtitle: str) -> None:
         overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 140))
+        overlay.fill((0, 0, 0, 140)) #Gray out screen (0, 0, 0, 140)
         screen.blit(overlay, (0, 0))
 
         panel_rect = pygame.Rect(0, 0, 520, 180)
