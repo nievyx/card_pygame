@@ -8,17 +8,12 @@ class SFX:
         self.base_path = base_path
         self.cache = {}
 
-            #TODO: fireball for _1 to _4 variants to do a random choice from
-        self.sounds = {
-            'fireball' : pygame.mixer.Sound('assets/fireball/fireball_1.mp3'),
-        }
-
         self.volume = 0.5
         self.set_volume(self.volume)
 
     def play(self, spell):
         sounds_name = spell.sfx_name
-        sound_path = os.path.join(self.base_path, 'spells',f'{sounds_name}.mp3')
+        sound_path = os.path.join(self.base_path, 'spells',f'{sounds_name}.wav')
 
         if not os.path.exists(sound_path):
             return
@@ -30,5 +25,5 @@ class SFX:
 
     def set_volume(self, volume):
         self.volume = volume
-        for sound in self.sounds.values():
+        for sound in self.cache.values():
             sound.set_volume(volume)

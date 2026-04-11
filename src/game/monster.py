@@ -13,16 +13,14 @@ class Monster:
 
         self.max_hp = self.hp
         self.max_mp = self.mp
+        self.max_energy = self.energy
         self.alive = True
 
         self.dropped_exp = 10 #Placeholder
 
-        #TODO: future: add a requirement to fill like level 5, hp above 20 (if u want to pick upgrades)
         self.known_spells = known_spells if known_spells is not None else []
 
         Monster.monster_pool.append(self)
-
-        #TODO: Monsters will hold individual levels, and custom stats (owned monster class, this is in player class)
 
     @classmethod
     def get_monster_pool(cls):

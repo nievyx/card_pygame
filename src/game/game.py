@@ -1,8 +1,9 @@
 import pygame
 from typing import Literal
-from src.game.battle.battle import Battle, BattleState, Turn #TODO: also make import cleaner via __init__.py
-from src.ui.components.battle_log import BattleLog #TODO: also make import cleaner via __init__.py, think u can comma it
+from src.game.battle import Battle, BattleState, Turn
+from src.ui.components import BattleLog
 from src.ui.components.spell_menu import SpellMenu
+from src.sound.sfx import SFX
 from src.ui.theme import THEME
 from src.ui import Button
 
@@ -11,18 +12,24 @@ State = Literal['menu', 'game', 'how_to_play', 'quit']
 class Game:
     def __init__(self, config) -> None:
         pygame.init()
+        pygame.display.set_caption(config.game_title)
         self.config = config
-        # self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT)) #Orginial res
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) #Full Screen
+        self.sfx = SFX()
+
+        fullscreen = 1
+        if fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Full Screen
+        else:
+            self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT)) #Orginial res
+
         self.background = config.load_random_background(self.screen.get_size())
-        pygame.display.set_caption(config.game_title) #TODO: this looks a little off here
 
         self.current_state: State = 'menu'
         self.running = True
         self.card_rects = [ ]
 
         self.players = config.create_players()
-        self.battle = Battle(self.players[0], self.players[1])
+        self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.monster_image_cache = {}
         self.battle_log = BattleLog(self.battle)
 
@@ -124,7 +131,7 @@ class Game:
                 self.current_state = 'menu'
 
     def draw(self):
-        self.screen.fill(THEME['background']) #TODO: Use this for color bg
+        self.screen.fill(THEME['background'])
         self.screen.blit(self.background, (0,0))
 
 
@@ -136,7 +143,7 @@ class Game:
             self.draw_how_to_play()
 
     def draw_menu(self) -> None:
-        self.screen.fill(THEME['background'])  # TODO: Use this for color bg
+        self.screen.fill(THEME['background'])
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
         self.quit_button.draw(self.screen)
@@ -155,6 +162,7 @@ class Game:
         #self.screen.blit(text, (self.SCREEN_WIDTH / 2 - text.get_width() / 2, self.SCREEN_HEIGHT / 2 - text.get_height() / 2))
 
     def draw_game(self) -> list:
+        self.main_menu_button.draw(self.screen)
         card_rects = []  # For cards rectangle space
 
         card_width, card_height = 112, 220 #244, 150 This made it look centred even tho it wasn't
@@ -208,7 +216,7 @@ class Game:
                 card_rects.append((card_rect, player, monster))
 
                 # draw card background
-                pygame.draw.rect(self.screen, (50, 50, 50), card_rect)  # COLOR: gray 50, 50, 50
+                pygame.draw.rect(self.screen, THEME['card_color'], card_rect)  # COLOR: gray 50, 50, 50
 
                 # Highlight selected card
                 if monster == self.battle.selected_monster:
@@ -236,15 +244,15 @@ class Game:
 
                 hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
                 hp_color = get_stat_color(monster.hp, monster.max_hp)
-                hp_text = hp_text_font.render(f'HP: {monster.hp}', True, hp_color)
+                hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
 
                 card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)
                 strength_text = card_strength_font.render(f'STR: {monster.strength}', True, (255, 255, 255))
 
                 card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
-                energy_text = card_energy_font.render(f'ENG: {monster.energy}', True, (255, 255, 255))
+                energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True, (255, 255, 255))
 
-                # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation should get a class
+                # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
                 self.screen.blit(name_text, (card_x + 8, card_y + 8))  # Name
                 self.screen.blit(monster_img, image_rect)  # Image
                 self.screen.blit(hp_text, (card_x + 8, card_y + 130))  # HP

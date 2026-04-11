@@ -1,9 +1,11 @@
 THEME = {
     #Used in main.py
-    'PLAYER_LOG_COLOR': (0, 255, 255),
+    'PLAYER_LOG_COLOR': (255, 255, 255),
     'ENEMY_LOG_COLOR': (240, 80, 16),
 
     'background': (21, 30, 61),
+
+    'card_color': (80 , 50 , 50), # Gray (50,50,50)
 
     'panel_bg': (35, 35, 35),
     'panel_border': (200, 200, 200),

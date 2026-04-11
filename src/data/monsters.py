@@ -1,4 +1,4 @@
-from src.data.spells import light_heal
+from src.data.spells import light_heal, fireball, ice_bolt
 from src.game.monster import Monster
 import os
 
@@ -9,9 +9,10 @@ chimera = Monster(
         name='Chimera',
         image=MONSTER_DIR + '/Chimera.png',
         hp=12,
-        mp=8,
+        mp=10,
         energy=5,
-        strength=4
+        strength=4,
+        known_spells = [fireball]
 )
 demon = Monster(
         name='Demon',
@@ -19,7 +20,8 @@ demon = Monster(
         hp=15,
         mp=4,
         energy=8,
-        strength=9
+        strength=9,
+        known_spells = [ice_bolt]
 )
 calm = Monster(
         name='Calm',

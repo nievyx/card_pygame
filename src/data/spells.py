@@ -5,7 +5,7 @@ fireball = DamageSpell(name='Fireball',
                        mana_cost=10,
                        icon='🔥')
 
-icebolt = DamageSpell(name='Icebolt',
+ice_bolt = DamageSpell(name='Icebolt',
                       strength=40,
                       mana_cost=10,
                       icon='❄')

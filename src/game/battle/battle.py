@@ -2,6 +2,7 @@ from src.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
 from src.ui.theme import THEME
+from src.sound.sfx import SFX
 
 from src.game.spell import Spell, HealSpell
 
@@ -17,8 +18,9 @@ class Turn(Enum):
     ENEMY = 1
 
 class Battle:
-    def __init__(self, player1, player2):
+    def __init__(self, player1, player2, sfx): #todo: does sfx need to be passed
         self.players = [player1, player2]
+        self.sfx = SFX()
         self.current_turn = Turn.PLAYER
         self.selected_monster = None
         self.selected_spell = None
@@ -51,16 +53,22 @@ class Battle:
             return False
 
         amount = self.selected_spell.cast(self.selected_spell, target)
+
         if amount is None:
             #TODO: here ur passing the whole msg, but below ur just passing the item, pick one
-            self.add_battle_log(
+            (self.add_battle_log
+            (
                 f'{self.selected_monster.name} failed to cast {self.selected_monster}on {self.selected_monster}.',
                 THEME['PLAYER_LOG_COLOR']
-            )
+            ))
             return False
-        self.add_battle_log(
+
+        self.sfx.play(self.selected_spell)
+
+        (self.add_battle_log
+            (
             self.generate_spell_message(self.selected_monster, self.selected_spell, target, amount),
-        )
+        ))
 
         if not self.battle_is_over():
             self.end_turn()
@@ -78,7 +86,7 @@ class Battle:
         if len(self.log) > self.max_log_size:
             self.log.pop(0)
 
-    #TODO: do u want these message generators statics
+    #TODO: do u want these message generators static
 
     def generate_attack_message(self, attacker, defender, damage):
         templates = [
