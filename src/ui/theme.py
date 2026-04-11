@@ -18,6 +18,7 @@ THEME = {
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
 
+    'card_stat_text': (255, 255, 255),
     'card_stat_low' : (255, 0, 0),
 
     # BUTTON FONT

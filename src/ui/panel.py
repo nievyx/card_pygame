@@ -1,5 +1,5 @@
 import pygame
-from src.ui.theme import THEME
+from src.ui import THEME
 
 class Panel:
     def __init__(self, width, height, top=None, right_padding=None):

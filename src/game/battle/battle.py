@@ -17,22 +17,16 @@ class Turn(Enum):
     PLAYER = 0
     ENEMY = 1
 
-
-def generate_attack_message(attacker, defender, damage):
-    templates = [
-        f'{attacker.name} attacks {defender.name}! It deals {damage} to {defender.name}!',
-    ]
-    return random.choice(templates)
-
-
 def generate_spell_message(castor, target, spell, amount):
     if isinstance(spell, HealSpell):
+        # This is for Heal Spells
         return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
+    #This is for Damage Spell
     return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
 
 
 class Battle:
-    def __init__(self, player1, player2, sfx): #todo: does sfx need to be passed
+    def __init__(self, player1, player2, sfx):
         self.players = [player1, player2]
         self.sfx = SFX()
         self.current_turn = Turn.PLAYER
@@ -43,6 +37,22 @@ class Battle:
         self.max_log_size = 6
         self.winner = None
         self.loser = None
+
+    def get_monster_side(self, monster):
+        if monster in self.players[0]:
+            return 'Player'
+        elif monster in self.players[1]:
+            return 'AI'
+        return 'Unknown'
+
+    def generate_attack_message(self, attacker, defender, damage):
+        attacker_owner = self.get_monster_side(attacker)
+
+        templates = [
+            f'{attacker_owner}\'s {attacker.name} attacks '
+            f'{defender.name}! It deals {damage} to {defender.name}!',
+        ]
+        return random.choice(templates)
 
     def _can_cast_selected_heal_on_ally(self, target_player, target) -> bool:
         return (
@@ -87,7 +97,8 @@ class Battle:
             self.end_turn()
         return True
 
-    def get_player(self, index):
+    def get_team(self, index):
+        """returns a monster list"""""
         return self.players[index]
 
     def add_battle_log(self, message: str, color=None) -> None:
@@ -141,7 +152,7 @@ class Battle:
         if damage == 0:
             self.add_battle_log(f"{attacker.name} is too tired to attack!", ENEMY_LOG_COLOR)
         else:
-            msg = generate_attack_message(attacker, defender, damage)
+            msg = self.generate_attack_message(attacker, defender, damage)
             self.add_battle_log(msg, ENEMY_LOG_COLOR)
 
         self.end_turn()
@@ -196,7 +207,7 @@ class Battle:
             self.add_battle_log(f"{attacker.name} has no energy!", PLAYER_LOG_COLOR)
             return False
 
-        msg = generate_attack_message(attacker, defender, damage)
+        msg = self.generate_attack_message(attacker, defender, damage)
         self.add_battle_log(msg, PLAYER_LOG_COLOR)
 
         self.end_turn()

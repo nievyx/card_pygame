@@ -33,7 +33,7 @@ class Game:
 
         self.spell_menu = SpellMenu()
         self.show_spell_menu = False
-        self.selected_spell_index = 0
+        self.selected_spell_index = None
         self.active_spell_monster = None
 
         # Button Creation
@@ -48,7 +48,10 @@ class Game:
     def start_new_wave(self):
         self.wave_count += 1
         enemy_team = self.config.create_enemy_team()
-        pass
+        self.players[1] = enemy_team
+        self.battle = Battle(self.players[0], self.players[1], self.sfx)
+        self.battle_log = BattleLog(self.battle)
+        self.close_spell_menu()
 
     def get_monster_image(self, image_path: str) -> pygame.Surface:
         if image_path not in self.monster_image_cache:
@@ -66,12 +69,15 @@ class Game:
             self.update()
             self.draw()
             pygame.display.flip()
-
         pygame.quit()
 
     def update(self) -> None:
         if self.current_state == 'game':
             self.battle.update()
+
+            if self.battle.state == BattleState.BATTLE_OVER:
+                if self.battle.winner == 0:
+                    pass
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -130,9 +136,12 @@ class Game:
             if self.back_button.is_hovered(pos):
                 self.current_state = 'menu'
 
+    def generate_bg(self):
+        self.screen.blit(self.background, (0, 0))
+
     def draw(self):
         self.screen.fill(THEME['background'])
-        self.screen.blit(self.background, (0,0))
+        self.generate_bg()
 
         if self.current_state == 'menu':
             self.draw_menu()
@@ -171,6 +180,7 @@ class Game:
         y_offset = card_height + 40
 
         turn = self.battle.current_turn
+
 
         if turn == Turn.PLAYER:
             turn_name = 'Player'
@@ -246,10 +256,10 @@ class Game:
                 hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
 
                 card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)
-                strength_text = card_strength_font.render(f'STR: {monster.strength}', True, (255, 255, 255))
+                strength_text = card_strength_font.render(f'STR: {monster.strength}', True, THEME['card_stat_text'])
 
                 card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
-                energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True, (255, 255, 255))
+                energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True, THEME['card_stat_text'])
 
                 # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
                 self.screen.blit(name_text, (card_x + 8, card_y + 8))  # Name
@@ -262,8 +272,8 @@ class Game:
 
             self.battle_log.draw(self.screen) # Battle Log box
 
-            if self.show_spell_menu and self.active_spell_monster:
-                self.spell_menu.draw(self.screen, self.active_spell_monster)
+            if self.show_spell_menu and self.active_spell_monster and self.active_spell_monster.is_alive():
+                self.spell_menu.draw(self.screen, self.active_spell_monster, self.selected_spell_index)
 
             # TODO: check for winner here
             if self.battle.state != BattleState.BATTLE_OVER:

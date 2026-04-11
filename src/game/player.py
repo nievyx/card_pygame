@@ -15,6 +15,10 @@ class Player:
     def has_alive_monsters(self):
         return len(self.get_alive_monsters()) > 0
 
+class AI:
+    def __init__(self):
+        self.name = 'AI'
+
 # class OwnedMonster:
 #     def __init__(self, monster) -> None:
 #         self.monster = monster
