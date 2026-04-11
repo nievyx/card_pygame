@@ -69,33 +69,42 @@ class Battle:
         if self.state == BattleState.ENEMY_TURN:
             self._enemy_turn()
 
-    def _can_attack_target(self):
-        pass
+    def _can_attack_target(self, target) -> bool:
+        caster = self.selected_monster
+        spell = self.selected_spell
+
+        valid_targets = spell.get_valid_targets(
+            caster,
+            self.players[self.get_current_player()],
+            self.players[self.get_opposing_player()],
+        )
+        if target not in valid_targets:
+            return False
+
+        amount = spell.cast(caster, target)
+        if amount is None:
+            #TODO add a failed to cast to generate message
+            self.add_battle_log(
+                f'{caster.name} failed to cast {spell.name}.',
+                THEME['PLAYER_LOG_COLOR']
+            )
+            return False
+
+        self.sfx.play(spell.sfx_name)
+        self.add_battle_log(
+            generate_spell_message(caster, target, spell, amount),
+            PLAYER_LOG_COLOR
+        )
+
+        if not self.battle_is_over():
+            self.end_turn()
+        return True
 
     def try_cast_on_ally(self, target_player, target) -> bool:
         if not self._can_cast_selected_heal_on_ally(target_player, target):
             return False
 
-        amount = self.selected_spell.cast(self.selected_spell, target)
-
-        if amount is None:
-            (self.add_battle_log
-            (
-                f'{self.selected_monster.name} failed to cast {self.selected_monster}on {self.selected_monster}.',
-                THEME['PLAYER_LOG_COLOR']
-            ))
-            return False
-
-        self.sfx.play(self.selected_spell)
-
-        (self.add_battle_log
-            (
-            generate_spell_message(self.selected_monster, self.selected_spell, target, amount),
-        ))
-
-        if not self.battle_is_over():
-            self.end_turn()
-        return True
+        return self._try_cast_spell_on_target(target)
 
     def get_team(self, index):
         """returns a monster list"""""

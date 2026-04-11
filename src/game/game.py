@@ -112,8 +112,10 @@ class Game:
         spell_index = self.spell_menu.get_spell_by_pos(self.screen, self.active_spell_monster, pos)
         if spell_index is None:
             return False
-        if self.battle.selected_spell(spell_index):
-            self.active_spell_monster = spell_index
+
+        self.battle.selected_spell = self.active_spell_monster.known_spells[spell_index]
+        self.selected_spell_index = spell_index
+
         return True
 
     def close_spell_menu(self):
@@ -344,9 +346,6 @@ class Game:
 
             if self.battle.state == BattleState.BATTLE_OVER:
                 self.draw_battle_result()
-
-
-
 
         return card_rects
 

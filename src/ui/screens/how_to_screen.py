@@ -15,4 +15,3 @@ def draw_how_to_play(screen, back_button) -> None:
     text = font.render(text_content, 1, THEME['text_primary'])
 
     screen.blit(text, (200, 300))
-    # screen.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, SCREEN_HEIGHT / 2 - text.get_height() / 2))
