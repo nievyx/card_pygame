@@ -69,9 +69,12 @@ class Battle:
         if self.state == BattleState.ENEMY_TURN:
             self._enemy_turn()
 
-    def _can_attack_target(self, target) -> bool:
+    def _cast_spell_on_target(self, target) -> bool:
         caster = self.selected_monster
         spell = self.selected_spell
+
+        if caster is None or spell is None or target is None:
+            return False
 
         valid_targets = spell.get_valid_targets(
             caster,
@@ -82,15 +85,15 @@ class Battle:
             return False
 
         amount = spell.cast(caster, target)
+
         if amount is None:
-            #TODO add a failed to cast to generate message
             self.add_battle_log(
                 f'{caster.name} failed to cast {spell.name}.',
                 THEME['PLAYER_LOG_COLOR']
             )
             return False
 
-        self.sfx.play(spell.sfx_name)
+        self.sfx.play(spell)
         self.add_battle_log(
             generate_spell_message(caster, target, spell, amount),
             PLAYER_LOG_COLOR
@@ -104,7 +107,7 @@ class Battle:
         if not self._can_cast_selected_heal_on_ally(target_player, target):
             return False
 
-        return self._try_cast_spell_on_target(target)
+        return self._cast_spell_on_target(target)
 
     def get_team(self, index):
         """returns a monster list"""""
@@ -211,11 +214,10 @@ class Battle:
         if not attacker.is_alive() or not defender.is_alive():
             return False
 
-        damage = attacker.attack(defender)
+        if self.selected_spell is not None:
+            return self._cast_spell_on_target(defender)
 
-        if damage == 0:
-            self.add_battle_log(f"{attacker.name} has no energy!", PLAYER_LOG_COLOR)
-            return False
+        damage = attacker.attack(defender)
 
         msg = self.generate_attack_message(attacker, defender, damage)
         self.add_battle_log(msg, PLAYER_LOG_COLOR)
@@ -230,6 +232,7 @@ class Battle:
 
     def end_turn(self):
         self.selected_monster = None
+        self.selected_spell = None
 
         # Change State to enemies
         if self.current_turn == Turn.PLAYER:

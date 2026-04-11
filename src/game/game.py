@@ -331,7 +331,7 @@ class Game:
                 card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
                 energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True, THEME['card_stat_text'])
                 mp_text = card_energy_font.render(
-                    f'MP: {monster.mp}', True, THEME['card_stat_text']
+                    f'MP: {monster.mp}/{monster.max_mp}', True, THEME['card_stat_text']
                 )
 
                 # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
@@ -354,9 +354,3 @@ class Game:
                 self.draw_battle_result()
 
         return card_rects
-
-
-
-
-
-
