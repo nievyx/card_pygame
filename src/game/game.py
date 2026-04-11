@@ -8,6 +8,7 @@ from src.ui.components import BattleLog, SpellMenu
 from src.sound.sfx import SFX
 from src.ui import Button, THEME
 from src.ui.panel import Panel
+from src.ui.screens.how_to_screen import draw_how_to_play
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 
@@ -23,7 +24,7 @@ class Game:
         self.config = config
         self.sfx = SFX()
 
-        fullscreen = 1
+        fullscreen = 0
         if fullscreen:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Full Screen
         else:
@@ -104,6 +105,17 @@ class Game:
                 pos = pygame.mouse.get_pos()
                 self.handle_mouse_click(pos)
 
+    def handle_spell_check(self, pos) -> bool:
+        if not (self.show_spell_menu and self.active_spell_monster):
+            return False
+
+        spell_index = self.spell_menu.get_spell_by_pos(self.screen, self.active_spell_monster, pos)
+        if spell_index is None:
+            return False
+        if self.battle.selected_spell(spell_index):
+            self.active_spell_monster = spell_index
+        return True
+
     def close_spell_menu(self):
         self.show_spell_menu = False
         self.active_spell_monster = None
@@ -124,6 +136,9 @@ class Game:
             return
 
         if self.battle.state == BattleState.ENEMY_TURN:
+            return
+
+        if self.handle_spell_check(pos):
             return
 
         if self.battle.state == BattleState.BATTLE_OVER:
@@ -187,26 +202,13 @@ class Game:
         elif self.current_state == 'game':
             self.card_rects = self.draw_game()
         elif self.current_state == 'how_to_play':
-            self.draw_how_to_play()
+            draw_how_to_play(self.screen, self.back_button)
 
     def draw_menu(self) -> None:
         self.screen.fill(THEME['background'])
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
         self.quit_button.draw(self.screen)
-
-    def draw_how_to_play(self) -> None:
-        self.back_button.draw(self.screen)
-        # TODO: do u want the game bg
-
-        #TODO: add instructions. And add font to config, move instructions elsewhere as well
-        #TODO: should instructions be a txt or a md and then just a quick func to read ir
-        font = pygame.font.SysFont('Arial', 40)
-        #TODO : Put text in the box, believe it's in panel class
-        text = font.render('How to play instructions will go here.....', 1, (0, 0, 0))
-
-        self.screen.blit(text, (200,300))
-        #self.screen.blit(text, (self.SCREEN_WIDTH / 2 - text.get_width() / 2, self.SCREEN_HEIGHT / 2 - text.get_height() / 2))
 
     def display_selections(self):
         if self.battle.selected_monster is not None:

@@ -13,7 +13,7 @@ THEME = {
     'text_primary': (255, 255, 255),
     'text_secondary': (230, 230, 230),
 
-    'primary_font' : 'Arial', #TODO: replace all the arial usage in main.py with THEME['primary_font']
+    'primary_font' : 'Arial', #TODO: THEME['primary_font']
 
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
