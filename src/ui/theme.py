@@ -5,9 +5,9 @@ THEME = {
 
     'background': (21, 30, 61),
 
-    'card_color': (80 , 50 , 50), # Gray (50,50,50)
+    'card_color': (80 , 50 , 50, 100), # Gray (50,50,50)
 
-    'panel_bg': (35, 35, 35, 210),
+    'panel_bg': (35, 35, 35, 80),
     'panel_border': (200, 200, 200),
 
     'text_primary': (255, 255, 255),
@@ -27,7 +27,7 @@ THEME = {
 
     # BATTLE LOG
     # (Used in ui/components/battle_log.py)
-    'battle_log_bg' :  (35, 35, 35, 210), #Make green (20, 35, 35),
+    'battle_log_bg' :  (35, 35, 35), #Make green (20, 35, 35),
     'battle_log_border': (200, 200, 200),
 
     'battle_log_default_text' : (255, 255, 255),

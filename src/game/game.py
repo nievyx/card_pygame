@@ -1,11 +1,9 @@
 import pygame
 from typing import Literal
 from src.game.battle import Battle, BattleState, Turn
-from src.ui.components import BattleLog
-from src.ui.components.spell_menu import SpellMenu
+from src.ui.components import BattleLog, SpellMenu
 from src.sound.sfx import SFX
-from src.ui.theme import THEME
-from src.ui import Button
+from src.ui import Button, THEME
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 
@@ -93,12 +91,11 @@ class Game:
         if self.current_state == 'menu':
             if self.start_button.is_hovered(pos):
                 self.current_state = 'game'
-
             elif self.how_to_button.is_hovered(pos):
                 self.current_state = 'how_to_play'
-
             elif self.quit_button.is_hovered(pos):
-                self.running = False #TODO: should handle_mouse clicks control this logic
+                self.running = False
+            return
 
         elif self.current_state == 'game':
             if self.back_button.is_hovered(pos):
@@ -111,13 +108,9 @@ class Game:
             if self.battle.state == BattleState.BATTLE_OVER:
                 return
 
-            clicked_card = False
-
             for rect, player, monster in self.card_rects:
                 if not rect.collidepoint(pos):
                     continue
-
-                clicked_card = True
 
                 if player == self.battle.get_current_player():
                     self.battle.select_monster(player, monster)
@@ -140,7 +133,6 @@ class Game:
     def draw(self):
         self.screen.fill(THEME['background'])
         self.screen.blit(self.background, (0,0))
-
 
         if self.current_state == 'menu':
             self.draw_menu()
@@ -272,6 +264,12 @@ class Game:
 
             if self.show_spell_menu and self.active_spell_monster:
                 self.spell_menu.draw(self.screen, self.active_spell_monster)
+
+            # TODO: check for winner here
+            if self.battle.state != BattleState.BATTLE_OVER:
+                if self.battle.battle_is_over():
+                    print("Battle ended")
+
 
         return card_rects
 

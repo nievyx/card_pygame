@@ -1,21 +1,18 @@
 import pygame
 from src.ui.theme import THEME
+from src.ui.panel import Panel
 
-#TODO: attach battle log to Panel Class
-
-class BattleLog: #TODO: rect, theme, font_manger removed
+class BattleLog(Panel):
     def __init__(self, battle, width=440, height=180, top=360, right_padding=40):
+        super().__init__(width, height, top, right_padding)
         self.battle = battle
         self.width = width
         self.height = height
         self.top = top
         self.right_padding = right_padding
 
-    def draw(self, screen):  #TODO: removed entries
-        screen_rect = screen.get_rect()
-
-        log_rect = pygame.Rect(0, 0, self.width, self.height)
-        log_rect.midright = (screen_rect.right - self.right_padding, screen_rect.centery)
+    def draw(self, screen):
+        log_rect = self.draw_panel(screen, 'Battle Log')
 
         pygame.draw.rect(screen, THEME['battle_log_bg'], log_rect)
         pygame.draw.rect(screen, THEME['battle_log_border'], log_rect, 2)
@@ -33,6 +30,5 @@ class BattleLog: #TODO: rect, theme, font_manger removed
         for i, entry in enumerate(visible_entries):
             color = entry.get("color") or (230, 230, 230)
             text = line_font.render(entry["text"], True, color)
-
             text_rect = text.get_rect(midtop=(log_rect.centerx, start_y + i * 22))
             screen.blit(text, text_rect)

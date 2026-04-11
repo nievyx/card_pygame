@@ -14,6 +14,8 @@ class Config:
     SCREEN_HEIGHT = 850
     game_title = "Niamh's Monster Cards"
 
+    cards_per_player = 5
+
     @staticmethod
     def load_game_data():
         """
@@ -53,6 +55,20 @@ class Config:
                 for m in random.choices(Monster.monster_pool, k=cards_per_player)
             ]
         return players
+
+    def create_enemy_team(self):
+        """ Recreates enemy team"""
+        return [
+            Monster(
+                m.name,
+                m.image,
+                m.hp,
+                m.enemgy,
+                m.strength,
+                known_spells=list(m.known_spells)
+            )
+            for m in random.choices(Monster.monster_pool, k=self.cards_per_player)
+        ]
 
 
 
