@@ -1,6 +1,9 @@
+from enum import Enum, auto
+
 import pygame
 from typing import Literal
 from src.game.battle import Battle, BattleState, Turn
+from src.sound import sfx
 from src.ui.components import BattleLog, SpellMenu
 from src.sound.sfx import SFX
 from src.ui import Button, THEME
@@ -8,10 +11,15 @@ from src.ui.panel import Panel
 
 State = Literal['menu', 'game', 'how_to_play', 'quit']
 
+class GameMode(Enum):
+    WAVE_MODE = auto()
+
 class Game:
     def __init__(self, config) -> None:
         pygame.init()
         pygame.display.set_caption(config.game_title)
+
+        self.mode = GameMode.WAVE_MODE
         self.config = config
         self.sfx = SFX()
 
@@ -48,16 +56,16 @@ class Game:
 
     def start_new_wave(self):
         self.wave_count += 1
-        Panel.draw_popup_message(self.screen, f'Wave {self.wave_count}', '')
         enemy_team = self.config.create_enemy_team()
         self.players[1] = enemy_team
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
+        self.background = self.config.load_random_background(self.screen.get_size()) #Regenerate BG
 
     def reset_battle(self):
         self.players = self.config.create_players()
-        self.battle = Battle(self.players[0], self.players[1])
+        self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
         self.card_rects = []
@@ -84,7 +92,7 @@ class Game:
         if self.current_state == 'game':
             self.battle.update()
 
-            if self.battle.state == BattleState.BATTLE_OVER:
+            if self.battle.state != BattleState.BATTLE_OVER:
                 self.battle.battle_is_over()
 
     def handle_events(self) -> None:
@@ -101,72 +109,78 @@ class Game:
         self.active_spell_monster = None
         self.selected_spell_index = 0
 
-    def handle_mouse_click(self, pos: tuple[int, int]) -> None:
-        if self.current_state == 'menu':
-            if self.start_button.is_hovered(pos):
-                self.current_state = 'game'
-            elif self.how_to_button.is_hovered(pos):
-                self.current_state = 'how_to_play'
-            elif self.quit_button.is_hovered(pos):
-                self.running = False
+    def handle_menu_click(self, pos: tuple[int, int]) -> None:
+        if self.start_button.is_hovered(pos):
+            self.current_state = 'game'
+        elif self.how_to_button.is_hovered(pos):
+            self.current_state = 'how_to_play'
+        elif self.quit_button.is_hovered(pos):
+            self.running = False
+        return
+
+    def handle_game_click(self, pos: tuple[int, int]) -> None:
+        if self.back_button.is_hovered(pos):
+            self.current_state = 'menu'
             return
 
-        elif self.current_state == 'game':
-            if self.back_button.is_hovered(pos):
-                self.current_state = 'menu'
-                return
+        if self.battle.state == BattleState.ENEMY_TURN:
+            return
 
-            if self.battle.state == BattleState.ENEMY_TURN:
-                return
-
-            if self.battle.state == BattleState.BATTLE_OVER:
+        if self.battle.state == BattleState.BATTLE_OVER:
+            if self.battle.winner == 0:
+                self.start_new_wave()
+            else:
                 self.reset_battle()
-                self.current_state = 'menu'
-                return
+            return
 
-            clicked_monster = False
+        clicked_monster = False
 
-            for rect, player, monster in self.card_rects:
-                if not rect.collidepoint(pos):
-                    continue
+        for rect, player, monster in self.card_rects:
+            if not rect.collidepoint(pos):
+                continue
 
-                clicked_monster = True
+            clicked_monster = True
 
-                if player == self.battle.get_current_player():
-                    self.battle.select_monster(player, monster)
+            if player == self.battle.get_current_player():
+                self.battle.select_monster(player, monster)
 
-                    if monster.known_spells:
-                        self.show_spell_menu = True
-                        self.active_spell_monster = monster
-                    else:
-                        self.close_spell_menu()
-
-                elif player == self.battle.get_opposing_player():#
+                if monster.known_spells:
+                    self.show_spell_menu = True
+                    self.active_spell_monster = monster
+                else:
                     self.close_spell_menu()
-                    self.battle.try_attack(player, monster)
-                break
 
-            if not clicked_monster:
-                # Click away from monster to deselect
-                self.battle.cancel_selection()
+            elif player == self.battle.get_opposing_player():  #
                 self.close_spell_menu()
+                self.battle.try_attack(player, monster)
+            break
+
+        if not clicked_monster:
+            # Click away from monster to deselect
+            self.battle.cancel_selection()
+            self.close_spell_menu()
+
+    def handle_how_to_play_click(self, pos: tuple[int, int]) -> None:
+        if self.back_button.is_hovered(pos):
+            self.current_state = 'menu'
+
+    def handle_mouse_click(self, pos: tuple[int, int]) -> None:
+        if self.current_state == 'menu':
+            self.handle_menu_click(pos)
+            return
+        if self.current_state == 'game':
+            self.handle_game_click(pos)
+            return
+        if self.current_state == 'how_to_play':
+            self.handle_how_to_play_click(pos)
 
 
-
-        elif self.current_state == 'how_to_play':
-            if self.back_button.is_hovered(pos):
-                self.current_state = 'menu'
-
-
-
-
-    def generate_bg(self):
-        #TODO: this does not re-randomise background image
+    def display_bg(self):
         self.screen.blit(self.background, (0, 0))
 
     def draw(self):
         self.screen.fill(THEME['background'])
-        self.generate_bg()
+        self.display_bg()
 
         if self.current_state == 'menu':
             self.draw_menu()
@@ -206,13 +220,15 @@ class Game:
             self.screen.blit(display_text_surface, (360,28))
 
     def draw_battle_result(self):
-        if self.battle.winner == 0:
-            Panel.draw_popup_message(self.screen, 'You Win', 'Click anywhere to return to the menu')
-        elif self.battle.winner == 1:
-            Panel.draw_popup_message(self.screen, 'You Lose', 'Click anywhere to return to the menu')
-        else:
-            Panel.draw_popup_message(self.screen, 'Draw', 'Click anywhere to return to the menu')
+        title = ['Draw', 'You Win', 'You Lose'][self.battle.winner or 0]
 
+        msg = (
+            f'Wave {self.wave_count} Clear! Click anywhere to start the next wave'
+            if self.mode == GameMode.WAVE_MODE and self.battle.winner == 0
+            else 'Click anywhere to return to the menu'
+        )
+
+        Panel.draw_popup_message(self.screen, title, msg)
 
     def draw_game(self) -> list:
         self.main_menu_button.draw(self.screen)

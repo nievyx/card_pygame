@@ -111,6 +111,9 @@ class Battle:
             self.log.pop(0)
 
     def battle_is_over(self) -> bool:
+        if self.state == BattleState.BATTLE_OVER:
+            return True
+
         player_alive = any(monster.is_alive() for monster in self.players[0])
         enemy_alive = any(monster.is_alive() for monster in self.players[1])
 
@@ -118,17 +121,15 @@ class Battle:
             return False
 
         self.state = BattleState.BATTLE_OVER
+
         if player_alive:
-            self.winner = 0
-            self.loser = 1
+            self.winner, self.loser = 0, 1
             self.add_battle_log(f'player wins!', THEME['PLAYER_LOG_COLOR'])
         elif enemy_alive:
-            self.winner = 1
-            self.loser = 0
-            self.add_battle_log(f'AI wins the battle', THEME['ENEMY_COLOR'])
+            self.winner, self.loser = 1, 0
+            self.add_battle_log(f'AI wins the battle', THEME['ENEMY_LOG_COLOR'])
         else:
-            self.winner = None
-            self.loser = None
+            self.winner, self.loser = None, None
             self.add_battle_log('The battle ends in a draw.')
         return True
 
