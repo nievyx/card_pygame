@@ -5,9 +5,9 @@ import pygame
 
 from src.game import Monster
 
-#TODO: these are now also in theme/theme
 PLAYER_LOG_COLOR = None
 ENEMY_LOG_COLOR = (240, 80, 16)
+# Note: theme/theme.py replacing this in future implementation
 
 class Config:
     SCREEN_WIDTH = 1200

@@ -17,6 +17,20 @@ class Turn(Enum):
     PLAYER = 0
     ENEMY = 1
 
+
+def generate_attack_message(attacker, defender, damage):
+    templates = [
+        f'{attacker.name} attacks {defender.name}! It deals {damage} to {defender.name}!',
+    ]
+    return random.choice(templates)
+
+
+def generate_spell_message(castor, target, spell, amount):
+    if isinstance(spell, HealSpell):
+        return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
+    return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
+
+
 class Battle:
     def __init__(self, player1, player2, sfx): #todo: does sfx need to be passed
         self.players = [player1, player2]
@@ -55,7 +69,6 @@ class Battle:
         amount = self.selected_spell.cast(self.selected_spell, target)
 
         if amount is None:
-            #TODO: here ur passing the whole msg, but below ur just passing the item, pick one
             (self.add_battle_log
             (
                 f'{self.selected_monster.name} failed to cast {self.selected_monster}on {self.selected_monster}.',
@@ -67,7 +80,7 @@ class Battle:
 
         (self.add_battle_log
             (
-            self.generate_spell_message(self.selected_monster, self.selected_spell, target, amount),
+            generate_spell_message(self.selected_monster, self.selected_spell, target, amount),
         ))
 
         if not self.battle_is_over():
@@ -86,19 +99,6 @@ class Battle:
         if len(self.log) > self.max_log_size:
             self.log.pop(0)
 
-    #TODO: do u want these message generators static
-
-    def generate_attack_message(self, attacker, defender, damage):
-        templates = [
-            f'{attacker.name} attacks {defender.name}! It deals {damage} to {defender.name}!',
-        ]
-        return random.choice(templates)
-
-    def generate_spell_message(self, castor, target, spell, amount):
-        if isinstance(spell, HealSpell):
-            return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
-        return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
-
     def battle_is_over(self) -> bool:
         player_alive = any(monster.is_alive() for monster in self.players[0])
         enemy_alive = any(monster.is_alive() for monster in self.players[1])
@@ -109,9 +109,18 @@ class Battle:
         self.state = BattleState.BATTLE_OVER
         if player_alive:
             self.winner = 0
+            self.loser = 1
+            self.add_battle_log(f'player wins!', THEME['PLAYER_LOG_COLOR'])
+        elif enemy_alive:
+            self.winner = 1
+            self.loser = 0
+            self.add_battle_log(f'AI wins the battle', THEME['ENEMY_COLOR'])
+        else:
+            self.winner = None
+            self.loser = None
+            self.add_battle_log('The battle ends in a draw.')
         return True
 
-        #TODO: finish me!
 
     def _enemy_turn(self):
         enemy_player = self.players[1]
@@ -132,7 +141,7 @@ class Battle:
         if damage == 0:
             self.add_battle_log(f"{attacker.name} is too tired to attack!", ENEMY_LOG_COLOR)
         else:
-            msg = self.generate_attack_message(attacker, defender, damage)
+            msg = generate_attack_message(attacker, defender, damage)
             self.add_battle_log(msg, ENEMY_LOG_COLOR)
 
         self.end_turn()
@@ -142,9 +151,7 @@ class Battle:
         return self.current_turn.value
 
     def get_opposing_player(self):
-        """Returns index of the AI player
-
-        Calculated by flipping """
+        """Returns index of the AI player"""
         return 1 - self.current_turn.value
 
     def select_monster(self, player, monster):
@@ -189,7 +196,7 @@ class Battle:
             self.add_battle_log(f"{attacker.name} has no energy!", PLAYER_LOG_COLOR)
             return False
 
-        msg = self.generate_attack_message(attacker, defender, damage)
+        msg = generate_attack_message(attacker, defender, damage)
         self.add_battle_log(msg, PLAYER_LOG_COLOR)
 
         self.end_turn()

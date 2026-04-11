@@ -45,6 +45,13 @@ class Game:
         self.back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
         self.main_menu_button = Button((200, 200, 200), 20, 20, 150, 60, "Menu")
 
+        self.wave_count = 1
+
+    def start_new_wave(self):
+        self.wave_count += 1
+        enemy_team = self.config.create_enemy_team()
+        pass
+
     def get_monster_image(self, image_path: str) -> pygame.Surface:
         if image_path not in self.monster_image_cache:
             image = pygame.image.load(image_path).convert_alpha()

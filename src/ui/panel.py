@@ -32,7 +32,8 @@ class Panel:
 
         return rect
 
-    def draw_overlay_message(self, screen, title: str, subtitle: str) -> None:
+    @staticmethod
+    def draw_overlay_message(screen, title: str, subtitle: str) -> None:
         overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 140))
         screen.blit(overlay, (0, 0))

@@ -3,7 +3,7 @@ from src.ui.theme import THEME
 from src.ui.panel import Panel
 
 class SpellMenu(Panel):
-    def __init__(self, width=440, height=180, top=650, right_padding=40):
+    def __init__(self, width=440, height=180, top=None, right_padding=None):
         super().__init__(width, height, top, right_padding)
         self.selected_index = 0
 
