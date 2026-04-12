@@ -1,4 +1,5 @@
 import random
+import pygame
 
 class Spell:
     spell_pool = []
@@ -14,11 +15,16 @@ class Spell:
         self.name = name
         self.strength = strength
         self.mana_cost = mana_cost
-        self.icon = icon
+        self.icon_path = icon
+        self.icon = None
         self.use_in_overworld = use_in_overworld
         self.sfx_name = sfx_name or self.name.lower().replace('', '_')
 
         Spell.spell_pool.append(self)
+
+    def load_img(self):
+        if self.icon is None:
+            self.icon = pygame.image.load(self.icon_path).convert_alpha()
 
     def can_cast(self, caster) -> bool:
         return getattr(caster, 'mp', 0) >= self.mana_cost and caster.is_alive()
