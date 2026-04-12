@@ -1,10 +1,10 @@
-from src.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
+from src.utils.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
 from src.ui.theme import THEME
 from src.sound.sfx import SFX
 
-from src.game.spell import Spell, HealSpell
+from src.game.spell import HealSpell
 
 
 class BattleState(Enum):

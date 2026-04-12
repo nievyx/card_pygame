@@ -57,6 +57,7 @@ class Game:
 
         self.wave_count = 1
 
+
     def start_new_wave(self):
         self.wave_count += 1
         enemy_team = self.config.create_enemy_team()
@@ -210,6 +211,8 @@ class Game:
         elif self.current_state == 'how_to_play':
             draw_how_to_play(self.screen, self.back_button)
 
+        self.cursor.draw(self.screen)
+
     def draw_menu(self) -> None:
         self.screen.fill(THEME['background'])
         self.start_button.draw(self.screen)
@@ -357,8 +360,7 @@ class Game:
             if self.battle.state == BattleState.BATTLE_OVER:
                 self.draw_battle_result()
 
+        # Display cursor
         self.cursor.draw(self.screen)
-        # test_img = pygame.image.load('assets/icons/fc721.png')
-        # self.screen.blit(test_img, (100, 100))
 
         return card_rects

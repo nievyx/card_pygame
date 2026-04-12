@@ -1,13 +1,32 @@
 # card_pygame
 > note: Readme might not reflect games current state
-## Install
+
+## How to play Game
+
+Windows:
+```commandline
+run run.bat
 ```
-pip install -r requirements.txt
+Linux / Mac:
+```commandline
+run run.sh
 ```
-## Run
-```
-python main.py
-```
+
+[//]: # (## Install)
+
+[//]: # (```)
+
+[//]: # (pip install -r requirements.txt)
+
+[//]: # (```)
+
+[//]: # (## Run)
+
+[//]: # (```)
+
+[//]: # (python main.py)
+
+[//]: # (```)
 ## Pygame image errors
 > NOTE: To fix 'libpng warning: iCCP: known incorrect sRGB profile'
 > 
@@ -93,31 +112,50 @@ project/
 ├── run.sh        <- Linux script to run game (root-based script) (untested)
 ```
 ## Code Structure
-``` 
-    src/
-    │
-    ├── main.py
-    ├── config.py
-    │
-    ├── config/
-    │   ├── colors.py           <- unused
-    │
-    ├── ui/
-    │   ├── button.py
-    │   │
-    │   ├── components/
-    │   │   ├── battle_log.py
-    │   │   ├── card_view.py
-    │   │ 
-    │   ├── theme/
-    │   │   ├── theme_manager.py
-    │
-    ├── game/
-    │   ├── state.py
-    │   ├── logic.py
-    │
 ```
-# #Dev scripts (Run game via these)
+src/
+├── main.py             # Entry point of the game
+│
+├── battle/
+│   ├── __init__.py
+│   ├── game.py          # Core battle loop / logic
+│   ├── monster.py       # Monster definitions & behavior
+│   ├── player.py        # Player logic & stats
+│   ├── shop.py          # Shop system
+│   ├── spell.py         # Spell classes & definitions
+│   ├── state.py         # Battle state management
+│
+├── sound/
+│   ├── music.py         # Background music handling
+│   ├── sfx.py           # Sound effects
+│
+├── ui/
+│   ├── components/
+│   │   ├── __init__.py
+│   │   ├── battle_log.py   # Displays combat text/log
+│   │   ├── card_view.py    # Card rendering logic
+│   │   ├── spell_menu.py   # Spell selection UI
+│   │
+│   ├── screens/
+│   │   ├── battle_screen.py   # Main battle screen
+│   │   ├── how_to_screen.py   # Instructions/tutorial screen
+│   │   ├── menu_screen.py     # Main menu screen
+│   │
+│   ├── theme/
+│   │   ├── __init__.py
+│   │   ├── button.py      # Button UI elements
+│   │   ├── cursor.py      # Cursor styling/logic
+│   │   ├── panel.py       # UI panels/containers
+│   │   ├── theme.py       # Colors, fonts, styling config
+│
+├── utils/
+│   ├── __init__.py
+│   ├── config.py       # Global configuration/settings
+│
+
+```
+
+# Dev scripts (Run game via these)
 ``` 
     scripts/
     │

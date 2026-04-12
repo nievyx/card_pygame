@@ -1,4 +1,4 @@
-from src.config import Config
+from src.utils.config import Config
 from src.game.game import Game
 
 def main():
