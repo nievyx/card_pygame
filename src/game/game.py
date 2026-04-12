@@ -3,10 +3,11 @@ from enum import Enum, auto
 import pygame
 from typing import Literal
 from src.game.battle import Battle, BattleState, Turn
-from src.sound import sfx
+# from src.sound import sfx
 from src.ui.components import BattleLog, SpellMenu
 from src.sound.sfx import SFX
 from src.ui import Button, THEME
+from src.ui.cursor import Cursor
 from src.ui.panel import Panel
 from src.ui.screens.how_to_screen import draw_how_to_play
 
@@ -31,6 +32,7 @@ class Game:
             self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT)) #Orginial res
 
         self.background = config.load_random_background(self.screen.get_size())
+        self.cursor = Cursor()
 
         self.current_state: State = 'menu'
         self.running = True
@@ -90,6 +92,7 @@ class Game:
         pygame.quit()
 
     def update(self) -> None:
+        self.cursor.update()
         if self.current_state == 'game':
             self.battle.update()
 
@@ -237,6 +240,7 @@ class Game:
 
     def draw_game(self) -> list:
         self.main_menu_button.draw(self.screen)
+
         card_rects = []  # For cards rectangle space
 
         card_width, card_height = 112, 220
@@ -352,5 +356,9 @@ class Game:
 
             if self.battle.state == BattleState.BATTLE_OVER:
                 self.draw_battle_result()
+
+        self.cursor.draw(self.screen)
+        # test_img = pygame.image.load('assets/icons/fc721.png')
+        # self.screen.blit(test_img, (100, 100))
 
         return card_rects
