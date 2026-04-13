@@ -111,6 +111,14 @@ project/
 ├── run.bat       <- Windows script to run game (root-based script)
 ├── run.sh        <- Linux script to run game (root-based script) (untested)
 ```
+# Dev scripts (Run game via these)
+``` 
+    scripts/
+    │
+    ├── run.bat
+    │
+    ├── run.sh (untested)
+```
 ## Code Structure
 ```
 src/
@@ -155,11 +163,59 @@ src/
 
 ```
 
-# Dev scripts (Run game via these)
-``` 
-    scripts/
-    │
-    ├── run.bat
-    │
-    ├── run.sh (untested)
+<details>
+<summary>Future Project Structure (If project got bigger)</summary>
+
 ```
+src/
+├── main.py
+│
+├── core/
+│   ├── battle/
+│   │   ├── battle.py
+│   │   ├── state.py
+│   │   ├── actions.py
+│   │   ├── rules.py
+│   │   └── turn_resolution.py
+│   ├── entities/
+│   │   ├── monster.py
+│   │   ├── player.py
+│   │   └── spell.py
+│   └── progression/
+│       ├── wave_manager.py
+│       └── shop_logic.py
+│
+├── app/
+│   ├── game.py
+│   ├── game_state.py
+│   └── screen_router.py
+│
+├── ui/
+│   ├── screens/
+│   │   ├── menu_screen.py
+│   │   ├── battle_screen.py
+│   │   ├── how_to_screen.py
+│   │   └── shop_screen.py
+│   ├── renderers/
+│   │   ├── battle_renderer.py
+│   │   ├── card_renderer.py
+│   │   ├── hud_renderer.py
+│   │   └── background_renderer.py
+│   ├── components/
+│   │   ├── battle_log.py
+│   │   ├── spell_menu.py
+│   │   └── button.py
+│   └── theme/
+│       ├── theme.py
+│       ├── panel.py
+│       └── cursor.py
+│
+├── assets/
+│   ├── image_cache.py
+│   ├── sound_manager.py
+│   └── font_manager.py
+│
+└── utils/
+    └── config.py
+```
+</details>

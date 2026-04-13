@@ -1,6 +1,5 @@
-from enum import Enum, auto
-
 import pygame
+from enum import Enum, auto
 from typing import Literal
 from src.game.battle import Battle, BattleState, Turn
 # from src.sound import sfx
@@ -25,7 +24,7 @@ class Game:
         self.config = config
         self.sfx = SFX()
 
-        fullscreen = 0
+        fullscreen = 1
         if fullscreen:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Full Screen
         else:
@@ -75,6 +74,11 @@ class Game:
         self.card_rects = []
 
     def get_monster_image(self, image_path: str) -> pygame.Surface:
+        """
+
+        :param image_path:
+        :return:
+        """
         if image_path not in self.monster_image_cache:
             image = pygame.image.load(image_path).convert_alpha()
             cropped_rect = image.get_bounding_rect()
@@ -99,6 +103,18 @@ class Game:
 
             if self.battle.state != BattleState.BATTLE_OVER:
                 self.battle.battle_is_over()
+
+    def get_cursor_context(self):
+        if self.current_state != 'game':
+            return None, None
+
+        if self.battle.selected_spell is None:
+            return None, None
+
+        if self.get_hovered_monster() is None:
+            pass
+            # return self.#TODO at this
+
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
