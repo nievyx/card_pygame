@@ -43,4 +43,8 @@ yanpi = Monster(
 )
 fury = Monster('Fury', MONSTER_DIR + '/Fury.png',6,7,5,9,[fireball])
 
+earth_king = Monster('Earth King', MONSTER_DIR + '/Earth King.png',7,7,6,7,[ice_bolt])
+
 djinn = Monster('Djinn', MONSTER_DIR + '/djinn.png',7,7,6,7,[ice_bolt])
+
+plant = Monster('plant', MONSTER_DIR + '/plant.png',7,7,6,7,[ice_bolt])

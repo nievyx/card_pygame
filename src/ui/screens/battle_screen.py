@@ -16,7 +16,7 @@ class BattleScreen:
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.monster_image_cache = {}
         self.battle_log = BattleLog(self.battle)
-        self.enemy_team = config.create_enemy_team()
+        # self.enemy_team = config.create_enemy_team()
 
         self.spell_menu = SpellMenu()
         self.show_spell_menu = False
@@ -110,10 +110,12 @@ class BattleScreen:
                 self.battle.try_attack(player, monster)
             break
 
+        # Click away from monster to deselect
         if not clicked_monster:
-            # Click away from monster to deselect
             self.battle.cancel_selection()
             self.close_spell_menu()
+            return None
+        return None
 
     def handle_spell_check(self, pos) -> bool:
         if not (self.show_spell_menu and self.active_spell_monster):
@@ -272,7 +274,7 @@ class BattleScreen:
         screen_rect = self.screen.get_rect()
 
         self.print_cards()
-        card_width, card_height = 112, 220  # TODO: must be same as dub variable in draw_game
+        card_width, card_height = 112, 220
         for row_index, (player, monsters) in enumerate(self.players.items()):
             alive_monsters = [monster for monster in monsters if monster.is_alive()]
             num_cards = len(alive_monsters)
