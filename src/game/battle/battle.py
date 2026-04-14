@@ -167,7 +167,6 @@ class Battle:
         else:
             msg = self.generate_attack_message(attacker, defender, damage)
             self.add_battle_log(msg, ENEMY_LOG_COLOR)
-
         self.end_turn()
 
     def get_current_player(self) -> int:

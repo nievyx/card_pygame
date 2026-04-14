@@ -17,6 +17,7 @@ class BattleScreen:
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.monster_image_cache = {}
         self.battle_log = BattleLog(self.battle)
+        self.enemy_action_delay = config.enemy_action_delay
 
         self.spell_menu = SpellMenu()
         self.show_spell_menu = False
@@ -27,6 +28,10 @@ class BattleScreen:
 
         self.wave_count = 1
         self.card_rects = []
+
+    def get_attacking_monster(self) -> bool:
+        """Returns true if monster is attacking"""
+        return self.show_spell_menu
 
     def update(self):
         self.battle.update()
@@ -166,6 +171,10 @@ class BattleScreen:
 
         Panel.draw_popup_message(self.screen, title, msg)
 
+    def delay_enemy_action(self):
+        import time
+        time.sleep(70)
+
     def print_cards(self) -> list:
         screen_rect = self.screen.get_rect()
         card_rects = []
@@ -263,6 +272,9 @@ class BattleScreen:
             turn_name = 'Player'
         else:
             turn_name = 'AI'
+            #TODO: try delay here
+            print("ai branch")
+            self.delay_enemy_action()
 
         self.display_selections()
 

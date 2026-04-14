@@ -12,9 +12,11 @@ ENEMY_LOG_COLOR = (240, 80, 16)
 class Config:
     SCREEN_WIDTH = 1200
     SCREEN_HEIGHT = 850
+
     game_title = "Niamh's Monster Cards"
 
     cards_per_player = 5
+    enemy_action_delay = 600
 
     @staticmethod
     def load_game_data():

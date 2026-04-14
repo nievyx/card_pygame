@@ -36,6 +36,9 @@ class Cursor:
     def use_spell(self, spell):
         self._set_path(spell.icon_path)
 
+    def use_attack(self):
+        self._set_path(self.attack_path)
+
     def draw(self, screen):
         screen.blit(self.spr, (self.x, self.y))
 

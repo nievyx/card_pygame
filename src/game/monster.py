@@ -38,14 +38,22 @@ class Monster:
              #TODO: Append to battle log?, probably not here
 
         #TODO: dice roll for critical hit
-        damage = self.strength
+        roll = random.randint(1, 6)
+        if roll > 4:
+            test_crit = 1
+        else:
+            test_crit = 0
 
-        self.deplete_energy(1) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
+        damage = self.strength
+        if test_crit:
+            damage = round(self.strength * self.critical_hit())
+
+        self.deplete_energy(self.strength) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
         target.take_damage(damage)
 
         return damage
 
-    def critical_hit(self, target):
+    def critical_hit(self) -> float:
         modifier = random.uniform(2.2, 3.3)
         return modifier
 

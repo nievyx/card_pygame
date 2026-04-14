@@ -56,9 +56,15 @@ class Game:
             self.update_cursor_context()
 
     def update_cursor_context(self):
-        spell = self.battle_screen.get_active_spell()
-        if spell:
-            self.cursor.use_spell(spell)
+        attacking = self.battle_screen.get_attacking_monster()
+
+        if attacking:
+            spell = self.battle_screen.get_active_spell()
+            if spell:
+                self.cursor.use_spell(spell)
+            else:
+                self.cursor.use_attack()
+
         else:
             self.cursor.use_default()
 
