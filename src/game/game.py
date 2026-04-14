@@ -80,15 +80,6 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 self.handle_mouse_click(pos)
-    # ❌
-    # def handle_menu_click(self, pos: tuple[int, int]) -> None:
-    #     if self.start_button.is_hovered(pos):
-    #         self.current_state = 'game'
-    #     elif self.how_to_button.is_hovered(pos):
-    #         self.current_state = 'how_to_play'
-    #     elif self.quit_button.is_hovered(pos):
-    #         self.running = False
-    #     return
 
     def handle_how_to_play_click(self, pos: tuple[int, int]) -> None:
         if self.back_button.is_hovered(pos):
@@ -128,11 +119,3 @@ class Game:
             draw_how_to_play(self.screen, self.back_button)
 
         self.cursor.draw(self.screen)
-
-    # ❌
-    # def draw_menu(self) -> None:
-    #     self.screen.fill(THEME['background'])
-    #     self.start_button.draw(self.screen)
-    #     self.how_to_button.draw(self.screen)
-    #     self.quit_button.draw(self.screen)
-
