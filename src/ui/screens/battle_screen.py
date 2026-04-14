@@ -4,6 +4,7 @@ from src.game.battle import Battle, BattleState, Turn
 from src.ui.components import BattleLog, SpellMenu
 from src.ui import THEME
 from src.ui.panel import Panel
+from src.game import State
 
 class BattleScreen:
     def __init__(self, screen, config, sfx, main_menu_button):
@@ -71,7 +72,7 @@ class BattleScreen:
             return self.handle_mouse_click(event.pos)
         return None
 
-    def handle_mouse_click(self, pos: tuple[int, int]) -> str | None:
+    def handle_mouse_click(self, pos: tuple[int, int]) -> State | None:
         if self.back_button.is_hovered(pos):
             return 'menu' #TODO: whats the point of having enums then returning menu, think so game does that logic.
 

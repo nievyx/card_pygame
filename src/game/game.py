@@ -1,17 +1,11 @@
 import pygame
 from enum import Enum, auto
-from typing import Literal
-from src.game.battle import Battle, BattleState, Turn
-# from src.sound import sfx
-from src.ui.components import BattleLog, SpellMenu
 from src.sound.sfx import SFX
 from src.ui import Button, THEME
 from src.ui.cursor import Cursor
-from src.ui.panel import Panel
+from src.game import State
 from src.ui.screens.how_to_screen import draw_how_to_play
 from src.ui.screens.battle_screen import BattleScreen
-
-State = Literal['menu', 'game', 'how_to_play', 'quit']
 
 class GameMode(Enum):
     WAVE_MODE = auto()
@@ -98,8 +92,13 @@ class Game:
         if self.current_state == 'menu':
             self.handle_menu_click(pos)
             return
+
         if self.current_state == 'game':
-            self.battle_screen.handle_mouse_click(pos)
+            result = self.battle_screen.handle_mouse_click(pos)
+            if result is not None:
+                self.current_state = result
+            return
+
         if self.current_state == 'how_to_play':
             self.handle_how_to_play_click(pos)
 

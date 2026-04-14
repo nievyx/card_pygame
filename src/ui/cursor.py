@@ -2,7 +2,7 @@ import pygame
 
 class Cursor:
     def __init__(self):
-        DEBUG = 1
+        DEBUG = 0
         if not DEBUG:
             pygame.mouse.set_visible(False)
         self.size = (32,32)
