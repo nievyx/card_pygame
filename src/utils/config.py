@@ -63,7 +63,8 @@ class Config:
                 m.name,
                 m.image,
                 m.hp,
-                m.enemgy,
+                m.mp,
+                m.energy,
                 m.strength,
                 known_spells=list(m.known_spells)
             )

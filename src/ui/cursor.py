@@ -2,7 +2,9 @@ import pygame
 
 class Cursor:
     def __init__(self):
-        pygame.mouse.set_visible(False)
+        DEBUG = 0
+        if not DEBUG:
+            pygame.mouse.set_visible(False)
         self.size = (32,32)
 
         self.default_path = 'assets/cursors/01.png'
