@@ -78,7 +78,7 @@ class BattleScreen:
 
     def handle_mouse_click(self, pos: tuple[int, int]) -> State | None:
         if self.back_button.is_hovered(pos):
-            return 'menu' #TODO: whats the point of having enums then returning menu, think so game does that logic.
+            return 'menu'
 
         if self.battle.state == BattleState.ENEMY_TURN:
             return None
@@ -171,6 +171,7 @@ class BattleScreen:
 
         Panel.draw_popup_message(self.screen, title, msg)
 
+    #TODO: finish this
     def delay_enemy_action(self):
         import time
         time.sleep(70)

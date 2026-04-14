@@ -6,6 +6,7 @@ from src.ui import Button, Cursor, THEME
 from src.game import State, GameMode
 from src.ui.screens.how_to_screen import draw_how_to_play
 from src.ui.screens.battle_screen import BattleScreen
+from src.ui.screens.menu_screen import MenuScreen
 
 
 class Game:
@@ -39,6 +40,9 @@ class Game:
 
         self.battle_screen = BattleScreen(screen=self.screen, config=self.config,
                                           sfx=self.sfx, main_menu_button=self.back_button)
+        self.menu_screen = MenuScreen(screen=self.screen, config=self.config,start_button= self.start_button,
+                                      how_to_button= self.how_to_button,
+                                      quit_button = self.quit_button)
 
     def start(self) -> None:
         while self.running:
@@ -76,15 +80,15 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 self.handle_mouse_click(pos)
-
-    def handle_menu_click(self, pos: tuple[int, int]) -> None:
-        if self.start_button.is_hovered(pos):
-            self.current_state = 'game'
-        elif self.how_to_button.is_hovered(pos):
-            self.current_state = 'how_to_play'
-        elif self.quit_button.is_hovered(pos):
-            self.running = False
-        return
+    # ❌
+    # def handle_menu_click(self, pos: tuple[int, int]) -> None:
+    #     if self.start_button.is_hovered(pos):
+    #         self.current_state = 'game'
+    #     elif self.how_to_button.is_hovered(pos):
+    #         self.current_state = 'how_to_play'
+    #     elif self.quit_button.is_hovered(pos):
+    #         self.running = False
+    #     return
 
     def handle_how_to_play_click(self, pos: tuple[int, int]) -> None:
         if self.back_button.is_hovered(pos):
@@ -92,7 +96,11 @@ class Game:
 
     def handle_mouse_click(self, pos: tuple[int, int]) -> None:
         if self.current_state == 'menu':
-            self.handle_menu_click(pos)
+            result = self.menu_screen.handle_click(pos)
+            if result == 'quit':
+                self.running = False
+            elif result is not None:
+                self.current_state = result
             return
 
         if self.current_state == 'game':
@@ -113,7 +121,7 @@ class Game:
         self.display_bg()
 
         if self.current_state == 'menu':
-            self.draw_menu()
+            self.menu_screen.draw()
         elif self.current_state == 'game':
             self.card_rects = self.battle_screen.draw()
         elif self.current_state == 'how_to_play':
@@ -121,9 +129,10 @@ class Game:
 
         self.cursor.draw(self.screen)
 
-    def draw_menu(self) -> None:
-        self.screen.fill(THEME['background'])
-        self.start_button.draw(self.screen)
-        self.how_to_button.draw(self.screen)
-        self.quit_button.draw(self.screen)
+    # ❌
+    # def draw_menu(self) -> None:
+    #     self.screen.fill(THEME['background'])
+    #     self.start_button.draw(self.screen)
+    #     self.how_to_button.draw(self.screen)
+    #     self.quit_button.draw(self.screen)
 
