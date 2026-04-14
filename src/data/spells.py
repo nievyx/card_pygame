@@ -7,7 +7,7 @@ fireball = DamageSpell(name='Fireball',
 
 fire_blast = DamageSpell(name='Fireblast',
                        strength=fireball.strength+3,
-                       mana_cost=5,
+                       mana_cost=fireball.mana_cost+5,
                        icon='assets/icons/fire_spell_1.png')
 
 

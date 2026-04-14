@@ -22,8 +22,16 @@ class Panel:
     def draw_panel(self, screen, title):
         rect = self.get_rect(screen)
 
-        pygame.draw.rect(screen, THEME['battle_log_bg'], rect)
-        pygame.draw.rect(screen, THEME['battle_log_border'], rect, 2)
+        translucent_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
+        bg_color = (*THEME['battle_log_bg'], 180)
+        border_color = (*THEME['battle_log_border'], 200)
+
+        translucent_surface.fill(bg_color)
+        pygame.draw.rect(translucent_surface, border_color, translucent_surface.get_rect(), 2)
+
+        # draw panel
+        screen.blit(translucent_surface, rect.topleft)
+
 
         font = pygame.font.SysFont('Arial', 18)
         title_surface = font.render(title, True, THEME['battle_log_default_text'])

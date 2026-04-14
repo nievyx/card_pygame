@@ -33,10 +33,10 @@ class Game:
 
         # Button Creation
         self.start_button = Button((0, 255, 0), 400, 150, 200, 80, "Start")
-        self.how_to_button = Button((0, 0, 255), 400, 300, 420, 80, "How To Play")
-        self.quit_button = Button((170, 90, 10), 400, 450, 200, 80, "Quit")
-        self.back_button = Button((200, 200, 200), 20, 20, 150, 60, "Back")
-        self.main_menu_button = Button((200, 200, 200), 20, 20, 150, 60, "Menu")
+        self.how_to_button = Button(THEME['how_to_color'], 400, 300, 420, 80, "How To Play")
+        self.quit_button = Button(THEME['quit_color'], 400, 450, 200, 80, "Quit")
+        self.back_button = Button(THEME['back_button_color'], 20, 20, 150, 60, "Back")
+        self.main_menu_button = Button(THEME['how_to_color'], 20, 20, 150, 60, "Menu")
 
         self.battle_screen = BattleScreen(screen=self.screen, config=self.config,
                                           sfx=self.sfx, main_menu_button=self.back_button)

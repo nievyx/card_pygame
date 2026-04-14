@@ -10,6 +10,7 @@ class MenuScreen:
         self.how_to_button = how_to_button
         self.quit_button = quit_button
 
+
     # TODO: add literal
     def handle_click(self, pos: tuple[int, int]):
         if self.start_button.is_hovered(pos):

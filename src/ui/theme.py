@@ -13,7 +13,7 @@ THEME = {
     'text_primary': (255, 255, 255),
     'text_secondary': (230, 230, 230),
 
-    'primary_font' : 'Arial', #TODO: THEME['primary_font']
+    'primary_font' : 'Arial', #THEME['primary_font']
 
     'card_bg': (50, 50, 50),
     'card_selected': (255, 255, 0),
@@ -21,10 +21,15 @@ THEME = {
     'card_stat_text': (255, 255, 255),
     'card_stat_low' : (255, 0, 0),
 
-    # BUTTON FONT
+    # BUTTONS
     # (Used in ui/buttons.py)
     'button_font' : 'comicsans',
     'button_text_color' : (0, 0 , 0),
+    'how_to_color': (170, 90, 10),
+    'back_button_color': (200, 200, 200),
+    'main_menu_color' : (200, 200, 200),
+    'quit_color' : (200, 200, 200),
+
 
     # BATTLE LOG
     # (Used in ui/components/battle_log.py)
