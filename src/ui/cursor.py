@@ -2,13 +2,19 @@ import pygame
 
 class Cursor:
     def __init__(self):
-        DEBUG = 0
-        if not DEBUG:
+        debug = 0
+        if not debug:
             pygame.mouse.set_visible(False)
         self.size = (32,32)
 
         self.default_path = 'assets/cursors/01.png'
         self.attack_path = 'assets/icons/fc721.png'
+        self.paths = {
+            'default': self.default_path,
+            'attack': self.attack_path,
+            'valid_target': None,
+            'invalid_target': None,
+        }
 
         self.spr = self._load_image(self.default_path)
 
@@ -22,13 +28,10 @@ class Cursor:
         )
 
     def _set_path(self, path:str) -> None:
-       if path != self.default_path:
-           return
-       self.attack_path = path
        self.spr = self._load_image(path)
 
-    def use_default(self, spell):
-        self._set_path(spell.default_path)
+    def use_default(self):
+        self._set_path(self.default_path)
 
     def use_spell(self, spell):
         self._set_path(spell.icon_path)

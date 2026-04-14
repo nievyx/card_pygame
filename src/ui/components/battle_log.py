@@ -11,6 +11,9 @@ class BattleLog(Panel):
         self.top = top
         self.right_padding = right_padding
 
+    def display_monster_img(self):
+        pass
+
     def draw(self, screen):
         log_rect = self.draw_panel(screen, 'Battle Log')
 

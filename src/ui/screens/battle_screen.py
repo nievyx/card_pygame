@@ -131,6 +131,12 @@ class BattleScreen:
         self.selected_spell_index = spell_index
         return True
 
+    def get_active_spell(self):
+        return self.battle.selected_spell
+
+    def get_active_spell_monster(self):
+        return self.active_spell_monster
+
     def close_spell_menu(self):
         self.show_spell_menu = False
         self.active_spell_monster = None
@@ -272,8 +278,6 @@ class BattleScreen:
 
         if self.show_spell_menu and self.active_spell_monster and self.active_spell_monster.is_alive():
             self.spell_menu.draw(self.screen, self.active_spell_monster, self.selected_spell_index)
-            # TODO: could add the updated cursor here.
-            print(self.selected_spell_index)
 
 
         if self.battle.state == BattleState.BATTLE_OVER:

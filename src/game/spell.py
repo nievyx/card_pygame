@@ -1,7 +1,9 @@
 import random
 import pygame
 
+
 class Spell:
+    DEFAULT_ICON = 'assets/icons/staff.png'
     spell_pool = []
 
     def __init__(self,
@@ -15,7 +17,7 @@ class Spell:
         self.name = name
         self.strength = strength
         self.mana_cost = mana_cost
-        self.icon_path = icon
+        self.icon_path = icon or self.DEFAULT_ICON
         self.icon = None
         self.use_in_overworld = use_in_overworld
         self.sfx_name = sfx_name or self.name.lower().replace('', '_')

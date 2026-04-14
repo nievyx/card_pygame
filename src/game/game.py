@@ -1,4 +1,5 @@
 import pygame
+from pygame.mouse import get_cursor
 
 from src.sound.sfx import SFX
 from src.ui import Button, Cursor, THEME
@@ -52,17 +53,14 @@ class Game:
         if self.current_state == 'game':
             self.battle_screen.update()
 
-    #TODO:
-    def get_cursor_context(self):
-        if self.current_state != 'game':
-            return None, None
+            self.update_cursor_context()
 
-        if self.battle.selected_spell is None:
-            return None, None
-
-        if self.get_hovered_monster() is None:
-            pass
-            # return self.#TODO at this
+    def update_cursor_context(self):
+        spell = self.battle_screen.get_active_spell()
+        if spell:
+            self.cursor.use_spell(spell)
+        else:
+            self.cursor.use_default()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():

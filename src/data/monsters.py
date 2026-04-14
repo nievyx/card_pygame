@@ -1,4 +1,4 @@
-from src.data.spells import light_heal, fireball, ice_bolt
+from src.data.spells import light_heal, fireball, ice_bolt, mid_heal, ice_shards, vine_attack
 from src.game.monster import Monster
 import os
 
@@ -21,7 +21,7 @@ demon = Monster(
         mp=6,
         energy=8,
         strength=9,
-        known_spells = [ice_bolt]
+        known_spells = [ice_bolt, ice_shards]
 )
 calm = Monster(
         name='Calm',
@@ -41,10 +41,39 @@ yanpi = Monster(
         strength=2,
         known_spells = [light_heal]
 )
-fury = Monster('Fury', MONSTER_DIR + '/Fury.png',6,7,5,9,[fireball])
+yanfly = Monster(
+        name='Yanfly',
+        image=MONSTER_DIR + '/Yanfly.png',
+        hp=yanpi.hp+3,
+        mp=yanpi.mp+4,
+        energy=yanpi.energy+2,
+        strength=yanpi.strength+2,
+        known_spells = [light_heal, mid_heal]
+)
+fury = Monster(
+    'Fury',
+    MONSTER_DIR + '/Fury.png',
+    6, 7, 5, 9,
+    [fireball],
+)
 
-earth_king = Monster('Earth King', MONSTER_DIR + '/Earth King.png',7,7,6,7,[ice_bolt])
+earth_king = Monster(
+    'Earth King',
+    MONSTER_DIR + '/Earth King.png',
+    7, 7, 6, 7,
+    [ice_bolt],
+)
 
-djinn = Monster('Djinn', MONSTER_DIR + '/djinn.png',7,7,6,7,[ice_bolt])
+djinn = Monster(
+    'Djinn',
+    MONSTER_DIR + '/djinn.png',
+    7, 7, 6, 7,
+    [ice_bolt],
+)
 
-plant = Monster('plant', MONSTER_DIR + '/plant.png',7,7,6,7,[ice_bolt])
+plant = Monster(
+    'Plant',
+    MONSTER_DIR + '/plant.png',
+    7, 7, 6, 7,
+    [vine_attack],
+)
