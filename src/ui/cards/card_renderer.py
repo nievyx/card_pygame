@@ -72,8 +72,9 @@ class CardRenderer:
         )
 
         # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
+        name_offset = card_x + 26
         card_offset = card_x + 8
-        self.screen.blit(name_text, (card_offset, card_y + 8))  # Name
+        self.screen.blit(name_text, (name_offset, card_y + 8))  # Name
         self.screen.blit(monster_img, image_rect)  # Image
 
         self.screen.blit(hp_text, (card_offset, card_y + 130))  # HP
