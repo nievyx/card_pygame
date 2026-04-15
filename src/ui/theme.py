@@ -2,6 +2,8 @@ CARD_RENDER_THEME = {
     'bg': (21, 30, 61),
     'selected': (255, 255, 0),
     'text': (255, 255, 255),
+    'secondary_text': (230, 230, 230),
+    'stat_text': (255, 255, 255),
     'low_stat': (255, 0, 0),
 }
 
