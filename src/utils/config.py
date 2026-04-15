@@ -53,7 +53,7 @@ class Config:
 
         for i in range(num_players):
             players[i] = [
-                Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength, known_spells=list(m.known_spells))
+                Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength, known_spells=list(m.known_spells), rarity=m.rarity)
                 for m in random.choices(Monster.monster_pool, k=cards_per_player)
             ]
         return players
@@ -68,7 +68,8 @@ class Config:
                 m.mp,
                 m.energy,
                 m.strength,
-                known_spells=list(m.known_spells)
+                known_spells=list(m.known_spells),
+                rarity=m.rarity
             )
             for m in random.choices(Monster.monster_pool, k=self.cards_per_player)
         ]

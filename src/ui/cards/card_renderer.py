@@ -1,3 +1,4 @@
+from src.data.frames import RARITY_FRAMES
 from src.ui.theme import CARD_RENDER_THEME
 import pygame
 
@@ -13,8 +14,9 @@ class CardRenderer:
 
         self.card_width, self.card_height = 118, 250
 
-        self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
-        self.card_frame = pygame.transform.smoothscale(self.card_frame, (self.card_width, self.card_height))  # Original 112, 220
+        # self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
+        #
+        # self.card_frame = pygame.transform.smoothscale(self.card_frame, (self.card_width, self.card_height))  # Original 112, 220
 
     # ❌ TODO: Temp! Move to src/assets/image_cache.py
     def get_monster_image(self, image_path: str) -> pygame.Surface:
@@ -28,6 +30,14 @@ class CardRenderer:
         image = pygame.transform.smoothscale(image, (80, 90))
 
         return image
+
+    def get_card_frame(self, monster) -> pygame.Surface:
+        """Checks monsters rarity attribute and returns card frame"""
+        frame_path = RARITY_FRAMES.get(monster.rarity, RARITY_FRAMES["common"])
+        frame = pygame.image.load(frame_path).convert_alpha()
+        frame = pygame.transform.smoothscale(frame, (self.card_width, self.card_height))
+        print(monster.name, monster.rarity)
+        return frame
 
     def get_stat_color(self, current, max_value):
         """Toggles stat colors to highlight low stats"""
@@ -85,9 +95,13 @@ class CardRenderer:
         self.screen.blit(mp_text, (card_offset, card_y + 190))  # MP
 
 
-        #Add frame
-        self.screen.blit(self.card_frame, card_rect.topleft)
+        # ❌ Add frame
+        # self.screen.blit(self.card_frame, card_rect.topleft)
 
+        self.screen.blit(self.get_card_frame(monster), card_rect.topleft)
+
+
+    #TODO: rename to draw_cards or just draw()
     def print_cards(self) -> list:
         screen_rect = self.screen.get_rect()
         card_rects = []

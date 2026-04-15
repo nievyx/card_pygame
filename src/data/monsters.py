@@ -48,7 +48,8 @@ yanfly = Monster(
         mp=yanpi.mp+4,
         energy=yanpi.energy+2,
         strength=yanpi.strength+2,
-        known_spells = [light_heal, mid_heal]
+        known_spells = [light_heal, mid_heal],
+        rarity='uncommon'
 )
 fury = Monster(
     'Fury',
@@ -62,6 +63,7 @@ earth_king = Monster(
     MONSTER_DIR + '/Earth King.png',
     7, 7, 6, 7,
     [ice_bolt],
+    'uncommon',
 )
 
 djinn = Monster(
@@ -69,6 +71,7 @@ djinn = Monster(
     MONSTER_DIR + '/djinn.png',
     7, 7, 6, 7,
     [ice_bolt],
+    'rare',
 )
 
 plant = Monster(
@@ -76,4 +79,5 @@ plant = Monster(
     MONSTER_DIR + '/plant.png',
     7, 7, 6, 7,
     [vine_attack],
+    'uncommon',
 )
