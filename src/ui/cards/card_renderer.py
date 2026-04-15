@@ -11,7 +11,7 @@ class CardRenderer:
         # self.monster_image_cache = monster_image_cache
 
 
-        self.card_width, self.card_height = 112, 220
+        self.card_width, self.card_height = 118, 250
 
         self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
         self.card_frame = pygame.transform.smoothscale(self.card_frame, (self.card_width, self.card_height))  # Original 112, 220
