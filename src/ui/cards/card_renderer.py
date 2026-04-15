@@ -11,8 +11,10 @@ class CardRenderer:
         # self.monster_image_cache = monster_image_cache
 
 
+        self.card_width, self.card_height = 112, 220
+
         self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
-        self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220))  # try 112, 220
+        self.card_frame = pygame.transform.smoothscale(self.card_frame, (self.card_width, self.card_height))  # Original 112, 220
 
     # ❌ TODO: Temp! Move to src/assets/image_cache.py
     def get_monster_image(self, image_path: str) -> pygame.Surface:
@@ -90,20 +92,19 @@ class CardRenderer:
         screen_rect = self.screen.get_rect()
         card_rects = []
         space_between_cards = 10
-        card_width, card_height = 112, 220
 
         for row_index, (player, monsters) in enumerate(self.players.items()):
             alive_monsters = [monster for monster in monsters if monster.is_alive()]
             num_cards = len(alive_monsters)
 
-            total_width = num_cards * card_width + (num_cards - 1) * space_between_cards
+            total_width = num_cards * self.card_width + (num_cards - 1) * space_between_cards
 
-            row_rect = pygame.Rect(0, 0, total_width, card_height)
+            row_rect = pygame.Rect(0, 0, total_width, self.card_height)
             row_rect.centerx = screen_rect.centerx
             # row_rect.y = initial_y + (row_index * y_offset)
 
             top_row_y = 80
-            bottom_row_y = screen_rect.bottom - card_height - 80
+            bottom_row_y = screen_rect.bottom - self.card_height - 80
 
             # Choose which player goes on top / bottom
             if row_index == 1:
@@ -117,10 +118,10 @@ class CardRenderer:
                 # create rect for card (used for clicking)
                 card_x = x
                 card_y = row_rect.y
-                card_rect = pygame.Rect(card_x, card_y, card_width, card_height)
+                card_rect = pygame.Rect(card_x, card_y, self.card_width, self.card_height)
                 card_rects.append((card_rect, player, monster))
                 self.draw_monster_card(monster, card_rect)
 
-                x += card_width + space_between_cards
+                x += self.card_width + space_between_cards
 
         return card_rects
