@@ -1,48 +1,48 @@
-from src.ui.theme import THEME
+from src.ui.theme import THEME, CARD_RENDER_THEME
 import pygame
 
-
-# CARD_RENDER_THEME = {
-#     'bg': (50, 50, 50),
-#     'selected': (255, 255, 0),
-#     'text': (255, 255, 255),
-#     'low_stat': (255, 0, 0),
-# }
 class CardRenderer:
-    def __init__(self, monster_image_cache, battle, players, screen):
+    def __init__(self, battle, players, screen):
         self.screen = screen
         self.battle = battle
         self.players = players
-        self.monster_image_cache = monster_image_cache
+
+        # ❌ TODO: Temp! Move to src/assets/image_cache.py
+        # self.monster_image_cache = monster_image_cache
+
 
         self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
         self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220))  # try 112, 220
 
-    # ❌
+    # ❌ TODO: Temp! Move to src/assets/image_cache.py
     def get_monster_image(self, image_path: str) -> pygame.Surface:
         """
-
         :param image_path:
         :return:
         """
-        if image_path not in self.monster_image_cache:
-            image = pygame.image.load(image_path).convert_alpha()
-            cropped_rect = image.get_bounding_rect()
-            image = image.subsurface(cropped_rect).copy()
-            image = pygame.transform.smoothscale(image, (80, 90))
-            self.monster_image_cache[image_path] = image
+        image = pygame.image.load(image_path).convert_alpha()
+        cropped_rect = image.get_bounding_rect()
+        image = image.subsurface(cropped_rect).copy()
+        image = pygame.transform.smoothscale(image, (80, 90))
 
-        return self.monster_image_cache[image_path]
+        return image
+
+    def get_stat_color(self, current, max_value):
+        """Toggles stat colors to highlight low stats"""
+        if max_value <= 0:
+            return CARD_RENDER_THEME['text']
+        percent = 0.3
+        return CARD_RENDER_THEME['low_stat'] if current / max_value <= percent else THEME['text_secondary']
 
     def draw_monster_card(self, monster, card_rect):
         card_x, card_y = card_rect.topleft
 
         # draw card background
-        pygame.draw.rect(self.screen, THEME['card_color'], card_rect)
+        pygame.draw.rect(self.screen, CARD_RENDER_THEME['bg'], card_rect)
 
         # Highlight selected card
         if monster == self.battle.selected_monster:
-            pygame.draw.rect(self.screen, THEME['card_selected'], card_rect, 3)
+            pygame.draw.rect(self.screen, CARD_RENDER_THEME['selected'], card_rect, 3)
 
         # load + scale monster image
         monster_img = self.get_monster_image(monster.image)
@@ -55,17 +55,10 @@ class CardRenderer:
         card_name_font = pygame.font.SysFont('Arial', 20, bold=False)
         name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
-        def get_stat_color(current, max_value):
-            """Toggles stat colors to highlight low stats"""
-            if max_value <= 0:
-                return THEME['text_secondary']
-            percent = 0.3
-            return THEME['card_stat_low'] if current / max_value <= percent else THEME['text_secondary']
-
         # TODO: use a stats variable and get it from themes / create it and then move it to themes
 
         hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
-        hp_color = get_stat_color(monster.hp, monster.max_hp)
+        hp_color = self.get_stat_color(monster.hp, monster.max_hp)
         hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
 
         card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)

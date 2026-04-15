@@ -2,6 +2,7 @@ import pygame
 
 from src.game.battle import Battle, BattleState, Turn
 from src.ui.components import BattleLog, SpellMenu
+from src.ui.cards.card_renderer import CardRenderer
 from src.ui import THEME
 from src.ui.panel import Panel
 from src.game import State
@@ -29,6 +30,7 @@ class BattleScreen:
         self.wave_count = 1
         self.card_rects = []
 
+        self.card_renderer = CardRenderer(battle=self.battle, players=self.players,screen=self.screen)
         # ❌ Temp for card frame (Refactor to CardRenderer)
         self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
         self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220)) # try 112, 220
@@ -297,7 +299,9 @@ class BattleScreen:
         turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
         self.screen.blit(turn_text, (200, 28))
 
-        self.card_rects = self.print_cards()
+        # ❌
+        # self.card_rects = self.print_cards()
+        self.card_rects = self.card_renderer.print_cards()
 
         # Battle Log box
         self.battle_log.draw(self.screen)
