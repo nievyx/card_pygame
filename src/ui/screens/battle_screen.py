@@ -29,7 +29,7 @@ class BattleScreen:
         self.wave_count = 1
         self.card_rects = []
 
-        #Temp for card frame (Refactor to CardRenderer)
+        # ❌ Temp for card frame (Refactor to CardRenderer)
         self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
         self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220)) # try 112, 220
 
@@ -60,6 +60,7 @@ class BattleScreen:
         self.close_spell_menu()
         self.card_rects = []
 
+    # ❌
     def get_monster_image(self, image_path: str) -> pygame.Surface:
         """
 
@@ -180,6 +181,7 @@ class BattleScreen:
         import time
         time.sleep(70)
 
+    # ❌
     def draw_monster_card(self, monster, card_rect):
         card_x, card_y = card_rect.topleft
 
@@ -235,6 +237,7 @@ class BattleScreen:
         #Add frame
         self.screen.blit(self.card_frame, card_rect.topleft)
 
+    # ❌
     def print_cards(self) -> list:
         screen_rect = self.screen.get_rect()
         card_rects = []
