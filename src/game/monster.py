@@ -48,7 +48,7 @@ class Monster:
         if test_crit:
             damage = round(self.strength * self.critical_hit())
 
-        self.deplete_energy(self.strength) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
+        self.deplete_energy(1) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
         target.take_damage(damage)
 
         return damage
