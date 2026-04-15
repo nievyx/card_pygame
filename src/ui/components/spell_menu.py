@@ -1,4 +1,5 @@
 import pygame
+
 from src.ui.theme import THEME
 from src.ui.panel import Panel
 
@@ -38,10 +39,20 @@ class SpellMenu(Panel):
         start_y = box_rect.y + 40
 
         for i, spell in enumerate(monster.known_spells):
+
+
             prefix = ">" if i == selected_index else " "
             text_str = f"{prefix} {spell.name} ({spell.mana_cost} MP)"
-            text = line_font.render(text_str, True, THEME['battle_log_default_text'])
+            can_cast = spell.can_cast(monster)
+
+            if can_cast:
+                text = line_font.render(text_str, True, THEME['battle_log_default_text'])
+            else:
+                text = line_font.render(text_str, True, (120, 120, 120), )
+
             text_rect = text.get_rect(midtop=(box_rect.centerx, start_y + i * self.line_height))
+
+
             screen.blit(text, text_rect)
 
 
