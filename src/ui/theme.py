@@ -1,3 +1,10 @@
+CARD_RENDER_THEME = {
+    'bg': (50, 50, 50),
+    'selected': (255, 255, 0),
+    'text': (255, 255, 255),
+    'low_stat': (255, 0, 0),
+}
+
 THEME = {
     #Used in main.py
     'PLAYER_LOG_COLOR': (255, 255, 255),
@@ -45,3 +52,4 @@ THEME = {
     'battle_log_text_size' : 16, #TODO: not in use
     'battle_log_text_color' : (0, 0 , 0),
 }
+
