@@ -3,7 +3,7 @@ import random
 class Monster:
     monster_pool = []
 
-    def __init__(self, name, image, hp, mp, energy, strength, known_spells = None):
+    def __init__(self, name, image, hp, mp, energy, strength, known_spells = None, rarity='common'):
         self.name = name
         self.image = image
         self.hp = hp
@@ -19,8 +19,10 @@ class Monster:
         self.dropped_exp = 10 #Placeholder
 
         self.known_spells = known_spells if known_spells is not None else []
+        self.rarity = rarity
 
         Monster.monster_pool.append(self)
+        print(f"CREATED: {name} rarity={rarity}")
 
     @classmethod
     def get_monster_pool(cls):

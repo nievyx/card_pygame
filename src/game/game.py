@@ -1,6 +1,4 @@
 import pygame
-from pygame.mouse import get_cursor
-
 from src.sound.sfx import SFX
 from src.ui import Button, Cursor, THEME
 from src.game import State, GameMode
