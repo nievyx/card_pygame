@@ -2,7 +2,12 @@
 > note: Readme might not reflect games current state
 
 ## How to play Game
-
+```
+set PYTHONPATH=%CD%;%CD%\src
+```
+```
+python -m src.main
+```
 Windows:
 ```commandline
 run run.bat
@@ -24,9 +29,42 @@ run run.sh
 
 [//]: # (```)
 
-[//]: # (python main.py)
+[//]: # ([//]: # python -m src.main)
 
 [//]: # (```)
+
+How to Run
+
+> Note Because project was created using pycharm, some import paths may not be automatically functional without 
+```
+@echo off
+cd /d %~dp0
+
+set PYTHONPATH=%CD%;%CD%\src
+
+python -m src.main
+
+pause
+@echo off
+cd /d %~dp0
+```
+set PYTHONPATH=%CD%;%CD%\src
+
+python -m src.main
+
+pause
+[//]: # (```)
+
+[//]: # (from src.game.game import Game   # absolute from package root)
+
+[//]: # (from game.game import Game       # absolute from a different assumed root)
+
+[//]: # (from .game_screen import GameScreen  # relative import)
+
+[//]: # (```)
+
+> 
+> 
 ## Pygame image errors
 > NOTE: To fix 'libpng warning: iCCP: known incorrect sRGB profile'
 > 
