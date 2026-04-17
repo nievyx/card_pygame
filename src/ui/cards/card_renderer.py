@@ -11,13 +11,7 @@ class CardRenderer:
 
         self.image_cache = ImageCache()
 
-
         self.card_width, self.card_height = 118, 250
-
-        # self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
-        #
-        # self.card_frame = pygame.transform.smoothscale(self.card_frame, (self.card_width, self.card_height))  # Original 112, 220
-
 
     def get_card_frame(self, monster) -> pygame.Surface:
         """Checks monsters rarity attribute and returns card frame"""
@@ -83,9 +77,7 @@ class CardRenderer:
 
         self.screen.blit(self.get_card_frame(monster), card_rect.topleft)
 
-
-    #TODO: rename to draw_cards or just draw() (much change in battle/battle_screen.py)
-    def print_cards(self) -> list:
+    def draw(self) -> list:
         screen_rect = self.screen.get_rect()
         card_rects = []
         space_between_cards = 10

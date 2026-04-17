@@ -203,7 +203,7 @@ class BattleScreen:
         turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
         self.screen.blit(turn_text, (200, 28))
 
-        self.card_rects = self.card_renderer.print_cards()
+        self.card_rects = self.card_renderer.draw()
 
         # Battle Log box
         self.battle_log.draw(self.screen)
