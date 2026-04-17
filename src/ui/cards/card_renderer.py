@@ -1,5 +1,5 @@
 from src.data.frames import RARITY_FRAMES
-from src.ui.theme import CARD_RENDER_THEME
+from src.ui.theme import CARD_RENDER_THEME as THEME
 from src.assets.image_cache import ImageCache
 import pygame
 
@@ -30,19 +30,19 @@ class CardRenderer:
     def get_stat_color(self, current, max_value):
         """Toggles stat colors to highlight low stats"""
         if max_value <= 0:
-            return CARD_RENDER_THEME['text']
+            return THEME['text']
         percent = 0.3
-        return CARD_RENDER_THEME['low_stat'] if current / max_value <= percent else CARD_RENDER_THEME['secondary_text']
+        return THEME['low_stat'] if current / max_value <= percent else THEME['secondary_text']
 
     def draw_monster_card(self, monster, card_rect):
         card_x, card_y = card_rect.topleft
 
         # draw card background
-        pygame.draw.rect(self.screen, CARD_RENDER_THEME['bg'], card_rect)
+        pygame.draw.rect(self.screen, THEME['bg'], card_rect)
 
         # Highlight selected card
         if monster == self.battle.selected_monster:
-            pygame.draw.rect(self.screen, CARD_RENDER_THEME['selected'], card_rect, 3)
+            pygame.draw.rect(self.screen, THEME['selected'], card_rect, 3)
 
         # load + scale monster image
         monster_img = self.image_cache.get_monster_image(monster.image)
@@ -52,21 +52,21 @@ class CardRenderer:
         image_rect.top = card_y + 40
 
         # draw text
-        card_name_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 20, bold=False)
+        card_name_font = pygame.font.SysFont(THEME['font'], 20, bold=False)
         name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
-        hp_text_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 16)  # TODO: add font to config
+        hp_text_font = pygame.font.SysFont(THEME['font'], 16)  # TODO: add font to config
         hp_color = self.get_stat_color(monster.hp, monster.max_hp)
         hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
 
-        card_strength_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 16, bold=False)
-        strength_text = card_strength_font.render(f'STR: {monster.strength}', True, CARD_RENDER_THEME['stat_text'])
+        card_strength_font = pygame.font.SysFont(THEME['font'], 16, bold=False)
+        strength_text = card_strength_font.render(f'STR: {monster.strength}', True, THEME['stat_text'])
 
-        card_energy_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 16, bold=False)
+        card_energy_font = pygame.font.SysFont(THEME['font'], 16, bold=False)
         energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True,
-                                              CARD_RENDER_THEME['stat_text'])
+                                              THEME['stat_text'])
         mp_text = card_energy_font.render(
-            f'MP: {monster.mp}/{monster.max_mp}', True, CARD_RENDER_THEME['stat_text']
+            f'MP: {monster.mp}/{monster.max_mp}', True, THEME['stat_text']
         )
 
         # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
