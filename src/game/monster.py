@@ -14,6 +14,7 @@ class Monster:
         self.max_hp = self.hp
         self.max_mp = self.mp
         self.max_energy = self.energy
+        self.max_strength = self.strength
         self.alive = True
 
         self.dropped_exp = 10 #Placeholder

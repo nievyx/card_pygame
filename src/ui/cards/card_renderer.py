@@ -13,12 +13,13 @@ class CardRenderer:
 
         self.card_width, self.card_height = 118, 250
 
+    # TODO: Cache frames
     def get_card_frame(self, monster) -> pygame.Surface:
         """Checks monsters rarity attribute and returns card frame"""
         frame_path = RARITY_FRAMES.get(monster.rarity, RARITY_FRAMES["common"])
         frame = pygame.image.load(frame_path).convert_alpha()
         frame = pygame.transform.smoothscale(frame, (self.card_width, self.card_height))
-        print(monster.name, monster.rarity)
+        # print(monster.name, monster.rarity)
         return frame
 
     def get_stat_color(self, current, max_value):
@@ -28,6 +29,23 @@ class CardRenderer:
         percent = 0.3
         return THEME['low_stat'] if current / max_value <= percent else THEME['secondary_text']
 
+    def draw_monster_stats(self, monster, card_x, card_y):
+        monster_stats = {'HP': (monster.hp, monster.max_hp),
+                         'STR': (monster.strength, monster.max_strength),
+                         'ENG': (monster.energy, monster.max_energy),
+                         'MP': (monster.mp, monster.max_mp),
+                         }
+        card_offset = card_x + 8
+        offset_y = 130
+        font_ = pygame.font.SysFont(THEME['font'], 16)
+        for stat, (stat_current, stat_max) in monster_stats.items():
+            color = self.get_stat_color(stat_current, stat_max)
+            antialias = True
+
+            card_stat = font_.render(f'{stat}: {stat_current}/{stat_max}', antialias, color)
+            self.screen.blit(card_stat, (card_offset, card_y + offset_y))
+            offset_y += 20
+
     def draw_monster_card(self, monster, card_rect):
         card_x, card_y = card_rect.topleft
 
@@ -36,7 +54,7 @@ class CardRenderer:
 
         # Highlight selected card
         if monster == self.battle.selected_monster:
-            pygame.draw.rect(self.screen, THEME['selected'], card_rect, 3)
+            pygame.draw.rect(self.screen, THEME['selected'], card_rect, 12)
 
         # load + scale monster image
         monster_img = self.image_cache.get_monster_image(monster.image)
@@ -49,30 +67,12 @@ class CardRenderer:
         card_name_font = pygame.font.SysFont(THEME['font'], 20, bold=False)
         name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
-        hp_text_font = pygame.font.SysFont(THEME['font'], 16)  # TODO: add font to config
-        hp_color = self.get_stat_color(monster.hp, monster.max_hp)
-        hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
-
-        card_strength_font = pygame.font.SysFont(THEME['font'], 16, bold=False)
-        strength_text = card_strength_font.render(f'STR: {monster.strength}', True, THEME['stat_text'])
-
-        card_energy_font = pygame.font.SysFont(THEME['font'], 16, bold=False)
-        energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True,
-                                              THEME['stat_text'])
-        mp_text = card_energy_font.render(
-            f'MP: {monster.mp}/{monster.max_mp}', True, THEME['stat_text']
-        )
-
-        # display monster's image and hp #TODO: For positioning for stats could do +30 each time in a for loop, also card creation could get a class
         name_offset = card_x + 26
-        card_offset = card_x + 8
+
         self.screen.blit(name_text, (name_offset, card_y + 8))  # Name
         self.screen.blit(monster_img, image_rect)  # Image
+        self.draw_monster_stats(monster, card_x, card_y) # Stats
 
-        self.screen.blit(hp_text, (card_offset, card_y + 130))  # HP
-        self.screen.blit(strength_text, (card_offset, card_y + 150))  # STR
-        self.screen.blit(energy_text, (card_offset, card_y + 170))  # ENG
-        self.screen.blit(mp_text, (card_offset, card_y + 190))  # MP
 
         # Render Frame
         self.screen.blit(self.get_card_frame(monster), card_rect.topleft)
