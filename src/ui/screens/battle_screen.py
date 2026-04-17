@@ -32,7 +32,7 @@ class BattleScreen:
 
         self.card_renderer = CardRenderer(battle=self.battle, players=self.players,screen=self.screen)
         # ❌ Temp for card frame (Refactor to CardRenderer)
-        self.card_frame = pygame.image.load('assets/frame/1.png').convert_alpha()
+        self.card_frame = pygame.image.load('src/assets/frame/1.png').convert_alpha()
         self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220)) # try 112, 220
 
     def get_attacking_monster(self) -> bool:

@@ -31,7 +31,7 @@ class Config:
 
     @staticmethod
     def load_random_background(screen_size):
-        folder = 'assets/backgrounds/'
+        folder = 'src/assets/backgrounds/'
         img_types = ('.png', '.jpg', '.jpeg', '.webp')
 
         files = [
