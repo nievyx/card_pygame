@@ -74,8 +74,10 @@ class CardRenderer:
         self.screen.blit(energy_text, (card_offset, card_y + 170))  # ENG
         self.screen.blit(mp_text, (card_offset, card_y + 190))  # MP
 
-
+        # Render Frame
         self.screen.blit(self.get_card_frame(monster), card_rect.topleft)
+        #TODO: fix this so frames are caches
+        card_frame = self.image_cache.get_card_frame(monster.rarity_path, card_rect.topleft)
 
     def draw(self) -> list:
         screen_rect = self.screen.get_rect()

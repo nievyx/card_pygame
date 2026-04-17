@@ -9,7 +9,7 @@ class Monster:
         self.hp = hp
         self.mp = mp
         self.strength = strength # Strength of physical damage
-        self.energy = energy # Points needed for monsters to physical attack
+        self.energy = energy # Points needed for monsters to physical attack?
 
         self.max_hp = self.hp
         self.max_mp = self.mp
@@ -22,7 +22,8 @@ class Monster:
         self.rarity = rarity
 
         Monster.monster_pool.append(self)
-        print(f"CREATED: {name} rarity={rarity}")
+
+        # print(f"CREATED: {name} rarity={rarity}")
 
     @classmethod
     def get_monster_pool(cls):
@@ -39,7 +40,7 @@ class Monster:
             raise ValueError(f'{self.name} has no energy left to fight') #TODO: remove error and just let monster not fight, u may also need to update logic for enemy using a monster with no energy
              #TODO: Append to battle log?, probably not here
 
-        #TODO: dice roll for critical hit
+        #TODO: update generate msg in battle log to say critial hit
         roll = random.randint(1, 6)
         if roll > 4:
             test_crit = 1
