@@ -1,5 +1,6 @@
 from src.data.frames import RARITY_FRAMES
 from src.ui.theme import CARD_RENDER_THEME
+from src.assets.image_cache import ImageCache
 import pygame
 
 class CardRenderer:
@@ -8,8 +9,7 @@ class CardRenderer:
         self.battle = battle
         self.players = players
 
-        # ❌ TODO: Temp! Move to src/assets/image_cache.py
-        # self.monster_image_cache = monster_image_cache
+        self.image_cache = ImageCache()
 
 
         self.card_width, self.card_height = 118, 250
@@ -18,18 +18,6 @@ class CardRenderer:
         #
         # self.card_frame = pygame.transform.smoothscale(self.card_frame, (self.card_width, self.card_height))  # Original 112, 220
 
-    # ❌ TODO: Temp! Move to src/assets/image_cache.py
-    def get_monster_image(self, image_path: str) -> pygame.Surface:
-        """
-        :param image_path:
-        :return:
-        """
-        image = pygame.image.load(image_path).convert_alpha()
-        cropped_rect = image.get_bounding_rect()
-        image = image.subsurface(cropped_rect).copy()
-        image = pygame.transform.smoothscale(image, (80, 90))
-
-        return image
 
     def get_card_frame(self, monster) -> pygame.Surface:
         """Checks monsters rarity attribute and returns card frame"""
@@ -57,26 +45,24 @@ class CardRenderer:
             pygame.draw.rect(self.screen, CARD_RENDER_THEME['selected'], card_rect, 3)
 
         # load + scale monster image
-        monster_img = self.get_monster_image(monster.image)
+        monster_img = self.image_cache.get_monster_image(monster.image)
 
         image_rect = monster_img.get_rect()
         image_rect.centerx = card_rect.centerx
         image_rect.top = card_y + 40
 
         # draw text
-        card_name_font = pygame.font.SysFont('Arial', 20, bold=False)
+        card_name_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 20, bold=False)
         name_text = card_name_font.render(f'{monster.name}', True, (255, 255, 255))
 
-        # TODO: use a stats variable and get it from themes / create it and then move it to themes
-
-        hp_text_font = pygame.font.SysFont('Arial', 16)  # TODO: add font to config
+        hp_text_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 16)  # TODO: add font to config
         hp_color = self.get_stat_color(monster.hp, monster.max_hp)
         hp_text = hp_text_font.render(f'HP: {monster.hp}/{monster.max_hp}', True, hp_color)
 
-        card_strength_font = pygame.font.SysFont('Arial', 16, bold=False)
+        card_strength_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 16, bold=False)
         strength_text = card_strength_font.render(f'STR: {monster.strength}', True, CARD_RENDER_THEME['stat_text'])
 
-        card_energy_font = pygame.font.SysFont('Arial', 16, bold=False)
+        card_energy_font = pygame.font.SysFont(CARD_RENDER_THEME['font'], 16, bold=False)
         energy_text = card_energy_font.render(f'ENG: {monster.energy}/{monster.max_energy}', True,
                                               CARD_RENDER_THEME['stat_text'])
         mp_text = card_energy_font.render(
@@ -95,13 +81,10 @@ class CardRenderer:
         self.screen.blit(mp_text, (card_offset, card_y + 190))  # MP
 
 
-        # ❌ Add frame
-        # self.screen.blit(self.card_frame, card_rect.topleft)
-
         self.screen.blit(self.get_card_frame(monster), card_rect.topleft)
 
 
-    #TODO: rename to draw_cards or just draw()
+    #TODO: rename to draw_cards or just draw() (much change in battle/battle_screen.py)
     def print_cards(self) -> list:
         screen_rect = self.screen.get_rect()
         card_rects = []

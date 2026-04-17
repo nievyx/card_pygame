@@ -6,7 +6,6 @@ class ImageCache:
 
     def get_monster_image(self, image_path: str) -> pygame.Surface:
         """
-
         :param image_path:
         :return:
         """
