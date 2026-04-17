@@ -3,7 +3,7 @@ from src.game.spell import DamageSpell, HealSpell
 fireball = DamageSpell(name='Fireball',
                        strength=12,
                        mana_cost=5,
-                       icon='src/ssets/icons/fire_spell_2.png')
+                       icon='src/assets/icons/fire_spell_2.png')
 
 fire_blast = DamageSpell(name='Fireblast',
                        strength=fireball.strength+3,
