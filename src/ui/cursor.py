@@ -7,8 +7,8 @@ class Cursor:
             pygame.mouse.set_visible(False)
         self.size = (32,32)
 
-        self.default_path = 'assets/cursors/01.png'
-        self.attack_path = 'assets/icons/fc721.png'
+        self.default_path = 'src/assets/cursors/01.png'
+        self.attack_path = 'src/assets/icons/fc721.png'
         self.paths = {
             'default': self.default_path,
             'attack': self.attack_path,

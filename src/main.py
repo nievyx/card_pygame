@@ -1,5 +1,5 @@
 from src.utils.config import Config
-from game.game import Game
+from src.game.game import Game
 
 def main():
     Config.load_game_data()
