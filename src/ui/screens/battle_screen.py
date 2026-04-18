@@ -26,6 +26,7 @@ class BattleScreen:
         self.active_spell_monster = None
 
         self.enemy_turn_started_at = None
+        self.enemy_action_delay = 5.5
 
         self.background = config.load_random_background(self.screen.get_size())
 
@@ -34,20 +35,29 @@ class BattleScreen:
 
         self.card_renderer = CardRenderer(battle=self.battle, players=self.players,screen=self.screen)
 
-        # # ❌ Temp for card frame (Refactor to CardRenderer)
-        # self.card_frame = pygame.image.load('src/assets/frame/1.png').convert_alpha()
-        # self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220)) # try 112, 220
-
     def get_attacking_monster(self) -> bool:
         """Returns true if monster is attacking"""
         return self.show_spell_menu
 
+    def delay_enemy_action(self):
+        start_ticks = pygame.time.get_ticks()
+
+        if self.enemy_turn_started_at is None:
+            self.enemy_turn_started_at = start_ticks
+        elif start_ticks - self.enemy_turn_started_at >= self.enemy_action_delay:
+            self.battle.update()
+            self.enemy_turn_started_at = None
+        else:
+            self.enemy_turn_started_at = None
+
     def update(self):
-        self.battle.update()
+        if self.battle.state != BattleState.ENEMY_TURN:
+            self.battle.update()
+        elif self.battle.state == BattleState.ENEMY_TURN:
+           self.delay_enemy_action()
 
         if self.battle.state != BattleState.BATTLE_OVER:
             self.battle.battle_is_over()
-
 
     def start_new_wave(self):
         self.wave_count += 1
@@ -168,11 +178,6 @@ class BattleScreen:
 
         Panel.draw_popup_message(self.screen, title, msg)
 
-    #TODO: finish this
-    def delay_enemy_action(self):
-        import time
-        time.sleep(7)
-
     def draw(self) -> list:
         self.back_button.draw(self.screen)
 
@@ -182,9 +187,6 @@ class BattleScreen:
             turn_name = 'Player'
         else:
             turn_name = 'AI'
-            #TODO: try delay here
-            print("ai branch")
-            self.delay_enemy_action()
 
         self.display_selections()
 
