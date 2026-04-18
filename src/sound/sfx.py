@@ -2,8 +2,7 @@ import os
 import pygame
 
 class SFX:
-    #TODO: debug fireball.mp3 added to sfx for testing
-    def __init__(self, base_path='assets/sfx'):
+    def __init__(self, base_path='src/assets/sfx'):
         pygame.mixer.init()
         self.base_path = base_path
         self.cache = {}
@@ -16,12 +15,15 @@ class SFX:
         sound_path = os.path.join(self.base_path, 'spells',f'{sounds_name}.wav')
 
         if not os.path.exists(sound_path):
+            print(f"[SFX WARNING] Missing sound: {sound_path}")
             return
 
         if sound_path not in self.cache:
-            self.cache[sound_path] = pygame.mixer.Sound(sound_path)
+            sound = pygame.mixer.Sound(sound_path)
+            sound.set_volume(self.volume)
+            self.cache[sound_path] = sound
 
-        self.cache[sound_path].mixer.Sound(sound_path)
+        self.cache[sound_path].play()
 
     def set_volume(self, volume):
         self.volume = volume

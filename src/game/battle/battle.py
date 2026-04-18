@@ -28,7 +28,7 @@ def generate_spell_message(castor, target, spell, amount):
 class Battle:
     def __init__(self, player1, player2, sfx):
         self.players = [player1, player2]
-        self.sfx = SFX()
+        self.sfx = sfx
         self.current_turn = Turn.PLAYER
         self.selected_monster = None
         self.selected_spell = None

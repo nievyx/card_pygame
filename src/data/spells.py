@@ -10,7 +10,6 @@ fire_blast = DamageSpell(name='Fireblast',
                        mana_cost=fireball.mana_cost+5,
                        icon='src/assets/icons/fire_spell_1.png')
 
-
 ice_bolt = DamageSpell(name='Icebolt',
                       strength=18,
                       mana_cost=6,
