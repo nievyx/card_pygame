@@ -33,7 +33,7 @@ vine_attack = DamageSpell(name='Vine Attack',
 
 light_heal = HealSpell(name='Light Heal',
                        strength=15,
-                       mana_cost=8,
+                       mana_cost=6,
                        icon='src/assets/icons/heal_spell_1.png',
                        use_in_overworld=True)
 

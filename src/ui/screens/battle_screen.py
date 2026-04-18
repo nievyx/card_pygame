@@ -109,7 +109,15 @@ class BattleScreen:
             clicked_monster = True
 
             if player == self.battle.get_current_player():
+                if self.battle.try_cast_on_ally(player, monster):
+                    self.close_spell_menu()
+                else:
+                    self.battle.select_monster(player, monster)
+
+
                 self.battle.select_monster(player, monster)
+
+
 
                 if monster.known_spells:
                     self.show_spell_menu = True

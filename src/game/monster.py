@@ -71,10 +71,29 @@ class Monster:
     def rest(self):
         pass
 
-    def take_damage(self, amount):
-        self.hp = max(0, self.hp - amount)
+    def check_is_alive(self):
         if self.hp <= 0:
             self.alive = False
+
+    def take_damage(self, amount):
+        starting_hp = self.hp
+
+        self.hp = max(0, self.hp - amount)
+        self.check_is_alive()
+
+        return starting_hp + amount
+
+    def restore_health(self, amount):
+        """restore the health of the monster
+        :returns: amount of health healed"""
+        self.check_is_alive()
+
+        if amount <= 0:
+            return 0
+
+        starting_hp = self.hp
+        self.hp = min(self.max_hp, self.hp + amount)
+        return self.hp - starting_hp
 
 
 
