@@ -15,7 +15,6 @@ class Monster:
         self.max_mp = self.mp
         self.max_energy = self.energy
         self.max_strength = self.strength
-        self.alive = True
 
         self.dropped_exp = 10 #Placeholder
 
@@ -27,10 +26,11 @@ class Monster:
         # print(f"CREATED: {name} rarity={rarity}")
 
     @classmethod
-    def get_monster_pool(cls):
+    def get_monster_pool(cls) -> list:
         return cls.monster_pool
 
-    def is_alive(self):
+    @property
+    def is_alive(self) -> bool:
         return self.hp > 0
 
     def deplete_energy(self, amount: int) -> None:
@@ -38,7 +38,8 @@ class Monster:
 
     def attack(self, target) -> int:
         if not self.can_attack():
-            raise ValueError(f'{self.name} has no energy left to fight') #TODO: remove error and just let monster not fight, u may also need to update logic for enemy using a monster with no energy
+            raise ValueError(f'{self.name} has no energy left to fight')
+            #TODO: remove error and just let monster not fight, u may also need to update logic for enemy using a monster with no energy
              #TODO: Append to battle log?, probably not here
 
         #TODO: update generate msg in battle log to say critial hit
@@ -52,7 +53,7 @@ class Monster:
         if test_crit:
             damage = round(self.strength * self.critical_hit())
 
-        self.deplete_energy(1) #TODO: change to strength, when changed to str moves can be used even if at least 1 strength this not correct
+        self.deplete_energy(1) #TODO: change amount?
         target.take_damage(damage)
 
         return damage
@@ -62,7 +63,6 @@ class Monster:
         return modifier
 
     def can_attack(self) -> bool:
-        """ #TODO: update this when decided how much energy attacks will use"""
         return self.energy > 0
 
     def defense(self):
@@ -71,29 +71,27 @@ class Monster:
     def rest(self):
         pass
 
-    def check_is_alive(self):
-        if self.hp <= 0:
-            self.alive = False
-
-    def take_damage(self, amount):
+    def take_damage(self, amount:int) -> int:
         starting_hp = self.hp
 
         self.hp = max(0, self.hp - amount)
-        self.check_is_alive()
 
         return starting_hp + amount
 
-    def restore_health(self, amount):
+    def restore_health(self, amount:int):
         """restore the health of the monster
         :returns: amount of health healed"""
-        self.check_is_alive()
+        if self.is_alive:
 
-        if amount <= 0:
-            return 0
+            if amount <= 0:
+                return 0
 
-        starting_hp = self.hp
-        self.hp = min(self.max_hp, self.hp + amount)
-        return self.hp - starting_hp
+            starting_hp = self.hp
+            self.hp = min(self.max_hp, self.hp + amount)
+            return self.hp - starting_hp
+        return None
+
+
 
 
 

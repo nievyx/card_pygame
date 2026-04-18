@@ -5,6 +5,7 @@ CARD_RENDER_THEME = {
     'secondary_text': (230, 230, 230),
     'stat_text': (255, 255, 255),
     'low_stat': (255, 0, 0),
+    'mid_stat': (255, 200, 0),
     'font': 'Arial'
 }
 

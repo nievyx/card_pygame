@@ -29,7 +29,7 @@ class Spell:
             self.icon = pygame.image.load(self.icon_path).convert_alpha()
 
     def can_cast(self, caster) -> bool:
-        return getattr(caster, 'mp', 0) >= self.mana_cost and caster.is_alive()
+        return getattr(caster, 'mp', 0) >= self.mana_cost and caster.is_alive
 
     def get_valid_targets(self, caster, allies, enemies):
         raise NotImplementedError('Each spell must implement get_valid_targets()')
@@ -41,7 +41,7 @@ class Spell:
         raise NotImplementedError('Each spell must implement cast()')
 
     def can_cast_on(self, caster, target):
-        return self.can_cast(caster) and target is not None and target.is_alive()
+        return self.can_cast(caster) and target is not None and target.is_alive
 
     def __str__(self):
         return f'{self.name} : ({self.strength}STR, {self.mana_cost}MP)'
@@ -71,7 +71,7 @@ class DamageSpell(Spell):
         :param enemies:
         :return: List of targets or empty list
         """
-        return [monster for monster in enemies if monster.is_alive()]
+        return [monster for monster in enemies if monster.is_alive]
 
 
     def __str__(self):
@@ -105,7 +105,7 @@ class HealSpell(Spell):
                 """
         return [
             monster for monster in allies 
-            if monster.is_alive() and monster.hp < monster.max_hp 
+            if monster.is_alive and monster.hp < monster.max_hp
         ]
 
     def __str__(self):

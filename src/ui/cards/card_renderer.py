@@ -26,8 +26,11 @@ class CardRenderer:
         """Toggles stat colors to highlight low stats"""
         if max_value <= 0:
             return THEME['text']
-        percent = 0.3
-        return THEME['low_stat'] if current / max_value <= percent else THEME['secondary_text']
+        mid_threshold = 0.5
+        low_threshold = 0.3
+        return (THEME['low_stat'] if current / max_value <= low_threshold else
+                THEME['mid_stat'] if current / max_value <= mid_threshold else
+                THEME['secondary_text'])
 
     def draw_monster_stats(self, monster, card_x, card_y):
         monster_stats = {'HP': (monster.hp, monster.max_hp),
@@ -85,7 +88,7 @@ class CardRenderer:
         space_between_cards = 10
 
         for row_index, (player, monsters) in enumerate(self.players.items()):
-            alive_monsters = [monster for monster in monsters if monster.is_alive()]
+            alive_monsters = [monster for monster in monsters if monster.is_alive]
             num_cards = len(alive_monsters)
 
             total_width = num_cards * self.card_width + (num_cards - 1) * space_between_cards

@@ -62,7 +62,7 @@ class Battle:
             and isinstance(self.selected_spell, HealSpell)
             and target_player == self.get_current_player()
             and target is not None
-            and target.is_alive()
+            and target.is_alive
         )
 
     def update(self):
@@ -126,8 +126,8 @@ class Battle:
         if self.state == BattleState.BATTLE_OVER:
             return True
 
-        player_alive = any(monster.is_alive() for monster in self.players[0])
-        enemy_alive = any(monster.is_alive() for monster in self.players[1])
+        player_alive = any(monster.is_alive for monster in self.players[0])
+        enemy_alive = any(monster.is_alive for monster in self.players[1])
 
         if player_alive and enemy_alive:
             return False
@@ -135,10 +135,10 @@ class Battle:
         self.state = BattleState.BATTLE_OVER
 
         if player_alive:
-            self.winner, self.loser = 0, 1
-            self.add_battle_log(f'player wins!', THEME['PLAYER_LOG_COLOR'])
-        elif enemy_alive:
             self.winner, self.loser = 1, 0
+            self.add_battle_log(f'Player wins!', THEME['PLAYER_LOG_COLOR'])
+        elif enemy_alive:
+            self.winner, self.loser = 0, 1
             self.add_battle_log(f'AI wins the battle', THEME['ENEMY_LOG_COLOR'])
         else:
             self.winner, self.loser = None, None
@@ -150,8 +150,8 @@ class Battle:
         enemy_player = self.players[1]
         player = self.players[0]
 
-        alive_enemies = [m for m in enemy_player if m.is_alive()]
-        alive_players = [m for m in player if m.is_alive()]
+        alive_enemies = [m for m in enemy_player if m.is_alive]
+        alive_players = [m for m in player if m.is_alive]
 
         if not alive_enemies or not alive_players:
             self.state = BattleState.BATTLE_OVER
@@ -184,7 +184,7 @@ class Battle:
         if player != self.get_current_player():
             return False
 
-        if monster is None or not monster.is_alive():
+        if monster is None or not monster.is_alive:
             return False
 
         #Clicking the same monster deselects #TODO: fact check this
@@ -210,7 +210,7 @@ class Battle:
         if defender_player != self.get_opposing_player():
             return False
 
-        if not attacker.is_alive() or not defender.is_alive():
+        if not attacker.is_alive or not defender.is_alive:
             return False
 
         if self.selected_spell is not None:

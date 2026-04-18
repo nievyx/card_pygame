@@ -25,15 +25,18 @@ class BattleScreen:
         self.selected_spell_index = None
         self.active_spell_monster = None
 
+        self.enemy_turn_started_at = None
+
         self.background = config.load_random_background(self.screen.get_size())
 
         self.wave_count = 1
         self.card_rects = []
 
         self.card_renderer = CardRenderer(battle=self.battle, players=self.players,screen=self.screen)
-        # ❌ Temp for card frame (Refactor to CardRenderer)
-        self.card_frame = pygame.image.load('src/assets/frame/1.png').convert_alpha()
-        self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220)) # try 112, 220
+
+        # # ❌ Temp for card frame (Refactor to CardRenderer)
+        # self.card_frame = pygame.image.load('src/assets/frame/1.png').convert_alpha()
+        # self.card_frame = pygame.transform.smoothscale(self.card_frame, (112, 220)) # try 112, 220
 
     def get_attacking_monster(self) -> bool:
         """Returns true if monster is attacking"""
@@ -61,22 +64,6 @@ class BattleScreen:
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
         self.card_rects = []
-
-    # ❌
-    def get_monster_image(self, image_path: str) -> pygame.Surface:
-        """
-
-        :param image_path:
-        :return:
-        """
-        if image_path not in self.monster_image_cache:
-            image = pygame.image.load(image_path).convert_alpha()
-            cropped_rect = image.get_bounding_rect()
-            image = image.subsurface(cropped_rect).copy()
-            image = pygame.transform.smoothscale(image, (80, 90))
-            self.monster_image_cache[image_path] = image
-
-        return self.monster_image_cache[image_path]
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -113,11 +100,6 @@ class BattleScreen:
                     self.close_spell_menu()
                 else:
                     self.battle.select_monster(player, monster)
-
-
-                self.battle.select_monster(player, monster)
-
-
 
                 if monster.known_spells:
                     self.show_spell_menu = True
@@ -216,7 +198,7 @@ class BattleScreen:
         # Battle Log box
         self.battle_log.draw(self.screen)
 
-        if self.show_spell_menu and self.active_spell_monster and self.active_spell_monster.is_alive():
+        if self.show_spell_menu and self.active_spell_monster and self.active_spell_monster.is_alive:
             self.spell_menu.draw(self.screen, self.active_spell_monster, self.selected_spell_index)
 
 
