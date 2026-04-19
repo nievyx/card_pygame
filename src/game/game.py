@@ -52,23 +52,29 @@ class Game:
 
     def update(self) -> None:
         self.cursor.update()
+
+        self.update_cursor_context()
+
         if self.current_state == 'game':
             self.battle_screen.update()
 
-            self.update_cursor_context()
 
     def update_cursor_context(self):
-        attacking = self.battle_screen.get_attacking_monster()
-
-        if attacking:
-            spell = self.battle_screen.get_active_spell()
-            if spell:
-                self.cursor.use_spell(spell)
-            else:
-                self.cursor.use_attack()
-
-        else:
+        if self.current_state == 'menu':
             self.cursor.use_default()
+
+        if self.current_state == 'game':
+            attacking = self.battle_screen.get_attacking_monster()
+
+            if attacking:
+                spell = self.battle_screen.get_active_spell()
+                if spell:
+                    self.cursor.use_spell(spell)
+                else:
+                    self.cursor.use_attack()
+
+            else:
+                self.cursor.use_default()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
