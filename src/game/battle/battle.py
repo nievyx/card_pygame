@@ -2,8 +2,6 @@ from src.utils.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
 from src.ui.theme import THEME
-from src.sound.sfx import SFX
-
 from src.game.spell import HealSpell
 
 
@@ -135,10 +133,10 @@ class Battle:
         self.state = BattleState.BATTLE_OVER
 
         if player_alive:
-            self.winner, self.loser = 1, 0
+            self.winner, self.loser = 0, 1
             self.add_battle_log(f'Player wins!', THEME['PLAYER_LOG_COLOR'])
         elif enemy_alive:
-            self.winner, self.loser = 0, 1
+            self.winner, self.loser = 1, 0
             self.add_battle_log(f'AI wins the battle', THEME['ENEMY_LOG_COLOR'])
         else:
             self.winner, self.loser = None, None

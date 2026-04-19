@@ -93,9 +93,10 @@ class BattleScreen:
         if self.battle.state == BattleState.BATTLE_OVER:
             if self.battle.winner == 0:
                 self.start_new_wave()
+                return None
             else:
                 self.reset_battle()
-            return 'menu'
+                return 'menu'
 
         clicked_monster = False
 
@@ -163,16 +164,15 @@ class BattleScreen:
 
             info_font = pygame.font.SysFont('Arial', 24)
             display_text_surface = info_font.render(display_text, True, THEME['text_primary'])
-            self.screen.blit(display_text_surface, (360, 28))
+            self.screen.blit(display_text_surface, (430, 28))
 
     def draw_battle_result(self):
-        title = ['Draw', 'You Win', 'You Lose'][self.battle.winner or 0]
-
-        # msg = (
-        #     f'Wave {self.wave_count} Clear! Click anywhere to start the next wave'
-        #     if self.mode == GameMode.WAVE_MODE and self.battle.winner == 0
-        #     else 'Click anywhere to return to the menu'
-        # )
+        if self.battle.winner is None:
+            title = None
+        elif self.battle.winner == 0:
+            title = 'You Win'
+        else:
+            title = 'You Lose'
 
         msg = f'Round {self.wave_count+1} Click anywhere to continue'
 
@@ -192,8 +192,10 @@ class BattleScreen:
 
         # Player Turn Text
         info_font = pygame.font.SysFont('Arial', 24)
-        turn_text = info_font.render(f'Turn: {turn_name}', True, (255, 255, 255))
-        self.screen.blit(turn_text, (200, 28))
+        wave_text = info_font.render(f'Wave {self.wave_count}', True, THEME['text_primary'])
+        turn_text = info_font.render(f'Turn: {turn_name}', True, THEME['text_primary'])
+        self.screen.blit(turn_text, (300, 28))
+        self.screen.blit(wave_text, (200, 28))
 
         self.card_rects = self.card_renderer.draw()
 
