@@ -21,14 +21,6 @@ class Monster:
         self.known_spells = known_spells if known_spells is not None else []
         self.rarity = rarity
 
-        # Monster.monster_pool.append(self)
-
-        # print(f"CREATED: {name} rarity={rarity}")
-
-    # @classmethod
-    # def get_monster_pool(cls) -> list:
-    #     return cls.monster_pool
-
     @classmethod
     def register(cls, monster):
         cls.monster_pool[monster.name] = monster
@@ -42,6 +34,20 @@ class Monster:
             team = random.choices(list(cls.monster_pool.values()), k=size)
 
         return [monster.clone() for monster in team]
+
+    @classmethod
+    def generate_rand_monster(cls, rarity_weights=None):
+        size=1
+        pool = list(cls.monster_pool.values())
+
+        if rarity_weights:
+            weights = [rarity_weights[monster.rarity] for monster in pool]
+            new_card = random.choices(pool, weights=weights, k=size)[0]
+        else:
+            new_card = random.choices(pool, k=1)[0]
+
+        return new_card.clone()
+
 
     @property
     def is_alive(self) -> bool:

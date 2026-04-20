@@ -66,8 +66,11 @@ class BattleScreen:
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
-        self.background = self.config.load_random_background(self.screen.get_size())  # Regenerate BG
-        print("enemy team size:", len(enemy_team)) #TODO: debug
+        self.background = self.config.load_random_background(self.screen.get_size())  # Regenerate BG#
+
+        new_card = self.config.get_new_card()
+        self.players[0].append(new_card)
+
 
     def reset_battle(self):
         self.players = self.config.create_players()

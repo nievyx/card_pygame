@@ -1,4 +1,4 @@
-from src.data.spells import light_heal, fireball, ice_bolt, mid_heal, ice_shards, vine_attack
+from src.data.spells import light_heal, fireball, ice_bolt, mid_heal, ice_shards, vine_attack, strong_heal, fire_blast
 from src.game.monster import Monster
 import os
 
@@ -81,4 +81,33 @@ Monster.register(Monster(
     7, 7, 6, 7,
     [vine_attack],
     'uncommon',
+))
+Monster.register(Monster(
+        name='Behemoth',
+        image=MONSTER_DIR + '/Behemoth.png',
+        hp=yanpi.max_hp+13,
+        mp=yanpi.max_mp+14,
+        energy=yanpi.max_energy+12,
+        strength=yanpi.max_strength+12,
+        rarity='impossible'
+))
+Monster.register(Monster(
+        name='Dark Angel',
+        image=MONSTER_DIR + '/Angel of the Dark.png',
+        hp=yanpi.max_hp+5,
+        mp=yanpi.max_mp+2,
+        energy=yanpi.max_energy+5,
+        strength=yanpi.max_strength+6,
+        known_spells = [light_heal, mid_heal],
+        rarity='rare'
+))
+Monster.register(Monster(
+        name='Blue Dragon',
+        image=MONSTER_DIR + '/Blue Dragon.png',
+        hp=yanpi.max_hp+13,
+        mp=yanpi.max_mp+14,
+        energy=yanpi.max_energy+12,
+        strength=yanpi.max_strength+15,
+        known_spells = [light_heal, mid_heal, strong_heal, fireball, fire_blast],
+        rarity='impossible'
 ))
