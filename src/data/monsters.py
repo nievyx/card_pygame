@@ -5,7 +5,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MONSTER_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'assets', 'monsters'))
 
-chimera = Monster(
+Monster.register(Monster(
         name='Chimera',
         image=MONSTER_DIR + '/Chimera.png',
         hp=12,
@@ -13,7 +13,7 @@ chimera = Monster(
         energy=5,
         strength=4,
         known_spells = [fireball]
-)
+))
 demon = Monster(
         name='Demon',
         image=MONSTER_DIR + '/Demon.png',

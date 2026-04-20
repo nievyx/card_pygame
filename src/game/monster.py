@@ -21,17 +21,32 @@ class Monster:
         self.known_spells = known_spells if known_spells is not None else []
         self.rarity = rarity
 
-        Monster.monster_pool.append(self)
+        # Monster.monster_pool.append(self)
 
         # print(f"CREATED: {name} rarity={rarity}")
 
+    # @classmethod
+    # def get_monster_pool(cls) -> list:
+    #     return cls.monster_pool
+
     @classmethod
-    def get_monster_pool(cls) -> list:
-        return cls.monster_pool
+    def register(cls, monster):
+        cls.monster_pool.append(monster)
+
+    @classmethod
+    def generate_rand_team(cls, size=5):
+        chosen = random.choices(cls.monster_pool, k=size)
+
 
     @property
     def is_alive(self) -> bool:
         return self.hp > 0
+
+    def reset(self):
+        self.hp = self.max_hp
+        self.mp = self.max_mp
+        self.energy = self.max_energy
+        self.strength = self.max_strength
 
     def deplete_energy(self, amount: int) -> None:
         self.energy = max(0, self.energy - amount)
