@@ -1,7 +1,7 @@
 import random
 
 class Monster:
-    monster_pool = []
+    monster_pool = {}
 
     def __init__(self, name, image, hp, mp, energy, strength, known_spells = None, rarity='common'):
         self.name = name
@@ -31,15 +31,15 @@ class Monster:
 
     @classmethod
     def register(cls, monster):
-        cls.monster_pool.append(monster)
+        cls.monster_pool[monster.name] = monster
 
     @classmethod
     def generate_rand_team(cls, size=5, rarity_weights=None):
         if rarity_weights:
-            weights = [rarity_weights[monster.rarity] for monster in cls.monster_pool]
-            team = random.choices(cls.monster_pool, weights=weights, k=size)
+            weights = [rarity_weights[monster.rarity] for monster in cls.monster_pool.values()]
+            team = random.choices(list(cls.monster_pool.values()), weights=weights, k=size)
         else:
-            team = random.choices(cls.monster_pool, k=size)
+            team = random.choices(list(cls.monster_pool.values()), k=size)
 
         return [monster.clone() for monster in team]
 
