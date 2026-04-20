@@ -24,7 +24,7 @@ class Config:
         'uncommon':6,
         'rare':4,
         'epic':1,
-        'impossible':0,
+        'legendary':0.5,
     }
 
     @staticmethod

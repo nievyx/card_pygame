@@ -3,9 +3,10 @@ import random
 class Monster:
     monster_pool = {}
 
-    def __init__(self, name, image, hp, mp, energy, strength, known_spells = None, rarity='common'):
+    def __init__(self, name, image, face, hp, mp, energy, strength, known_spells = None, rarity='common'):
         self.name = name
         self.image = image
+        self.face = face
         self.hp = hp
         self.mp = mp
         self.strength = strength # Strength of physical damage
@@ -20,6 +21,8 @@ class Monster:
 
         self.known_spells = known_spells if known_spells is not None else []
         self.rarity = rarity
+
+        # print(f"CREATED: {name} rarity={rarity}")
 
     @classmethod
     def register(cls, monster):
@@ -63,6 +66,7 @@ class Monster:
         return Monster(
             self.name,
             self.image,
+            self.face,
             self.hp,
             self.mp,
             self.energy,

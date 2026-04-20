@@ -38,6 +38,7 @@ class Game:
 
         self.battle_screen = BattleScreen(screen=self.screen, config=self.config,
                                           sfx=self.sfx, main_menu_button=self.back_button)
+
         self.menu_screen = MenuScreen(screen=self.screen, config=self.config,start_button= self.start_button,
                                       how_to_button= self.how_to_button,
                                       quit_button = self.quit_button)
