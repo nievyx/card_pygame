@@ -34,9 +34,14 @@ class Monster:
         cls.monster_pool.append(monster)
 
     @classmethod
-    def generate_rand_team(cls, size=5):
-        chosen = random.choices(cls.monster_pool, k=size)
+    def generate_rand_team(cls, size=5, rarity_weights=None):
+        if rarity_weights:
+            weights = [rarity_weights[monster.rarity] for monster in cls.monster_pool]
+            team = random.choices(cls.monster_pool, weights=weights, k=size)
+        else:
+            team = random.choices(cls.monster_pool, k=size)
 
+        return [monster.clone() for monster in team]
 
     @property
     def is_alive(self) -> bool:
@@ -47,6 +52,18 @@ class Monster:
         self.mp = self.max_mp
         self.energy = self.max_energy
         self.strength = self.max_strength
+
+    def clone(self):
+        return Monster(
+            self.name,
+            self.image,
+            self.hp,
+            self.mp,
+            self.energy,
+            self.strength,
+            known_spells=list(self.known_spells),
+            rarity=self.rarity
+        )
 
     def deplete_energy(self, amount: int) -> None:
         self.energy = max(0, self.energy - amount)

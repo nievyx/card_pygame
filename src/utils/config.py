@@ -18,6 +18,8 @@ class Config:
     cards_per_player = 5
     enemy_action_delay = 600
 
+    # rarity_weights = []
+
     @staticmethod
     def load_game_data():
         """
@@ -59,7 +61,7 @@ class Config:
         return players
 
     def create_enemy_team(self):
-        """ Recreates enemy team"""
+        """ Recreates enemy team """
         return [
             Monster(
                 m.name,

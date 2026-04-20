@@ -14,7 +14,7 @@ Monster.register(Monster(
         strength=4,
         known_spells = [fireball]
 ))
-demon = Monster(
+Monster.register(Monster(
         name='Demon',
         image=MONSTER_DIR + '/Demon.png',
         hp=15,
@@ -22,8 +22,8 @@ demon = Monster(
         energy=8,
         strength=9,
         known_spells = [ice_bolt, ice_shards]
-)
-calm = Monster(
+))
+Monster.register(Monster(
         name='Calm',
         image=MONSTER_DIR + '/Calm.png',
         hp=10,
@@ -31,8 +31,8 @@ calm = Monster(
         energy=6,
         strength=3,
         known_spells = [light_heal]
-)
-yanpi = Monster(
+))
+Monster.register(Monster(
         name='Yanpi',
         image=MONSTER_DIR + '/Yanpi.png',
         hp=8,
@@ -40,44 +40,45 @@ yanpi = Monster(
         energy=5,
         strength=2,
         known_spells = [light_heal]
-)
-yanfly = Monster(
+))
+yanpi = Monster.monster_pool["Yanpi"]
+Monster.register(Monster(
         name='Yanfly',
         image=MONSTER_DIR + '/Yanfly.png',
-        hp=yanpi.hp+3,
-        mp=yanpi.mp+4,
-        energy=yanpi.energy+2,
-        strength=yanpi.strength+2,
+        hp=yanpi.max_hp+3,
+        mp=yanpi.max_mp+4,
+        energy=yanpi.max_energy+2,
+        strength=yanpi.max_strength+2,
         known_spells = [light_heal, mid_heal],
         rarity='uncommon'
-)
-fury = Monster(
+))
+Monster.register(Monster(
     'Fury',
     MONSTER_DIR + '/Fury.png',
     6, 7, 5, 9,
     [fireball],
-)
+))
 
-earth_king = Monster(
+Monster.register(Monster(
     'Earth King',
     MONSTER_DIR + '/Earth King.png',
     7, 7, 6, 7,
     [ice_bolt],
     'uncommon',
-)
+))
 
-djinn = Monster(
+Monster.register(Monster(
     'Djinn',
     MONSTER_DIR + '/djinn.png',
     7, 7, 6, 7,
     [ice_bolt],
     'rare',
-)
+))
 
-plant = Monster(
+Monster.register(Monster(
     'Plant',
     MONSTER_DIR + '/plant.png',
     7, 7, 6, 7,
     [vine_attack],
     'uncommon',
-)
+))
