@@ -111,10 +111,12 @@ class Battle:
         """returns a monster list"""""
         return self.players[index]
 
-    def add_battle_log(self, message: str, color=None) -> None:
+    def add_battle_log(self, message: str, color=None, attacker =None, target=None) -> None:
         self.log.append({
             'text': message,
-            'color': color
+            'color': color,
+            'attacker': attacker,
+            'target': target
         })
 
         if len(self.log) > self.max_log_size:
@@ -161,7 +163,7 @@ class Battle:
         damage = attacker.attack(defender)
 
         if damage == 0:
-            self.add_battle_log(f"{attacker.name} is too tired to attack!", ENEMY_LOG_COLOR)
+            self.add_battle_log(f"{attacker.name} is too tired to attack!", ENEMY_LOG_COLOR, attacker=attacker, target=defender)
         else:
             msg = self.generate_attack_message(attacker, defender, damage)
             self.add_battle_log(msg, ENEMY_LOG_COLOR)
