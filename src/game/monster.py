@@ -1,11 +1,12 @@
 import random
 
 class Monster:
-    monster_pool = []
+    monster_pool = {}
 
-    def __init__(self, name, image, hp, mp, energy, strength, known_spells = None, rarity='common'):
+    def __init__(self, name, image, face, hp, mp, energy, strength, known_spells = None, rarity='common'):
         self.name = name
         self.image = image
+        self.face = face
         self.hp = hp
         self.mp = mp
         self.strength = strength # Strength of physical damage
@@ -21,17 +22,58 @@ class Monster:
         self.known_spells = known_spells if known_spells is not None else []
         self.rarity = rarity
 
-        Monster.monster_pool.append(self)
-
         # print(f"CREATED: {name} rarity={rarity}")
 
     @classmethod
-    def get_monster_pool(cls) -> list:
-        return cls.monster_pool
+    def register(cls, monster):
+        cls.monster_pool[monster.name] = monster
+
+    @classmethod
+    def generate_rand_team(cls, size=5, rarity_weights=None):
+        if rarity_weights:
+            weights = [rarity_weights[monster.rarity] for monster in cls.monster_pool.values()]
+            team = random.choices(list(cls.monster_pool.values()), weights=weights, k=size)
+        else:
+            team = random.choices(list(cls.monster_pool.values()), k=size)
+
+        return [monster.clone() for monster in team]
+
+    @classmethod
+    def generate_rand_monster(cls, rarity_weights=None):
+        size=1
+        pool = list(cls.monster_pool.values())
+
+        if rarity_weights:
+            weights = [rarity_weights[monster.rarity] for monster in pool]
+            new_card = random.choices(pool, weights=weights, k=size)[0]
+        else:
+            new_card = random.choices(pool, k=1)[0]
+
+        return new_card.clone()
+
 
     @property
     def is_alive(self) -> bool:
         return self.hp > 0
+
+    def reset(self):
+        self.hp = self.max_hp
+        self.mp = self.max_mp
+        self.energy = self.max_energy
+        self.strength = self.max_strength
+
+    def clone(self):
+        return Monster(
+            self.name,
+            self.image,
+            self.face,
+            self.hp,
+            self.mp,
+            self.energy,
+            self.strength,
+            known_spells=list(self.known_spells),
+            rarity=self.rarity
+        )
 
     def deplete_energy(self, amount: int) -> None:
         self.energy = max(0, self.energy - amount)

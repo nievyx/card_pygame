@@ -66,7 +66,11 @@ class BattleScreen:
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
-        self.background = self.config.load_random_background(self.screen.get_size())  # Regenerate BG
+        self.background = self.config.load_random_background(self.screen.get_size())  # Regenerate BG#
+
+        new_card = self.config.get_new_card()
+        self.players[0].append(new_card)
+
 
     def reset_battle(self):
         self.players = self.config.create_players()
@@ -169,12 +173,14 @@ class BattleScreen:
     def draw_battle_result(self):
         if self.battle.winner is None:
             title = None
+            msg = f'Click anywhere to continue'
         elif self.battle.winner == 0:
             title = 'You Win'
+            msg = f'Round {self.wave_count + 1} Click anywhere to continue'
         else:
             title = 'You Lose'
+            msg = f'Better luck next time! Click anywhere to continue'
 
-        msg = f'Round {self.wave_count+1} Click anywhere to continue'
 
         Panel.draw_popup_message(self.screen, title, msg)
 
