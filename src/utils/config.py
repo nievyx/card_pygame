@@ -17,6 +17,8 @@ class Config:
 
     cards_per_player = 5
     num_players = 2
+    # cards_per_player = 5
+    #cards_per_player = [5, 3]
     enemy_action_delay = 600
 
     RARITY_WEIGHTS = {
@@ -64,6 +66,14 @@ class Config:
                 rarity_weights=self.RARITY_WEIGHTS
             )
 
+        # num_players = 2
+        # players = {}
+        #
+        # for i in range(num_players):
+        #     players[i] = [
+        #         Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength, known_spells=list(m.known_spells), rarity=m.rarity)
+        #         for m in random.choices(Monster.monster_pool, k=self.cards_per_player)
+        #     ]
         return players
 
 
@@ -75,7 +85,22 @@ class Config:
         )
 
     def get_new_card(self):
+        """ Recreates enemy team"""
         return Monster.generate_rand_monster(rarity_weights=self.RARITY_WEIGHTS)
+        # return [
+        #     Monster(
+        #         m.name,
+        #         m.image,
+        #         m.hp,
+        #         m.mp,
+        #         m.energy,
+        #         m.strength,
+        #         known_spells=list(m.known_spells),
+        #         rarity=m.rarity
+        #     )
+        #     for m in random.choices(Monster.monster_pool, k=self.cards_per_player[1])
+        # ]
+
 
 
 
