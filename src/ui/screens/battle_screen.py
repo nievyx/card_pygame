@@ -51,8 +51,17 @@ class BattleScreen:
             self.enemy_turn_started_at = None
 
     def update(self):
+        """ Controls the turn-based battle flow each frame.
+
+        Handles player updates during the player's turn,
+        executes played enemy actions during the enemy turn,
+        and checks if the battle has ended.
+
+        Called once per frame inside the main game loop"""
         if self.battle.state != BattleState.ENEMY_TURN:
             self.battle.update()
+
+        # If enemies turn handle enemy action delay
         elif self.battle.state == BattleState.ENEMY_TURN:
            self.delay_enemy_action()
 
@@ -60,6 +69,12 @@ class BattleScreen:
             self.battle.battle_is_over()
 
     def start_new_wave(self):
+        """Advance to the next wave.
+
+        Increments wave count, generates a new enemy team and battle,
+        reset UI state, loads a new background, and grants the player a new card"""
+
+
         self.wave_count += 1
         enemy_team = self.config.create_enemy_team()
         self.players[1] = enemy_team
@@ -73,6 +88,9 @@ class BattleScreen:
 
 
     def reset_battle(self):
+        """
+         Regenerates enemy cards.
+         Runs after Winning the battle."""
         self.players = self.config.create_players()
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
         self.battle_log = BattleLog(self.battle)
@@ -183,6 +201,14 @@ class BattleScreen:
 
 
         Panel.draw_popup_message(self.screen, title, msg)
+
+    def tint_background(self):
+        tint = pygame.Surface(self.screen.get_size())
+        tint.fill((0, 0, 0))  # black tint
+
+        tint.set_alpha(120)
+
+        self.screen.blit(tint, (0, 0))
 
     def draw(self) -> list:
         self.back_button.draw(self.screen)

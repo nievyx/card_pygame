@@ -98,7 +98,7 @@ Monster.register(Monster(
         face= FACE_DIR + '/Behemoth.png',
         hp=yanpi.max_hp+13,
         mp=yanpi.max_mp+14,
-        energy=yanpi.max_energy+12,
+        energy=yanpi.max_energy+8,
         strength=yanpi.max_strength+12,
         rarity='legendary'
 ))
@@ -119,7 +119,7 @@ Monster.register(Monster(
         face=FACE_DIR + '/Blue Dragon.png',
         hp=yanpi.max_hp+13,
         mp=yanpi.max_mp+14,
-        energy=yanpi.max_energy+12,
+        energy=yanpi.max_energy+8,
         strength=yanpi.max_strength+15,
         known_spells = [light_heal, mid_heal, strong_heal, fireball, fire_blast],
         rarity='legendary'

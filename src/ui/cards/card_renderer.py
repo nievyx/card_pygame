@@ -33,6 +33,7 @@ class CardRenderer:
                 THEME['secondary_text'])
 
     def draw_monster_stats(self, monster, card_x, card_y):
+        """Displays stats for a monster on the card"""
         monster_stats = {'HP': (monster.hp, monster.max_hp),
                          'STR': (monster.strength, monster.max_strength),
                          'ENG': (monster.energy, monster.max_energy),

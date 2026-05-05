@@ -78,6 +78,9 @@ class Monster:
     def deplete_energy(self, amount: int) -> None:
         self.energy = max(0, self.energy - amount)
 
+    def recover_energy(self, amount: int) -> None:
+        self.energy = min(0, self.energy + amount)
+
     def attack(self, target) -> int:
         if not self.can_attack():
             raise ValueError(f'{self.name} has no energy left to fight')

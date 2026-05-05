@@ -15,10 +15,8 @@ class Config:
     
     game_title = "Niamh's Monster Cards"
 
-    cards_per_player = 5
     num_players = 2
-    # cards_per_player = 5
-    #cards_per_player = [5, 3]
+    cards_per_player = [5, 3]
     enemy_action_delay = 600
 
     RARITY_WEIGHTS = {
@@ -62,44 +60,27 @@ class Config:
 
         for i in range(self.num_players):
             players[i] = Monster.generate_rand_team(
-                size=self.cards_per_player,
+                size=self.cards_per_player[i],
                 rarity_weights=self.RARITY_WEIGHTS
             )
-
-        # num_players = 2
-        # players = {}
-        #
-        # for i in range(num_players):
-        #     players[i] = [
-        #         Monster(m.name, m.image, m.hp, m.mp, m.energy, m.strength, known_spells=list(m.known_spells), rarity=m.rarity)
-        #         for m in random.choices(Monster.monster_pool, k=self.cards_per_player)
-        #     ]
         return players
 
 
-    def create_enemy_team(self):
+    def create_enemy_team(self, wave=1):
         """ Recreates enemy team """
+        base_enemy_cards = self.cards_per_player[1]
+
+        # increase slowly with wave
+        enemy_size = min(5, base_enemy_cards + (wave - 1) // 2)
+
         return Monster.generate_rand_team(
-            size=self.cards_per_player,
+            size=enemy_size,
             rarity_weights=self.RARITY_WEIGHTS
         )
 
     def get_new_card(self):
         """ Recreates enemy team"""
         return Monster.generate_rand_monster(rarity_weights=self.RARITY_WEIGHTS)
-        # return [
-        #     Monster(
-        #         m.name,
-        #         m.image,
-        #         m.hp,
-        #         m.mp,
-        #         m.energy,
-        #         m.strength,
-        #         known_spells=list(m.known_spells),
-        #         rarity=m.rarity
-        #     )
-        #     for m in random.choices(Monster.monster_pool, k=self.cards_per_player[1])
-        # ]
 
 
 

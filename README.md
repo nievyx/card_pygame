@@ -2,6 +2,16 @@
 > note: Readme might not reflect games current state
 
 ## How to play Game
+
+## Setup
+
+```powershell
+py -3.13 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python src.main.py
+```
+
 ```
 set PYTHONPATH=%CD%;%CD%\src
 ```
