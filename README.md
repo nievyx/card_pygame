@@ -1,6 +1,6 @@
 # card_pygame
 
-![Capture](././assets/demo.PNG)
+![Capture](./././assets/demo.PNG)
 
 ## Requirements / dependencies
 
