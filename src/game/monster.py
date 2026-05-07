@@ -98,8 +98,15 @@ class Monster:
         if test_crit:
             damage = round(self.strength * self.critical_hit())
 
+        # TODO: Refactor attack() to separate responsibilities:
+        # - Monster should ONLY calculate attack result (damage, crit, energy cost)
+        # - Move applying damage (target.take_damage) to BattleManager/combat system
+        # - Replace exception on no energy with a non-blocking return (e.g. {"success": False})
+        # - Return structured result dict (damage, crit, success) for battle/UI handling
+        # - Move battle log / text output OUT of this class into UI layer
+
         self.deplete_energy(1) #TODO: change amount?
-        target.take_damage(damage)
+        target.take_damage(damage) #TODO: dont think this should take effect here
 
         return damage
 

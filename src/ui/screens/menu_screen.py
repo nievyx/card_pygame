@@ -11,8 +11,7 @@ class MenuScreen:
         self.quit_button = quit_button
 
 
-    # TODO: add literal
-    def handle_click(self, pos: tuple[int, int]):
+    def handle_click(self, pos: tuple[int, int]) -> State:
         if self.start_button.is_hovered(pos):
             return 'game'
         elif self.how_to_button.is_hovered(pos):
@@ -26,8 +25,24 @@ class MenuScreen:
             return self.handle_click(event.pos)
         return None
 
+    def draw_title(self):
+        screen_width = self.screen.get_width()
+
+        title_font = pygame.font.SysFont(
+            'consolas',
+            72
+        )
+
+        title_text = title_font.render(self.config.game_title, True, (255, 255, 255))
+        title_rect = title_text.get_rect(
+            center=(screen_width // 2, 250)
+        )
+
+        self.screen.blit(title_text, title_rect)
+
     def draw(self) -> None:
         self.screen.fill(THEME['background'])
+        self.draw_title()
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
         self.quit_button.draw(self.screen)

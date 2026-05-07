@@ -1,5 +1,6 @@
 import random
 import pygame
+from src.utils.config import Config
 
 class Spell:
     DEFAULT_ICON = 'src/assets/icons/staff.png'
@@ -20,10 +21,11 @@ class Spell:
         self.icon = None
         self.use_in_overworld = use_in_overworld
         self.sfx_name = sfx_name or self.name.lower().replace(' ', '_')
-
+        self.allow_overheal = Config.ALLOW_OVERHEAL
         Spell.spell_pool.append(self)
 
     def load_img(self):
+        """Loads spell icon image"""
         if self.icon is None:
             self.icon = pygame.image.load(self.icon_path).convert_alpha()
 
@@ -39,8 +41,12 @@ class Spell:
     def cast(self, caster, target):
         raise NotImplementedError('Each spell must implement cast()')
 
-    def can_cast_on(self, caster, target):
-        return self.can_cast(caster) and target is not None and target.is_alive
+    def can_cast_on(self, caster, target) -> bool:
+        return (
+                self.can_cast(caster)
+                and target is not None
+                and target.is_alive
+        )
 
     def __str__(self):
         return f'{self.name} : ({self.strength}STR, {self.mana_cost}MP)'
@@ -62,7 +68,7 @@ class DamageSpell(Spell):
         target.take_damage(final_damage)
         return final_damage
 
-    def get_valid_targets(self, caster, allies, enemies):
+    def get_valid_targets(self, caster, allies, enemies) -> list:
         """
         Returns a list of valid targets to use damage spell.
         :param caster:
@@ -93,6 +99,16 @@ class HealSpell(Spell):
         healed = target.restore_health(final_amount)
 
         return healed
+
+    def can_cast_on(self, caster, target) -> bool:
+        return (
+                super().can_cast_on(caster, target)
+
+                and (
+                    self.allow_overheal
+            or target.hp < target.max_hp
+                )
+        )
 
     def get_valid_targets(self, caster, allies, enemies):
         """

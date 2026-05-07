@@ -1,4 +1,4 @@
-from src.data.frames import RARITY_FRAMES
+from src.content.frames import RARITY_FRAMES
 from src.ui.theme import CARD_RENDER_THEME as THEME
 from src.assets.image_cache import ImageCache
 import pygame
@@ -83,6 +83,41 @@ class CardRenderer:
         #TODO: fix this so frames are caches
         #card_frame = self.image_cache.get_card_frame(monster.rarity_path, card_rect.topleft)
 
+    def get_card_draw_rect(self, card_rect, monster):
+        """Returns the visual draw rect for a monster card.
+        Applies hover and selection offsets to create a lifted
+        card effect without changing the original rect.
+        """
+        draw_rect = card_rect.copy()
+
+        if card_rect.collidepoint(pygame.mouse.get_pos()):
+            draw_rect.y -= 18
+
+        if monster == self.battle.selected_monster:
+            draw_rect.y -= 18
+
+        if monster == self.battle.ai_active_monster:
+            draw_rect.y += 18 #DEBUG
+
+        return draw_rect
+
+    def draw_card_shadow(self, card_rect):
+        shadow_rect = card_rect.copy()
+        shadow_rect.x += 6
+        shadow_rect.y += 10
+
+        shadow = pygame.Surface((shadow_rect.width, shadow_rect.height), pygame.SRCALPHA)
+
+        pygame.draw.rect(
+            shadow,
+            THEME['shadow'],
+            shadow.get_rect(),
+            border_radius=14
+        )
+
+        self.screen.blit(shadow, shadow_rect)
+
+
     def draw(self) -> list:
         screen_rect = self.screen.get_rect()
         card_rects = []
@@ -113,9 +148,20 @@ class CardRenderer:
                 # create rect for card (used for clicking)
                 card_x = x
                 card_y = row_rect.y
+
                 card_rect = pygame.Rect(card_x, card_y, self.card_width, self.card_height)
+                draw_rect = self.get_card_draw_rect(card_rect, monster)
+
+                # Shadow
+                self.draw_card_shadow(draw_rect)
+
+                #IMPORTANT: Draw using draw_rect
+                self.draw_monster_card(monster, draw_rect)
+
+
+                #IMPORTANT: keep original rect for clicking
                 card_rects.append((card_rect, player, monster))
-                self.draw_monster_card(monster, card_rect)
+
 
                 x += self.card_width + space_between_cards
 

@@ -1,3 +1,14 @@
+"""
+Battle Screen Module.
+
+Handles:
+- main battle interface
+- turn flow
+- spell selection
+- enemy actions
+- battle rendering
+"""
+
 import pygame
 
 from src.game.battle import Battle, BattleState, Turn
@@ -26,7 +37,7 @@ class BattleScreen:
         self.active_spell_monster = None
 
         self.enemy_turn_started_at = None
-        self.enemy_action_delay = 5.5
+        self.enemy_action_delay = 1500
 
         self.background = config.load_random_background(self.screen.get_size())
 
@@ -35,20 +46,27 @@ class BattleScreen:
 
         self.card_renderer = CardRenderer(battle=self.battle, players=self.players,screen=self.screen)
 
+        self.background_tint = pygame.Surface(self.screen.get_size())
+        self.background_tint.fill((0, 0, 0))
+        self.background_tint.set_alpha(90)
+
     def get_attacking_monster(self) -> bool:
         """Returns true if monster is attacking"""
         return self.show_spell_menu
 
+
     def delay_enemy_action(self):
-        start_ticks = pygame.time.get_ticks()
+        now = pygame.time.get_ticks()
 
         if self.enemy_turn_started_at is None:
-            self.enemy_turn_started_at = start_ticks
-        elif start_ticks - self.enemy_turn_started_at >= self.enemy_action_delay:
+            self.enemy_turn_started_at = now
+            self.battle.prepare_enemy_turn()
+            return
+
+        if now - self.enemy_turn_started_at >= self.enemy_action_delay:
             self.battle.update()
             self.enemy_turn_started_at = None
-        else:
-            self.enemy_turn_started_at = None
+
 
     def update(self):
         """ Controls the turn-based battle flow each frame.
@@ -202,15 +220,13 @@ class BattleScreen:
 
         Panel.draw_popup_message(self.screen, title, msg)
 
-    def tint_background(self):
-        tint = pygame.Surface(self.screen.get_size())
-        tint.fill((0, 0, 0))  # black tint
-
-        tint.set_alpha(120)
-
-        self.screen.blit(tint, (0, 0))
+    def draw_background_tint(self):
+        self.screen.blit(self.background_tint, (0, 0))
 
     def draw(self) -> list:
+        # Apply background tint
+        self.draw_background_tint()
+
         self.back_button.draw(self.screen)
 
         turn = self.battle.current_turn
@@ -230,6 +246,8 @@ class BattleScreen:
         self.screen.blit(wave_text, (200, 28))
 
         self.card_rects = self.card_renderer.draw()
+
+
 
         # Battle Log box
         self.battle_log.draw(self.screen)

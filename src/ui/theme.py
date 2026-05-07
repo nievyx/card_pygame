@@ -6,7 +6,8 @@ CARD_RENDER_THEME = {
     'stat_text': (255, 255, 255),
     'low_stat': (255, 0, 0),
     'mid_stat': (255, 200, 0),
-    'font': 'Arial'
+    'font': 'Arial',
+    'shadow': (0, 0, 0, 100)
 }
 
 THEME = {
@@ -34,7 +35,7 @@ THEME = {
 
     # BUTTONS
     # (Used in ui/buttons.py)
-    'button_font' : 'comicsans',
+    'button_font' : 'consolas',
     'button_text_color' : (0, 0 , 0),
     'how_to_color': (170, 90, 10),
     'back_button_color': (200, 200, 200),

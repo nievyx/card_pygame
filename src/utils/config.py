@@ -9,11 +9,14 @@ PLAYER_LOG_COLOR = None
 ENEMY_LOG_COLOR = (240, 80, 16)
 # Note: theme/theme.py replacing this in future implementation
 
+
 class Config:
     SCREEN_WIDTH = 1200
     SCREEN_HEIGHT = 850
-    
+
     game_title = "Niamh's Monster Cards"
+
+    ALLOW_OVERHEAL = True
 
     num_players = 2
     cards_per_player = [5, 3]
@@ -30,13 +33,13 @@ class Config:
     @staticmethod
     def load_game_data():
         """
-        Loads all game data via import side effects.
+        Loads all game content via import side effects.
         Registers monsters and spells in global pools.
         NOTE: Imports may appear to be unused in some IDEs, but
         is required.
         """
-        import src.data.monsters
-        import src.data.spells
+        import src.content.monster_data
+        import src.content.spell_data
 
     @staticmethod
     def load_random_background(screen_size):

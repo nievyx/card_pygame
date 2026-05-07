@@ -1,5 +1,12 @@
+"""
+Main entry point for game.
+
+Loads configuration data, creates game instance,
+and starts main game loop.
+"""
+
 from src.utils.config import Config
-from src.game.game import Game
+from src.game.game_controller import Game
 
 def main():
     Config.load_game_data()

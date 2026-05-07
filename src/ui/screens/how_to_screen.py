@@ -12,6 +12,13 @@ def draw_how_to_play(screen, back_button) -> None:
     font = pygame.font.SysFont(THEME['primary_font'], 40)
     text_content = read_txt('instructions.txt')
 
-    text = font.render(text_content, 1, THEME['text_primary'], )
+    x = 180
+    y = 300
+    line_spacing = 48
 
-    screen.blit(text, (200, 300))
+    for line in text_content:
+
+        text = font.render(line, 1, THEME['text_primary'], )
+        screen.blit(text, (x, y))
+        y += line_spacing
+

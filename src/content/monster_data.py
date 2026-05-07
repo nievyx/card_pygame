@@ -1,4 +1,4 @@
-from src.data.spells import light_heal, fireball, ice_bolt, mid_heal, ice_shards, vine_attack, strong_heal, fire_blast
+from src.content.spell_data import light_heal, fireball, ice_bolt, mid_heal, ice_shards, vine_attack, strong_heal, fire_blast
 from src.game.monster import Monster
 import os
 

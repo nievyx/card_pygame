@@ -1,1 +1,10 @@
-How to play instructions will go here.....
+Wave Mode
+- Player starts with 5 cards, dealt at random, including chances to get rare cards.
+- Enemy starts with 3 cards.
+- Select one of your cards from the bottom to attack
+- use either:
+    - Either regular attack with by then click an enemy attack
+    - or select a spell before attacking to deal magic damage
+- AI enemy will then take its turn.
+- Winner eliminates all opposing players cards.
+- Winning rounds will reward an additional card and increase the wave count.

@@ -29,10 +29,48 @@ class Game:
         self.running = True
         self.card_rects = [ ]
 
+        # TODO: center title buttons
+        screen_width = self.screen.get_width()
+        screen_height = self.screen.get_height()
+
+        button_width = 380
+        button_height = 80
+
+        center_x = screen_width // 2 - button_width // 2
+        start_y = screen_height // 2 - 140
+        gap = 130
+
+        self.start_button = Button((
+            0, 255, 0),
+            center_x,
+            start_y,
+            button_width,
+            button_height,
+            "Start"
+        )
+
+        self.how_to_button = Button(
+            THEME['how_to_color'],
+            center_x,
+            start_y+gap,
+            button_width,
+            button_height,
+            "How To Play"
+        )
+
+        self.quit_button = Button(
+            THEME['quit_color'],
+            center_x,
+            start_y+(gap * 2),
+            button_width,
+            button_height,
+            "Quit"
+        )
+
         # Button Creation
-        self.start_button = Button((0, 255, 0), 400, 150, 200, 80, "Start")
-        self.how_to_button = Button(THEME['how_to_color'], 400, 300, 420, 80, "How To Play")
-        self.quit_button = Button(THEME['quit_color'], 400, 450, 200, 80, "Quit")
+        # self.start_button = Button((0, 255, 0), 400, 150, 200, 80, "Start")
+        # self.how_to_button = Button(THEME['how_to_color'], 400, 300, 420, 80, "How To Play")
+        # self.quit_button = Button(THEME['quit_color'], 400, 450, 200, 80, "Quit")
         self.back_button = Button(THEME['back_button_color'], 20, 20, 150, 60, "Back")
         self.main_menu_button = Button(THEME['how_to_color'], 20, 20, 150, 60, "Menu")
 

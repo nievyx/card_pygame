@@ -1,3 +1,10 @@
+"""
+Battle System Module
+
+Handles:
+-
+"""
+
 from src.utils.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
@@ -35,6 +42,8 @@ class Battle:
         self.max_log_size = 6
         self.winner = None
         self.loser = None
+
+        self.ai_active_monster = None
 
     def get_monster_side(self, monster):
         if monster in self.players[0]:
@@ -108,7 +117,7 @@ class Battle:
         return self._cast_spell_on_target(target)
 
     def get_team(self, index):
-        """returns a monster list"""""
+        """returns a monster list"""
         return self.players[index]
 
     def add_battle_log(self, message: str, color=None, attacker =None, target=None) -> None:
@@ -145,6 +154,15 @@ class Battle:
             self.add_battle_log('The battle ends in a draw.')
         return True
 
+    def prepare_enemy_turn(self):
+        """Used to add card movement to the enemies choose"""
+        enemy_player = self.players[1]
+        alive_enemies = [m for m in enemy_player if m.is_alive]
+
+        if not alive_enemies:
+            return
+
+        self.ai_active_monster = random.choice(alive_enemies)
 
     def _enemy_turn(self):
         enemy_player = self.players[1]
@@ -157,7 +175,13 @@ class Battle:
             self.state = BattleState.BATTLE_OVER
             return
 
-        attacker = random.choice(alive_enemies)
+        attacker = self.ai_active_monster
+
+        if attacker is None or not attacker.is_alive:
+            attacker = random.choice(alive_enemies)
+
+        self.ai_active_monster = attacker
+
         defender = random.choice(alive_players)
 
         damage = attacker.attack(defender)
@@ -241,3 +265,4 @@ class Battle:
         else:
             self.current_turn = Turn.PLAYER
             self.state = BattleState.SELECT_MONSTER
+            self.ai_active_monster = None

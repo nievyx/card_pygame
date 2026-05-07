@@ -10,7 +10,12 @@ class SFX:
         self.volume = 0.5
         self.set_volume(self.volume)
 
-    def play(self, spell):
+    def handle_error(self):
+        pass
+
+    def play(self, spell) -> None:
+        """Checks for spell and plays sound if available,
+        Caches sound if sound is not already loaded"""
         sounds_name = spell.sfx_name
         sound_path = os.path.join(self.base_path, 'spells',f'{sounds_name}.wav')
 
@@ -19,13 +24,16 @@ class SFX:
             return
 
         if sound_path not in self.cache:
-            sound = pygame.mixer.Sound(sound_path)
-            sound.set_volume(self.volume)
-            self.cache[sound_path] = sound
+            try:
+                sound = pygame.mixer.Sound(sound_path)
+                sound.set_volume(self.volume)
+                self.cache[sound_path] = sound
+            except pygame.error as e:
+                print(f"[SFX ERROR:] Sound {sound_path} not found: {e}")
 
         self.cache[sound_path].play()
 
-    def set_volume(self, volume):
+    def set_volume(self, volume: float) -> None:
         self.volume = volume
         for sound in self.cache.values():
             sound.set_volume(volume)

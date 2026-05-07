@@ -1,2 +1,2 @@
 from .monster import Monster
-from .state import State, GameMode
+from .game_state import State, GameMode
