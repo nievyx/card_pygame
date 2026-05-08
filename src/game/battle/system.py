@@ -217,7 +217,9 @@ class Battle:
             msg = self.generate_attack_message(attacker, defender, damage)
             self.add_battle_log(
                 msg,
-                THEME['battle_log']['ENEMY_LOG_COLOR']
+                THEME['battle_log']['ENEMY_LOG_COLOR'],
+                attacker=attacker,
+                target=defender
             )
         self.end_turn()
 
@@ -239,7 +241,7 @@ class Battle:
         if monster is None or not monster.is_alive:
             return False
 
-        #Clicking the same monster deselects #TODO: fact check this
+        #Clicking the selected monster again deselects it
         if self.selected_monster == monster:
             self.cancel_selection()
             return True
@@ -273,7 +275,9 @@ class Battle:
         msg = self.generate_attack_message(attacker, defender, damage)
         self.add_battle_log(
             msg,
-            THEME['battle_log']['PLAYER_LOG_COLOR']
+            THEME['battle_log']['PLAYER_LOG_COLOR'],
+            attacker=attacker,
+            target=defender
         )
 
         self.end_turn()

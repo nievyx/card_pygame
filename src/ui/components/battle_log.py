@@ -1,4 +1,6 @@
 import pygame
+
+from src.assets.image_cache import ImageCache
 from src.ui.theme import THEME
 from src.ui.panel import Panel
 
@@ -10,16 +12,14 @@ class BattleLog(Panel):
         self.height = height
         self.top = top
         self.right_padding = right_padding
+        self.image_cache = ImageCache()
 
     def display_monster_img(self, screen, attacker, target, y_pos, log_rect):
         size = 40
 
-        # Load Surfaces
-        attacker_img = pygame.image.load(attacker.face).convert_alpha()
-        target_img = pygame.image.load(target.face).convert_alpha()
-
-        attacker_img = pygame.transform.scale(attacker_img, (size, size))
-        target_img = pygame.transform.scale(target_img, (size, size))
+        # Load with cache
+        attacker_img = self.image_cache.get_face_image(attacker.face)
+        target_img = self.image_cache.get_face_image(target.face)
 
         # correct positions relative to panel
         l_x = log_rect.left + 10
@@ -32,13 +32,33 @@ class BattleLog(Panel):
     def draw(self, screen):
         log_rect = self.draw_panel(screen, 'Battle Log')
 
-        pygame.draw.rect(screen, THEME['battle_log_bg'], log_rect)
+        pygame.draw.rect(
+            screen,
+            THEME['battle_log_bg'],
+            log_rect
+        )
         pygame.draw.rect(screen, THEME['battle_log_border'], log_rect, 2)
 
-        font = pygame.font.SysFont('Arial', 18) #TODO: THEME['battle_log_title_font'], #THEME['battle_log_title_font_size']
-        title = font.render('Battle Log', True, THEME['battle_log_default_text'])
-        title_rect = title.get_rect(midtop=(log_rect.centerx, log_rect.top + 8))
-        screen.blit(title, title_rect)
+        font = pygame.font.SysFont(
+            THEME['battle_log_title_font'],
+            THEME['battle_log_title_font_size']
+        )
+
+        title = font.render(
+            'Battle Log',
+            True,
+            THEME['battle_log_default_text']
+        )
+        title_rect = title.get_rect(
+            midtop=(
+                log_rect.centerx,
+                log_rect.top + 8
+            )
+        )
+        screen.blit(
+            title,
+            title_rect
+        )
 
         line_font = pygame.font.SysFont('Arial', 16)
         start_y = log_rect.y + 35

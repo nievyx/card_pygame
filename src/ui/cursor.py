@@ -21,6 +21,27 @@ class Cursor:
         self.x, self.y = 0, 0
         self.rect = pygame.rect.Rect(self.x, self.y, *self.size)
 
+        # Cursor Message
+        self.cursor_message = None
+        self.cursor_message_pos = None
+        self.cursor_message_until = 0
+
+    def show_cursor_message(self,
+                            text: str,
+                            pos: tuple[int,int],
+                            duration=900
+                            ) -> None:
+        """
+        Display a message beside the cursor
+
+        :param text: Message text to display
+        :param pos: Mouse position (x, y)
+        :param duration: Duration in milliseconds
+        """
+        self.cursor_message = text
+        self.cursor_message_pos = pos
+        self.cursor_message_until = pygame.time.get_ticks() + duration
+
     def _load_image(self, path):
         return pygame.transform.scale(
             pygame.image.load(path).convert_alpha(),

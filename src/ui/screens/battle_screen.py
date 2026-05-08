@@ -19,8 +19,9 @@ from src.ui.panel import Panel
 from src.game import State
 
 class BattleScreen:
-    def __init__(self, screen, config, sfx, main_menu_button):
+    def __init__(self, screen, config, sfx, main_menu_button, cursor):
         self.screen = screen
+        self.cursor = cursor
         self.config = config
         self.sfx = sfx
         self.back_button = main_menu_button
@@ -49,6 +50,8 @@ class BattleScreen:
         self.background_tint = pygame.Surface(self.screen.get_size())
         self.background_tint.fill((0, 0, 0))
         self.background_tint.set_alpha(90)
+
+
 
     def get_attacking_monster(self) -> bool:
         """Returns true if monster is attacking"""
@@ -166,6 +169,7 @@ class BattleScreen:
                     self.close_spell_menu()
 
             elif player == self.battle.get_opposing_player():  #
+                self.cursor.show_cursor_message("Select one of your cards first", pos)
                 self.close_spell_menu()
                 self.battle.try_attack(player, monster)
             break
