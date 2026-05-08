@@ -146,6 +146,13 @@ class CardRenderer:
 
 
     def draw(self) -> list:
+        """Draws all active monster cards.
+
+        Note: Handles filtering for whether cards are visible, this is preferably
+        to be in game state / battle logic.
+        
+        :return: positions of cards as a list.
+        """
         screen_rect = self.screen.get_rect()
         card_rects = []
         space_between_cards = 10

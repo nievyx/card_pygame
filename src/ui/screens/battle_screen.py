@@ -92,9 +92,10 @@ class BattleScreen:
         Increments wave count, generates a new enemy team and battle,
         reset UI state, loads a new background, and grants the player a new card
 
-        TODO: background is not being loaded."""
+        TODO: background is not being loaded.
 
-
+        Note: Handles
+        """
         self.wave_count += 1
         enemy_team = self.config.create_enemy_team()
         self.players[1] = enemy_team
