@@ -15,30 +15,30 @@ class CardRenderer:
 
         self.anim_positions = {}
         self.deck_pos = (self.screen.get_width() // 2, self.screen.get_height() // 2)
-        self.animation_speed = 0.18
+        self.animation_speed = 0.09
 
-    def get_dealt_cards(self, monster, target_rect):#TODO add typing
+    def get_dealt_cards_rect(self, monster, desired_rect):#TODO add typing
         if monster not in self.anim_positions:
             self.anim_positions[monster] = [
                 self.deck_pos[0],
                 self.deck_pos[1]
             ]
 
-            pos = self.anim_positions[monster]
+        pos = self.anim_positions[monster]
 
-            pos[0] += (target_rect.x - pos[0]) * self.animation_speed
-            pos[1] += (target_rect.y - pos[0]) * self.animation_speed
+        pos[0] += (desired_rect.x - pos[0]) * self.animation_speed
+        pos[1] += (desired_rect.y - pos[1]) * self.animation_speed
 
-            if abs(pos[0] - target_rect.x) < 1:
-                pos[0] = target_rect.x
-            if abs(pos[1] - target_rect.y) < 1:
-                pos[1] = target_rect.y
+        if abs(pos[0] - desired_rect.x) < 1:
+            pos[0] = desired_rect.x
+        if abs(pos[1] - desired_rect.y) < 1:
+            pos[1] = desired_rect.y
 
-            dealt_rect = target_rect.copy()
-            dealt_rect.x = round(pos[0])
-            dealt_rect.y = round(pos[1])
-            return dealt_rect
-        return None
+        dealt_rect = desired_rect.copy()
+        dealt_rect.x = round(pos[0])
+        dealt_rect.y = round(pos[1])
+        return dealt_rect
+
 
     # TODO: Cache frames
     def get_card_frame(self, monster) -> pygame.Surface:
@@ -177,7 +177,9 @@ class CardRenderer:
                 card_y = row_rect.y
 
                 card_rect = pygame.Rect(card_x, card_y, self.card_width, self.card_height)
-                draw_rect = self.get_card_draw_rect(card_rect, monster)
+
+                animated_rect = self.get_dealt_cards_rect(monster, card_rect)
+                draw_rect = self.get_card_draw_rect(animated_rect, monster)
 
                 # Shadow
                 self.draw_card_shadow(draw_rect)

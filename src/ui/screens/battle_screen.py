@@ -90,13 +90,19 @@ class BattleScreen:
         """Advance to the next wave.
 
         Increments wave count, generates a new enemy team and battle,
-        reset UI state, loads a new background, and grants the player a new card"""
+        reset UI state, loads a new background, and grants the player a new card
+
+        TODO: background is not being loaded."""
 
 
         self.wave_count += 1
         enemy_team = self.config.create_enemy_team()
         self.players[1] = enemy_team
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
+
+        # Keep animation positions for existing cards
+        self.card_renderer.battle = self.battle
+
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
         self.background = self.config.load_random_background(self.screen.get_size())  # Regenerate BG#
