@@ -29,7 +29,7 @@ Monster.register(Monster(
 Monster.register(Monster(
         name='Calm',
         image=MONSTER_DIR + '/Calm.png',
-        face=FACE_DIR + '/Demon.png',
+        face=FACE_DIR + '/Calm.png',
         hp=10,
         mp=6,
         energy=6,
@@ -39,7 +39,7 @@ Monster.register(Monster(
 Monster.register(Monster(
         name='Yanpi',
         image=MONSTER_DIR + '/Yanpi.png',
-        face=FACE_DIR + '/Demon.png',
+        face=FACE_DIR + '/Yanpi.png',
         hp=8,
         mp=7,
         energy=5,
@@ -50,7 +50,7 @@ yanpi = Monster.monster_pool["Yanpi"]
 Monster.register(Monster(
         name='Yanfly',
         image=MONSTER_DIR + '/Yanfly.png',
-        face=FACE_DIR + '/Demon.png',
+        face=FACE_DIR + '/Yanfly.png',
         hp=yanpi.max_hp+3,
         mp=yanpi.max_mp+4,
         energy=yanpi.max_energy+2,

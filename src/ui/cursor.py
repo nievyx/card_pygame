@@ -1,4 +1,5 @@
 import pygame
+from src.ui import THEME
 
 class Cursor:
     def __init__(self):
@@ -60,8 +61,42 @@ class Cursor:
     def use_attack(self):
         self._set_path(self.attack_path)
 
+    def _is_cursor_msg(self) -> bool:
+        """Check if there is a cursor message to display"""
+        pass #TODO:
+
+    def display_cursor_message(self, text) -> None:
+        """Display a message beside the cursor"""
+        pass #TODO:
+
     def draw(self, screen):
         screen.blit(self.spr, (self.x, self.y))
+
+        #TODO:
+        # Only draw cursor msg if there is one
+        if (
+            self.cursor_message
+            and pygame.time.get_ticks() < self.cursor_message_until
+        ):
+            font = pygame.font.SysFont(
+                THEME['cursor_text']['font'],
+                THEME['cursor_text']['font_size']
+                )
+
+            text_surface = font.render(
+                self.cursor_message,
+                True,
+                THEME['cursor_text']['color']
+            )
+            screen.blit(text_surface, (
+                self.x  + 24,
+                self.y - 10
+            )
+                        )
+        else:
+            self.cursor_message = None
+
+
 
     def update(self):
         mx, my = pygame.mouse.get_pos()

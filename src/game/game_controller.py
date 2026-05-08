@@ -156,12 +156,17 @@ class Game:
 
     def draw(self):
         self.screen.fill(THEME['background'])
-        self.display_bg()
+        #self.display_bg()
 
+        # MENU STATE
         if self.current_state == 'menu':
             self.menu_screen.draw()
+
+        # GAME STATE
         elif self.current_state == 'game':
             self.card_rects = self.battle_screen.draw()
+
+        # HOW TO PLAY STATE
         elif self.current_state == 'how_to_play':
             draw_how_to_play(self.screen, self.back_button)
 

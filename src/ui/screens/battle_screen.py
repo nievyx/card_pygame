@@ -18,6 +18,9 @@ from src.ui import THEME
 from src.ui.panel import Panel
 from src.game import State
 
+INVALID_TARGET_MESSAGE = 'CANNOT PICK ENEMY CARDS!'
+ENEMY_DELAY = 900
+
 class BattleScreen:
     def __init__(self, screen, config, sfx, main_menu_button, cursor):
         self.screen = screen
@@ -38,7 +41,7 @@ class BattleScreen:
         self.active_spell_monster = None
 
         self.enemy_turn_started_at = None
-        self.enemy_action_delay = 1500
+        self.enemy_action_delay = ENEMY_DELAY
 
         self.background = config.load_random_background(self.screen.get_size())
 
@@ -168,8 +171,19 @@ class BattleScreen:
                 else:
                     self.close_spell_menu()
 
-            elif player == self.battle.get_opposing_player():  #
-                self.cursor.show_cursor_message("Select one of your cards first", pos)
+            # Check if clicking enemies card
+            elif player == self.battle.get_opposing_player():
+
+                # TODO: Only run if no monster is selected
+                if self.battle.selected_monster is None:
+
+                    self.cursor.show_cursor_message(
+                        INVALID_TARGET_MESSAGE,
+                        pos
+                    )
+                    return None
+
+
                 self.close_spell_menu()
                 self.battle.try_attack(player, monster)
             break

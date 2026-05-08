@@ -15,8 +15,16 @@ BATTLE_LOG_COLORS = {
     'ENEMY_LOG_COLOR': (240, 80, 16),
     'PLAYER_ENERGY_LOW_COLOR': (255, 255, 255),
 }
+CURSOR_MSG_DISPLAY = {
+    'font': 'Arial',
+    'font_size': 18,
+    'color': (250 , 0 ,0 ),
 
+}
 THEME = {
+
+    'cursor_text' : CURSOR_MSG_DISPLAY,
+
     'battle_log': BATTLE_LOG_COLORS,
 
     'PLAYER_LOG_COLOR': (255, 255, 255), #TODO: stop using these
