@@ -10,10 +10,17 @@ CARD_RENDER_THEME = {
     'shadow': (0, 0, 0, 100)
 }
 
-THEME = {
-    #Used in main.py
+BATTLE_LOG_COLORS = {
     'PLAYER_LOG_COLOR': (255, 255, 255),
     'ENEMY_LOG_COLOR': (240, 80, 16),
+    'PLAYER_ENERGY_LOW_COLOR': (255, 255, 255),
+}
+
+THEME = {
+    'battle_log': BATTLE_LOG_COLORS,
+
+    'PLAYER_LOG_COLOR': (255, 255, 255), #TODO: stop using these
+    'ENEMY_LOG_COLOR': (240, 80, 16), #TODO: stop using these
 
     'background': (21, 30, 61),
 
