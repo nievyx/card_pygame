@@ -54,6 +54,9 @@ class BattleScreen:
         self.background_tint.fill((0, 0, 0))
         self.background_tint.set_alpha(90)
 
+        #Background here now
+        #TODO
+        self.background = config.load_random_background(self.screen.get_size())
 
 
     def get_attacking_monster(self) -> bool:
@@ -249,6 +252,9 @@ class BattleScreen:
         self.screen.blit(self.background_tint, (0, 0))
 
     def draw(self) -> list:
+        #Background image
+        self.screen.blit(self.background, (0, 0))
+
         # Apply background tint
         self.draw_background_tint()
 

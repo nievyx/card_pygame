@@ -124,3 +124,158 @@ Monster.register(Monster(
         known_spells = [light_heal, mid_heal, strong_heal, fireball, fire_blast],
         rarity='legendary'
 ))
+Monster.register(Monster(
+    name='Brain Slime',
+    image=MONSTER_DIR + '/Brain Slime 2.png',
+    face=FACE_DIR + '/Brain Slime 2.png',
+    hp=9,
+    mp=8,
+    energy=5,
+    strength=4,
+    known_spells=[ice_shards],
+    rarity='uncommon'
+))
+
+Monster.register(Monster(
+    name='Coward',
+    image=MONSTER_DIR + '/Coward.png',
+    face=FACE_DIR + '/Coward.png',
+    hp=6,
+    mp=4,
+    energy=7,
+    strength=3,
+    known_spells=[],
+    rarity='common'
+))
+
+Monster.register(Monster(
+    name='Crow',
+    image=MONSTER_DIR + '/Crow.png',
+    face=FACE_DIR + '/Crow.png',
+    hp=7,
+    mp=6,
+    energy=8,
+    strength=5,
+    known_spells=[],
+    rarity='common'
+))
+
+Monster.register(Monster(
+    name='Dragon Hawk',
+    image=MONSTER_DIR + '/Dragon Hawk.png',
+    face=FACE_DIR + '/Dragon Hawk.png',
+    hp=10,
+    mp=8,
+    energy=8,
+    strength=7,
+    known_spells=[fireball],
+    rarity='rare'
+))
+
+Monster.register(Monster(
+    name='Drakee',
+    image=MONSTER_DIR + '/Drakee.png',
+    face=FACE_DIR + '/Drakee.png',
+    hp=8,
+    mp=5,
+    energy=8,
+    strength=5,
+    known_spells=[],
+    rarity='common'
+))
+
+Monster.register(Monster(
+    name='Emp. Slime',
+    image=MONSTER_DIR + '/Emperor Slime.png',
+    face=FACE_DIR + '/Emperor Slime.png',
+    hp=14,
+    mp=10,
+    energy=5,
+    strength=6,
+    known_spells=[light_heal, mid_heal],
+    rarity='rare'
+))
+
+Monster.register(Monster(
+    name='Evil God',
+    image=MONSTER_DIR + '/evilGod.png',
+    face=FACE_DIR + '/evilGod.png',
+    hp=18,
+    mp=12,
+    energy=7,
+    strength=12,
+    known_spells=[fire_blast],
+    rarity='legendary'
+))
+
+Monster.register(Monster(
+    name='Flaming Snowman',
+    image=MONSTER_DIR + '/Flaming Snowman.png',
+    face=FACE_DIR + '/Flaming Snowman.png',
+    hp=10,
+    mp=9,
+    energy=6,
+    strength=7,
+    known_spells=[fireball, ice_bolt],
+    rarity='rare'
+))
+
+Monster.register(Monster(
+    name='Octopot',
+    image=MONSTER_DIR + '/octopot.png',
+    face=FACE_DIR + '/octopot.png',
+    hp=8,
+    mp=6,
+    energy=6,
+    strength=5,
+    known_spells=[ice_shards],
+    rarity='common'
+))
+
+Monster.register(Monster(
+    name='Old Turtle',
+    image=MONSTER_DIR + '/Old Turtle.png',
+    face=FACE_DIR + '/Old Turtle.png',
+    hp=14,
+    mp=4,
+    energy=3,
+    strength=6,
+    known_spells=[strong_heal],
+    rarity='uncommon'
+))
+
+Monster.register(Monster(
+    name='Skeleton',
+    image=MONSTER_DIR + '/Skeleton.png',
+    face=FACE_DIR + '/Skeleton.png',
+    hp=9,
+    mp=3,
+    energy=6,
+    strength=8,
+    known_spells=[fireball],
+    rarity='common'
+))
+
+Monster.register(Monster(
+    name='Wave Slime',
+    image=MONSTER_DIR + '/Wave Slime.png',
+    face=FACE_DIR + '/Wave Slime.png',
+    hp=8,
+    mp=8,
+    energy=6,
+    strength=4,
+    known_spells=[ice_bolt],
+    rarity='common'
+))
+
+Monster.register(Monster(
+    name='Yanflayer',
+    image=MONSTER_DIR + '/Yanflayer.png',
+    face=FACE_DIR + '/Yanflayer.png',
+    hp=10,
+    mp=9,
+    energy=8,
+    strength=5,
+    known_spells=[light_heal, mid_heal],
+    rarity='rare'
+))

@@ -2,7 +2,12 @@
 Game Controller Module
 
 Handles:
-TODO: FINISH DOCSTRING
+- pygame setup
+- main event loop
+- screen and state switching
+- cursor updates
+- shared ui buttons
+- updating draw call to active screens
 """
 
 import pygame
@@ -29,7 +34,6 @@ class Game:
         else:
             self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))  # Original res
 
-        self.background = config.load_random_background(self.screen.get_size())
         self.cursor = Cursor()
 
         self.current_state: State = 'menu'
@@ -75,8 +79,17 @@ class Game:
             "Quit"
         )
 
-        self.back_button = Button(THEME['back_button_color'], 20, 20, 150, 60, "Back")
-        self.main_menu_button = Button(THEME['how_to_color'], 20, 20, 150, 60, "Menu")
+        self.back_button = Button(
+            THEME['back_button_color'],
+            20,
+            20,
+            150,
+            60,
+            "Back"
+        )
+
+        self.main_menu_button = Button(
+            THEME['how_to_color'], 20, 20, 150, 60, "Menu")
 
         self.battle_screen = BattleScreen(screen=self.screen, config=self.config,
                                           sfx=self.sfx, main_menu_button=self.back_button, cursor=self.cursor)
@@ -84,6 +97,8 @@ class Game:
         self.menu_screen = MenuScreen(screen=self.screen, config=self.config,start_button= self.start_button,
                                       how_to_button= self.how_to_button,
                                       quit_button = self.quit_button)
+
+
 
     def start(self) -> None:
         while self.running:
@@ -151,12 +166,8 @@ class Game:
             self.handle_how_to_play_click(pos)
 
 
-    def display_bg(self):
-        self.screen.blit(self.background, (0, 0))
-
     def draw(self):
         self.screen.fill(THEME['background'])
-        #self.display_bg()
 
         # MENU STATE
         if self.current_state == 'menu':

@@ -10,6 +10,15 @@ class MenuScreen:
         self.how_to_button = how_to_button
         self.quit_button = quit_button
 
+        self.background = pygame.image.load(
+            'src/assets/backgrounds/towering_mountain_biome.png'
+        ).convert()
+
+        self.background = pygame.transform.scale(
+            self.background,
+            self.screen.get_size()
+        )
+
 
     def handle_click(self, pos: tuple[int, int]) -> State:
         if self.start_button.is_hovered(pos):
@@ -26,6 +35,8 @@ class MenuScreen:
         return None
 
     def draw_title(self):
+
+
         screen_width = self.screen.get_width()
 
         title_font = pygame.font.SysFont(
@@ -33,7 +44,10 @@ class MenuScreen:
             72
         )
 
-        title_text = title_font.render(self.config.game_title, True, (255, 255, 255))
+        title_text = title_font.render(
+            self.config.game_title,
+            True,
+            THEME['title_color'])
         title_rect = title_text.get_rect(
             center=(screen_width // 2, 250)
         )
@@ -41,7 +55,11 @@ class MenuScreen:
         self.screen.blit(title_text, title_rect)
 
     def draw(self) -> None:
+
         self.screen.fill(THEME['background'])
+
+        self.screen.blit(self.background, (0, 0))
+
         self.draw_title()
         self.start_button.draw(self.screen)
         self.how_to_button.draw(self.screen)
