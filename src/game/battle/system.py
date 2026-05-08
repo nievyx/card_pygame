@@ -113,7 +113,9 @@ class Battle:
         self.sfx.play(spell)
         self.add_battle_log(
             generate_spell_message(caster, target, spell, amount),
-            THEME['battle_log']['PLAYER_LOG_COLOR']
+            THEME['battle_log']['PLAYER_LOG_COLOR'],
+            attacker=caster,
+            target=target
         )
 
         if not self.battle_is_over():

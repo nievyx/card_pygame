@@ -14,8 +14,12 @@ class BattleLog(Panel):
     def display_monster_img(self, screen, attacker, target, y_pos, log_rect):
         size = 40
 
-        attacker_img = pygame.transform.scale(attacker.face, (size, size))
-        target_img = pygame.transform.scale(target.face, (size, size))
+        # Load Surfaces
+        attacker_img = pygame.image.load(attacker.face).convert_alpha()
+        target_img = pygame.image.load(target.face).convert_alpha()
+
+        attacker_img = pygame.transform.scale(attacker_img, (size, size))
+        target_img = pygame.transform.scale(target_img, (size, size))
 
         # correct positions relative to panel
         l_x = log_rect.left + 10
