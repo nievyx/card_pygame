@@ -177,7 +177,7 @@ class BattleScreen:
             # Check if clicking enemies card
             elif player == self.battle.get_opposing_player():
 
-                # TODO: Only run if no monster is selected
+                # Only run if no monster is selected
                 if self.battle.selected_monster is None:
 
                     self.cursor.show_cursor_message(
