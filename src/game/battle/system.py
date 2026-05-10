@@ -30,9 +30,9 @@ class Turn(Enum):
 
 def generate_spell_message(castor, target, spell, amount):
     if isinstance(spell, HealSpell):
-        # This is for Heal Spells
+        #Heal Spells
         return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
-    #This is for Damage Spell
+    #Damage Spell
     return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
 
 
@@ -128,6 +128,20 @@ class Battle:
 
         return self._cast_spell_on_target(target)
 
+    def resolve_attack(self, attacker, defender) -> int:
+        attacker.deplete_energy(1)
+
+        if attacker.energy <= 0:
+            attacker.take_damage(attacker.hp)
+            self.add_battle_log(
+            f'{attacker.name} ran out of energy and collapsed!'
+            )
+            return 0
+
+        damage = attacker.attack(defender)
+        defender.take_damage(damage)
+        return damage
+
     def get_team(self, index):
         """returns a monster list"""
         return self.players[index]
@@ -204,7 +218,7 @@ class Battle:
 
         defender = random.choice(alive_players)
 
-        damage = attacker.attack(defender)
+        damage = self.resolve_attack(attacker, defender)
 
         if damage == 0:
             self.add_battle_log(
@@ -270,7 +284,7 @@ class Battle:
         if self.selected_spell is not None:
             return self._cast_spell_on_target(defender)
 
-        damage = attacker.attack(defender)
+        damage = self.resolve_attack(attacker, defender)
 
         msg = self.generate_attack_message(attacker, defender, damage)
         self.add_battle_log(

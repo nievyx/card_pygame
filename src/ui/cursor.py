@@ -63,16 +63,15 @@ class Cursor:
 
     def _is_cursor_msg(self) -> bool:
         """Check if there is a cursor message to display"""
-        pass #TODO:
+        pass #Logic for this in draw
 
     def display_cursor_message(self, text) -> None:
         """Display a message beside the cursor"""
-        pass #TODO:
+        pass #Logic for this in draw
 
     def draw(self, screen):
         screen.blit(self.spr, (self.x, self.y))
 
-        #TODO:
         # Only draw cursor msg if there is one
         if (
             self.cursor_message

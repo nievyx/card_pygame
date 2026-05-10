@@ -54,8 +54,6 @@ class BattleScreen:
         self.background_tint.fill((0, 0, 0))
         self.background_tint.set_alpha(90)
 
-        #Background here now
-        #TODO
         self.background = config.load_random_background(self.screen.get_size())
 
 
@@ -101,8 +99,6 @@ class BattleScreen:
         Increments wave count, generates a new enemy team and battle,
         reset UI state, loads a new background, and grants the player a new card
 
-        TODO: background is not being loaded.
-
         Note: Handles
         """
         self.wave_count += 1
@@ -132,6 +128,7 @@ class BattleScreen:
         self.card_rects = []
 
     def handle_event(self, event):
+        """Checks for mouse click and passes it to handle_mouse_click function"""
         if event.type == pygame.MOUSEBUTTONDOWN:
             return self.handle_mouse_click(event.pos)
         return None
