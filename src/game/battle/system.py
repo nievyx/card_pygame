@@ -2,13 +2,19 @@
 Battle System Module
 
 Handles:
--
+- turn flow
+- combat actions
+- attack/spell resolution
+- enemy AI actions
+- battle log data generation
+- win/loss detection
+
 """
 
-from src.utils.config import PLAYER_LOG_COLOR, ENEMY_LOG_COLOR
 from enum import Enum, auto
 import random
-from src.ui.theme import THEME
+from src.ui import THEME
+
 from src.game.spell import HealSpell
 
 
@@ -24,9 +30,9 @@ class Turn(Enum):
 
 def generate_spell_message(castor, target, spell, amount):
     if isinstance(spell, HealSpell):
-        # This is for Heal Spells
+        #Heal Spells
         return f'{castor.name} casts {spell.name}! It heals {target.name} {amount} HP.'
-    #This is for Damage Spell
+    #Damage Spell
     return f'{castor.name} casts {spell.name}! It attacks {target.name}  for {amount} damage.'
 
 
@@ -58,6 +64,8 @@ class Battle:
         templates = [
             f'{attacker_owner}\'s {attacker.name} attacks '
             f'{defender.name}! It deals {damage} to {defender.name}!',
+            f'{attacker_owner}\'s {attacker.name} strikes '
+            f'{defender.name}! It deals {damage} to {defender.name}!'
         ]
         return random.choice(templates)
 
@@ -77,6 +85,8 @@ class Battle:
             self._enemy_turn()
 
     def _cast_spell_on_target(self, target) -> bool:
+        """Check if valid target
+        :returns: True if valid, False otherwise"""
         caster = self.selected_monster
         spell = self.selected_spell
 
@@ -96,14 +106,16 @@ class Battle:
         if amount is None:
             self.add_battle_log(
                 f'{caster.name} failed to cast {spell.name}.',
-                THEME['PLAYER_LOG_COLOR']
+                THEME['battle_log']['PLAYER_LOG_COLOR']
             )
             return False
 
         self.sfx.play(spell)
         self.add_battle_log(
             generate_spell_message(caster, target, spell, amount),
-            PLAYER_LOG_COLOR
+            THEME['battle_log']['PLAYER_LOG_COLOR'],
+            attacker=caster,
+            target=target
         )
 
         if not self.battle_is_over():
@@ -115,6 +127,20 @@ class Battle:
             return False
 
         return self._cast_spell_on_target(target)
+
+    def resolve_attack(self, attacker, defender) -> int:
+        attacker.deplete_energy(1)
+
+        if attacker.energy <= 0:
+            attacker.take_damage(attacker.hp)
+            self.add_battle_log(
+            f'{attacker.name} ran out of energy and collapsed!'
+            )
+            return 0
+
+        damage = attacker.attack(defender)
+        defender.take_damage(damage)
+        return damage
 
     def get_team(self, index):
         """returns a monster list"""
@@ -145,13 +171,21 @@ class Battle:
 
         if player_alive:
             self.winner, self.loser = 0, 1
-            self.add_battle_log(f'Player wins!', THEME['PLAYER_LOG_COLOR'])
+            self.add_battle_log(
+                f'Player wins!',
+                THEME['battle_log']['PLAYER_LOG_COLOR']
+            )
         elif enemy_alive:
             self.winner, self.loser = 1, 0
-            self.add_battle_log(f'AI wins the battle', THEME['ENEMY_LOG_COLOR'])
+            self.add_battle_log(
+                f'AI wins the battle',
+                THEME['battle_log']['ENEMY_LOG_COLOR']
+            )
         else:
             self.winner, self.loser = None, None
-            self.add_battle_log('The battle ends in a draw.')
+            self.add_battle_log(
+                'The battle ends in a draw.'
+            )
         return True
 
     def prepare_enemy_turn(self):
@@ -184,13 +218,23 @@ class Battle:
 
         defender = random.choice(alive_players)
 
-        damage = attacker.attack(defender)
+        damage = self.resolve_attack(attacker, defender)
 
         if damage == 0:
-            self.add_battle_log(f"{attacker.name} is too tired to attack!", ENEMY_LOG_COLOR, attacker=attacker, target=defender)
+            self.add_battle_log(
+                f"{attacker.name} is too tired to attack!",
+                THEME['battle_log']['ENEMY_LOG_COLOR'],
+                attacker=attacker,
+                target=defender
+            )
         else:
             msg = self.generate_attack_message(attacker, defender, damage)
-            self.add_battle_log(msg, ENEMY_LOG_COLOR)
+            self.add_battle_log(
+                msg,
+                THEME['battle_log']['ENEMY_LOG_COLOR'],
+                attacker=attacker,
+                target=defender
+            )
         self.end_turn()
 
     def get_current_player(self) -> int:
@@ -211,7 +255,7 @@ class Battle:
         if monster is None or not monster.is_alive:
             return False
 
-        #Clicking the same monster deselects #TODO: fact check this
+        #Clicking the selected monster again deselects it
         if self.selected_monster == monster:
             self.cancel_selection()
             return True
@@ -240,10 +284,15 @@ class Battle:
         if self.selected_spell is not None:
             return self._cast_spell_on_target(defender)
 
-        damage = attacker.attack(defender)
+        damage = self.resolve_attack(attacker, defender)
 
         msg = self.generate_attack_message(attacker, defender, damage)
-        self.add_battle_log(msg, PLAYER_LOG_COLOR)
+        self.add_battle_log(
+            msg,
+            THEME['battle_log']['PLAYER_LOG_COLOR'],
+            attacker=attacker,
+            target=defender
+        )
 
         self.end_turn()
         return True

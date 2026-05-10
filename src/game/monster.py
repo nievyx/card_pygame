@@ -52,6 +52,8 @@ class Monster:
         return new_card.clone()
 
 
+
+
     @property
     def is_alive(self) -> bool:
         return self.hp > 0
@@ -79,34 +81,15 @@ class Monster:
         self.energy = max(0, self.energy - amount)
 
     def recover_energy(self, amount: int) -> None:
-        self.energy = min(0, self.energy + amount)
+        self.energy = min(self.max_energy, self.energy + amount)
 
     def attack(self, target) -> int:
-        if not self.can_attack():
-            raise ValueError(f'{self.name} has no energy left to fight')
-            #TODO: remove error and just let monster not fight, u may also need to update logic for enemy using a monster with no energy
-             #TODO: Append to battle log?, probably not here
-
-        #TODO: update generate msg in battle log to say critial hit
-        roll = random.randint(1, 6)
-        if roll > 4:
-            test_crit = 1
-        else:
-            test_crit = 0
 
         damage = self.strength
-        if test_crit:
+
+        roll = random.randint(1, 6)
+        if roll > 4:
             damage = round(self.strength * self.critical_hit())
-
-        # TODO: Refactor attack() to separate responsibilities:
-        # - Monster should ONLY calculate attack result (damage, crit, energy cost)
-        # - Move applying damage (target.take_damage) to BattleManager/combat system
-        # - Replace exception on no energy with a non-blocking return (e.g. {"success": False})
-        # - Return structured result dict (damage, crit, success) for battle/UI handling
-        # - Move battle log / text output OUT of this class into UI layer
-
-        self.deplete_energy(1) #TODO: change amount?
-        target.take_damage(damage) #TODO: dont think this should take effect here
 
         return damage
 
@@ -125,10 +108,8 @@ class Monster:
 
     def take_damage(self, amount:int) -> int:
         starting_hp = self.hp
-
         self.hp = max(0, self.hp - amount)
-
-        return starting_hp + amount
+        return starting_hp - self.hp
 
     def restore_health(self, amount:int):
         """restore the health of the monster

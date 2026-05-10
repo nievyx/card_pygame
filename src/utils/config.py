@@ -16,7 +16,9 @@ class Config:
 
     game_title = "Niamh's Monster Cards"
 
-    ALLOW_OVERHEAL = True
+
+
+    ALLOW_OVERHEAL = False
 
     num_players = 2
     cards_per_player = [5, 3]

@@ -49,8 +49,8 @@ Wave Mode
 - How to playL opens instructions
 - Back button: returns to menu
 
-## Code Structure
 
+## File Structure
 <details open>
 <summary>Click to collapse</summary>
 
@@ -104,3 +104,70 @@ src/
 | `src/utils/config.py` | Loads game data, assets, players, enemies, cards, and backgrounds.                                       |
 
 
+## Code Structure
+```mermaid
+flowchart LR
+    main["src/main.py<br/>Entry point"] --> game["Game<br/>game_controller.py"]
+
+    game --> config["Config<br/>utils/config.py"]
+    game --> cursor["Cursor<br/>ui/theme/cursor.py"]
+    game --> menu["MenuScreen<br/>ui/screens/menu_screen.py"]
+    game --> battleScreen["BattleScreen<br/>ui/screens/battle_screen.py"]
+    game --> howTo["How To Screen<br/>ui/screens/how_to_screen.py"]
+
+    config --> monsterData["monster_data.py<br/>Registers monsters"]
+    config --> spellData["spell_data.py<br/>Registers spells"]
+    config --> monster["Monster<br/>game/monster.py"]
+
+    battleScreen --> battle["Battle<br/>game/battle/system.py"]
+    battleScreen --> cardRenderer["CardRenderer<br/>ui/cards/card_renderer.py"]
+    battleScreen --> battleLog["BattleLog<br/>ui/components/battle_log.py"]
+    battleScreen --> spellMenu["SpellMenu<br/>ui/components/spell_menu.py"]
+
+    battle --> monster
+    battle --> spell["Spell / DamageSpell / HealSpell<br/>game/spell.py"]
+    battle --> sfx["SFX<br/>sound/sfx.py"]
+
+    cardRenderer --> imageCache["ImageCache<br/>assets/image_cache.py"]
+    battleLog --> imageCache
+    cardRenderer --> frames["RARITY_FRAMES<br/>content/frames.py"]
+
+    menu --> button["Button<br/>ui/theme/button.py"]
+    battleScreen --> panel["Panel<br/>ui/panel.py"]
+    battleLog --> panel
+```
+
+## Test Cases
+| Test area                                     | Problem found                                                                                              | Fix made | Result                                                                  |
+|-----------------------------------------------|------------------------------------------------------------------------------------------------------------|---|-------------------------------------------------------------------------|
+| Winner / loser screen                         | Winner / loser values could be set incorrectly causing the wrong battle result.                            | Corrected the `self.winner` and `self.loser` values in the battle result logic. | The correct winner is now displayed.                                    |
+| You Win screen not transisioning to next wave | After winninga a battle the gamame did not correctly start the next wave.                                  | Changed the  so `start_new_wave()` returns to gameplay instead of immediately returning to the menu. | Winning now starts the next wave correctly.                             |
+| Result title display                          | Python treated `0` as false, so `self.battle.winner or 0` causing a player win to display the wrong title. | Replaced the shortcut expression with explicit checks for `None`, `0`, and `1`. | The result screen now correctly shows `Draw`, `You Win`, or `You Lose`. |
+| Monster spawning in new waves                 | New waves did not always spawn monsters consitantly.                                                       | Added a monster pool to the `Monster` class so available monsters can be stored and retrieved when generating new waves. | New waves now generate monsters from the available monster pool.        |
+
+
+## Test Case: You Win screen doesn't start next round
+
+`ui/screens/battle_screen.py`
+
+Issue: 
+```python
+# Inside handle_mouse_click(..)
+if self.battle.state == BattleState.BATTLE_OVER:
+    if self.battle.winner == 0:
+        self.start_new_wave()
+    else:
+        self.reset_battle()
+    return 'menu'
+```
+Fix:
+```python
+# Inside handle_mouse_click(..)
+if self.battle.state == BattleState.BATTLE_OVER:
+    if self.battle.winner == 0:
+        self.start_new_wave()
+        return None
+    else:
+        self.reset_battle()
+        return 'menu'
+```

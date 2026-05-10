@@ -18,9 +18,13 @@ from src.ui import THEME
 from src.ui.panel import Panel
 from src.game import State
 
+INVALID_TARGET_MESSAGE = 'CANNOT PICK ENEMY CARDS!'
+ENEMY_DELAY = 900
+
 class BattleScreen:
-    def __init__(self, screen, config, sfx, main_menu_button):
+    def __init__(self, screen, config, sfx, main_menu_button, cursor):
         self.screen = screen
+        self.cursor = cursor
         self.config = config
         self.sfx = sfx
         self.back_button = main_menu_button
@@ -37,7 +41,7 @@ class BattleScreen:
         self.active_spell_monster = None
 
         self.enemy_turn_started_at = None
-        self.enemy_action_delay = 1500
+        self.enemy_action_delay = ENEMY_DELAY
 
         self.background = config.load_random_background(self.screen.get_size())
 
@@ -49,6 +53,9 @@ class BattleScreen:
         self.background_tint = pygame.Surface(self.screen.get_size())
         self.background_tint.fill((0, 0, 0))
         self.background_tint.set_alpha(90)
+
+        self.background = config.load_random_background(self.screen.get_size())
+
 
     def get_attacking_monster(self) -> bool:
         """Returns true if monster is attacking"""
@@ -90,13 +97,18 @@ class BattleScreen:
         """Advance to the next wave.
 
         Increments wave count, generates a new enemy team and battle,
-        reset UI state, loads a new background, and grants the player a new card"""
+        reset UI state, loads a new background, and grants the player a new card
 
-
+        Note: Handles
+        """
         self.wave_count += 1
         enemy_team = self.config.create_enemy_team()
         self.players[1] = enemy_team
         self.battle = Battle(self.players[0], self.players[1], self.sfx)
+
+        # Keep animation positions for existing cards
+        self.card_renderer.battle = self.battle
+
         self.battle_log = BattleLog(self.battle)
         self.close_spell_menu()
         self.background = self.config.load_random_background(self.screen.get_size())  # Regenerate BG#
@@ -116,6 +128,7 @@ class BattleScreen:
         self.card_rects = []
 
     def handle_event(self, event):
+        """Checks for mouse click and passes it to handle_mouse_click function"""
         if event.type == pygame.MOUSEBUTTONDOWN:
             return self.handle_mouse_click(event.pos)
         return None
@@ -158,7 +171,19 @@ class BattleScreen:
                 else:
                     self.close_spell_menu()
 
-            elif player == self.battle.get_opposing_player():  #
+            # Check if clicking enemies card
+            elif player == self.battle.get_opposing_player():
+
+                # Only run if no monster is selected
+                if self.battle.selected_monster is None:
+
+                    self.cursor.show_cursor_message(
+                        INVALID_TARGET_MESSAGE,
+                        pos
+                    )
+                    return None
+
+
                 self.close_spell_menu()
                 self.battle.try_attack(player, monster)
             break
@@ -224,6 +249,9 @@ class BattleScreen:
         self.screen.blit(self.background_tint, (0, 0))
 
     def draw(self) -> list:
+        #Background image
+        self.screen.blit(self.background, (0, 0))
+
         # Apply background tint
         self.draw_background_tint()
 
