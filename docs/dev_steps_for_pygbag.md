@@ -444,9 +444,109 @@ Then set GitHub Pages to use:
 gh-pages / root
 ```
 
-# 17 -
+# 17 - Perfect — you already have the worktree. Now use it.
 
+Run:
+```
+cd ../card_pygame_gh_pages
+git status
+```
+Then replace the gh-pages contents:
+```
+git rm -rf .
+cp -r ../card_pygame_web_deploy/* .
+touch .nojekyll
+git add -f .
+git status
+git commit -m "Deploy browser beta files"
+git push origin gh-pages --force
+```
+Then go back:
+```
+cd ../card_pygame
+```
+After that, refresh the GitHub gh-pages branch page. You should see:
+```
+.nojekyll
+card_pygame.apk
+card_pygame.tar.gz
+favicon.png
+index.html
+```
+Then test:
+```
+https://nievyx.github.io/card_pygame/
+```
 
-# 18 -
+# 18 - The remaining bug is exactly the old case-sensitive filename issue:
+
+Looking for: src/assets/monsters/Calm.png
+
+but your deployed build probably still contains:
+```
+src/assets/monsters/calm.png
+```
+or the fix wasn’t included in the build you deployed.
+
+Fix it in the source branch
+
+Go back to your source repo:
+```
+cd ../card_pygame
+git checkout web-pygbag
+```
+Check the actual file:
+```
+ls "src/assets/monsters" | grep -i calm
+```
+If it shows lowercase calm.png, rename it in two steps:
+```
+mv "src/assets/monsters/calm.png" "src/assets/monsters/calm_tmp.png"
+mv "src/assets/monsters/calm_tmp.png" "src/assets/monsters/Calm.png"
+```
+Then commit it:
+```
+git add "src/assets/monsters/Calm.png"
+git add -u "src/assets/monsters"
+git commit -m "Fix Calm monster image filename case"
+```
+Rebuild
+```
+python -m pygbag --disable-sound-format-error .
+```
+When it finishes building, copy fresh deploy files:
+```
+rm -rf ../card_pygame_web_deploy
+mkdir ../card_pygame_web_deploy
+cp -r build/web/* ../card_pygame_web_deploy/
+Redeploy using your worktree
+cd ../card_pygame_gh_pages
+git rm -rf .
+cp -r ../card_pygame_web_deploy/* .
+touch .nojekyll
+git add -f .
+git commit -m "Redeploy beta with Calm image fix"
+git push origin gh-pages --force
+cd ../card_pygame
+```
+Then wait a minute and hard refresh:
+```
+https://nievyx.github.io/card_pygame/
+```
+Use:
+```
+Ctrl + Shift + R
+```
+Likely next similar bugs
+
+After Calm, you may hit more case mismatches, probably:
+```
+chimera.png vs Chimera.png
+octopot.png vs Octopot.png
+evilGod.png vs EvilGod.png
+plant.png vs Plant.png
+demon.png vs Demon.png
+```
+If the browser crashes again, the traceback will tell you the exact filename. Fix them the same way.
 
 
