@@ -1,6 +1,12 @@
 """
 Created for pygbag.
 This file is not required for the normal desktop game.
+
+Pygbag browser launcher.
+
+Use this for building/running the browser version with pygbag.
+For desktop, run:
+    python -m src.main
 """
 
 # PEP 723 dependency block

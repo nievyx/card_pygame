@@ -363,6 +363,40 @@ mv "src/assets/monsters/calm.png" "src/assets/monsters/Calm.png"
 
 # 15 -
 
+need a gh-pages branch on GitHub, but you don’t have to manually create it first. The deploy command can create it for you.
+
+From your web-pygbag branch:
+```
+python -m pygbag --disable-sound-format-error .
+```
+Then try:
+```
+git subtree push --prefix build/web origin gh-pages
+```
+That should create/push the remote gh-pages branch containing only the built web files.
+
+If that fails, use the manual method:
+```
+git checkout --orphan gh-pages
+git rm -rf .
+cp -r build/web/* .
+git add .
+git commit -m "Deploy browser beta"
+git push origin gh-pages --force
+git checkout web-pygbag
+```
+Then in GitHub Pages settings choose:
+```
+Source: Deploy from a branch
+Branch: gh-pages
+Folder: /root
+```
+ web-pygbag is your source branch, gh-pages is the website branch
+
 # 16 -
+
+# 17 -
+
+# 18 -
 
 
