@@ -395,7 +395,57 @@ Folder: /root
 
 # 16 -
 
+gh-pages is your deployed website branch, not your source-code branch. It only has the built web files, so it no longer has your normal root main.py. That’s why pygbag says:
+
+no main.py ... found
+What to do now
+
+Do not run pygbag on gh-pages.
+
+In the bottom terminal, switch back:
+```
+git checkout web-pygbag
+```
+Then you can run pygbag from there:
+```
+python -m pygbag --disable-sound-format-error .
+About the top terminal
+```
+The top terminal is still pushing gh-pages:
+```
+Writing objects: 37% ...
+```
+
+Leave that one alone until it finishes.
+
+Branch roles
+
+Think of it like this:
+```
+web-pygbag = source branch
+  has src/
+  has main.py
+  run pygbag here
+
+gh-pages = website branch
+  has index.html
+  has card_pygame.tar.gz
+  do not develop here
+  do not run pygbag here
+```
+Once the top push finishes, switch any terminal on gh-pages back to:
+```
+git checkout web-pygbag
+```
+Then set GitHub Pages to use:
+
+
+```
+gh-pages / root
+```
+
 # 17 -
+
 
 # 18 -
 
