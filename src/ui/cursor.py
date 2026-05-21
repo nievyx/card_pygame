@@ -1,10 +1,13 @@
+import sys # For Pygbag version
 import pygame
 from src.ui import THEME
+
+IS_BROWSER = sys.platform == 'emscripten' # Check for Browser for Pygbag Version
 
 class Cursor:
     def __init__(self):
         debug = 0
-        if not debug:
+        if not debug and not IS_BROWSER:
             pygame.mouse.set_visible(False)
         self.size = (32,32)
 

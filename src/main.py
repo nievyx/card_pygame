@@ -8,10 +8,21 @@ and starts main game loop.
 from src.utils.config import Config
 from src.game.game_controller import Game
 
-def main():
+def create_game():
     Config.load_game_data()
-    game = Game(config=Config())
+    return Game(config=Config())
+
+def main():
+    game = create_game()
     game.start()
+
+async def main_async():
+    """
+    Main entry point for Pygbag async game.
+    (Browser Version)
+    """
+    game = create_game()
+    await game.start_async()
 
 if __name__ == '__main__':
     main()

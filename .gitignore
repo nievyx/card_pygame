@@ -6,3 +6,11 @@ __pycache__/
 #this has already been added
 cards/.vs/
 
+
+#Needed for pygbag
+.venv/
+venv/
+__pycache__/
+*.pyc
+build/
+dist/

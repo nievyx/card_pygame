@@ -9,6 +9,7 @@ Handles:
 - shared ui buttons
 - updating draw call to active screens
 """
+import asyncio
 
 import pygame
 from src.sound.sfx import SFX
@@ -22,13 +23,14 @@ from src.ui.screens.menu_screen import MenuScreen
 class Game:
     def __init__(self, config) -> None:
         pygame.init()
+        self.clock = pygame.time.Clock() # New feature from pygbag update
         pygame.display.set_caption(config.game_title)
 
         self.mode = GameMode.WAVE_MODE
         self.config = config
         self.sfx = SFX()
 
-        fullscreen = 1
+        fullscreen = 0
         if fullscreen:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Full Screen
         else:
@@ -98,7 +100,20 @@ class Game:
                                       how_to_button= self.how_to_button,
                                       quit_button = self.quit_button)
 
+    async def start_async(self):
+        """ Pygbag Version: play pygame in browser"""
+        import asyncio
 
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            pygame.display.flip()
+
+            # Keep 60 FPS cap, then yield control to the browser.
+            self.clock.tick(60)
+            await asyncio.sleep(0)
+        pygame.quit()
 
     def start(self) -> None:
         while self.running:
@@ -181,4 +196,10 @@ class Game:
         elif self.current_state == 'how_to_play':
             draw_how_to_play(self.screen, self.back_button)
 
-        self.cursor.draw(self.screen)
+        # TODO: Re-enable custom cursor for browser
+        # New check for if game running in browser before drawing custom cursor.
+        import sys
+        IS_BROWSER = sys.platform == 'emscripten'
+
+        if not IS_BROWSER:
+            self.cursor.draw(self.screen)

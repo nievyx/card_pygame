@@ -1,3 +1,5 @@
+from __future__ import annotations #treat type hints as text instead of trying to evaluate pygame.Surface immediately
+
 import pygame
 
 class ImageCache:

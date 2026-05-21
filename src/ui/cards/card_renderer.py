@@ -1,3 +1,5 @@
+from __future__ import annotations  # Keeps pygame.Surface type hints from being evaluated in pygbag.
+
 from src.content.frames import RARITY_FRAMES
 from src.ui.theme import CARD_RENDER_THEME as THEME
 from src.assets.image_cache import ImageCache

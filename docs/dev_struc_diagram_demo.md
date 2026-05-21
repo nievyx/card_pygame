@@ -2,6 +2,31 @@
 ## Project Structure Diagram
 
 ```mermaid
+stateDiagram-v2
+    [*] --> MENU
+
+    MENU --> GAME : Start clicked
+    MENU --> HOW_TO_PLAY : How to Play clicked
+    MENU --> [*] : Quit clicked
+
+    HOW_TO_PLAY --> MENU : Back clicked
+
+    GAME --> MENU : Back clicked / player loses
+
+    state GAME {
+        [*] --> SELECT_MONSTER
+        SELECT_MONSTER --> SELECT_TARGET : Monster selected
+        SELECT_TARGET --> SELECT_MONSTER : Cancelled / reselected
+        SELECT_TARGET --> ENEMY_TURN : Attack or spell used
+        ENEMY_TURN --> SELECT_MONSTER : Enemy action complete
+        SELECT_MONSTER --> BATTLE_OVER : All enemies defeated
+        SELECT_TARGET --> BATTLE_OVER : Final attack lands
+        ENEMY_TURN --> BATTLE_OVER : All player cards defeated
+        BATTLE_OVER --> SELECT_MONSTER : Player wins, next wave
+        BATTLE_OVER --> [*] : Player loses, return to menu
+    }
+```
+```mermaid
 flowchart TD
     main["src/main.py<br/>Entry point"] --> game["Game<br/>game_controller.py"]
 
